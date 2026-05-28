@@ -1,0 +1,61 @@
+===== START tp4_nvl_off 128k_500 concurrency=128 2026-05-28T09:23:28+00:00 =====
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+benchmark_args=Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=100, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=131072, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=128, output_file='/data/tp4_nvl_off_128k_500_c128.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+Waiting up to 60s for http://127.0.0.1:30000/v1/models to become ready...
+Server ready in 0.0s.
+
+WARNING It is recommended to use the `Chat` or `Instruct` model for benchmarking.
+Because when the tokenizer counts the output tokens, if there is gibberish, it might count incorrectly.
+
+Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=100, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=131072, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=128, output_file='/data/tp4_nvl_off_128k_500_c128.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+
+#Input tokens: 6787457
+#Output tokens: 24946
+Starting warmup with 1 sequences...
+Warmup completed with 1 sequences. Starting main benchmark run...
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:57<1:34:26, 57.24s/it]  2%|▏         | 2/100 [00:57<39:09, 23.98s/it]    3%|▎         | 3/100 [00:58<21:44, 13.45s/it]  4%|▍         | 4/100 [01:00<13:57,  8.72s/it]  5%|▌         | 5/100 [01:02<09:47,  6.19s/it]  6%|▌         | 6/100 [01:02<06:34,  4.20s/it]  7%|▋         | 7/100 [01:04<05:17,  3.42s/it]  8%|▊         | 8/100 [01:05<04:09,  2.71s/it]  9%|▉         | 9/100 [01:05<02:59,  1.98s/it] 10%|█         | 10/100 [01:06<02:21,  1.57s/it] 11%|█         | 11/100 [01:08<02:22,  1.60s/it] 14%|█▍        | 14/100 [01:08<01:02,  1.37it/s] 17%|█▋        | 17/100 [01:08<00:34,  2.38it/s] 19%|█▉        | 19/100 [01:08<00:28,  2.88it/s] 21%|██        | 21/100 [01:08<00:21,  3.68it/s] 23%|██▎       | 23/100 [01:09<00:16,  4.61it/s] 25%|██▌       | 25/100 [01:09<00:13,  5.41it/s] 27%|██▋       | 27/100 [01:09<00:12,  5.84it/s] 29%|██▉       | 29/100 [01:09<00:09,  7.15it/s] 33%|███▎      | 33/100 [01:09<00:06, 10.84it/s] 39%|███▉      | 39/100 [01:10<00:03, 15.73it/s] 41%|████      | 41/100 [01:10<00:04, 13.39it/s] 43%|████▎     | 43/100 [01:10<00:04, 12.05it/s] 46%|████▌     | 46/100 [01:10<00:03, 14.64it/s] 49%|████▉     | 49/100 [01:10<00:03, 14.61it/s] 51%|█████     | 51/100 [01:11<00:03, 13.55it/s] 54%|█████▍    | 54/100 [01:11<00:03, 14.60it/s] 56%|█████▌    | 56/100 [01:11<00:02, 15.60it/s] 60%|██████    | 60/100 [01:11<00:02, 19.04it/s] 63%|██████▎   | 63/100 [01:11<00:01, 20.88it/s] 66%|██████▌   | 66/100 [01:11<00:01, 20.90it/s] 69%|██████▉   | 69/100 [01:11<00:01, 17.18it/s] 72%|███████▏  | 72/100 [01:12<00:01, 17.45it/s] 74%|███████▍  | 74/100 [01:12<00:01, 17.02it/s] 77%|███████▋  | 77/100 [01:12<00:01, 17.27it/s] 80%|████████  | 80/100 [01:12<00:01, 19.54it/s] 83%|████████▎ | 83/100 [01:12<00:01, 16.99it/s] 85%|████████▌ | 85/100 [01:12<00:00, 16.16it/s] 90%|█████████ | 90/100 [01:13<00:00, 22.39it/s] 93%|█████████▎| 93/100 [01:13<00:00, 17.68it/s] 96%|█████████▌| 96/100 [01:13<00:00, 11.44it/s] 99%|█████████▉| 99/100 [01:13<00:00, 13.78it/s]100%|██████████| 100/100 [01:13<00:00,  1.35it/s]
+
+============ Serving Benchmark Result ============
+Backend:                                 sglang    
+Traffic request rate:                    inf       
+Max request concurrency:                 128       
+Successful requests:                     100       
+Benchmark duration (s):                  73.98     
+Total input tokens:                      6787457   
+Total input text tokens:                 6787457   
+Total generated tokens:                  24946     
+Total generated tokens (retokenized):    24946     
+Request throughput (req/s):              1.35      
+Input token throughput (tok/s):          91743.56  
+Output token throughput (tok/s):         337.19    
+Peak output token throughput (tok/s):    5892.00   
+Peak concurrent requests:                100       
+Total token throughput (tok/s):          92080.75  
+Concurrency:                             94.82     
+----------------End-to-End Latency----------------
+Mean E2E Latency (ms):                   70148.26  
+Median E2E Latency (ms):                 70933.47  
+P90 E2E Latency (ms):                    72980.79  
+P99 E2E Latency (ms):                    73812.55  
+---------------Time to First Token----------------
+Mean TTFT (ms):                          28609.44  
+Median TTFT (ms):                        21343.80  
+P99 TTFT (ms):                           66283.32  
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          515.37    
+Median TPOT (ms):                        173.71    
+P99 TPOT (ms):                           3118.17   
+---------------Inter-Token Latency----------------
+Mean ITL (ms):                           167.19    
+Median ITL (ms):                         13.17     
+P95 ITL (ms):                            172.81    
+P99 ITL (ms):                            184.42    
+Max ITL (ms):                            52470.91  
+==================================================
+===== END tp4_nvl_off 128k_500 concurrency=128 rc=0 2026-05-28T09:25:02+00:00 =====

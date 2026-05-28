@@ -1,0 +1,61 @@
+===== START tp4_nvl_on 4k_500 concurrency=16 2026-05-28T09:34:47+00:00 =====
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+benchmark_args=Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=100, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=4096, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=16, output_file='/data/tp4_nvl_on_4k_500_c16.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+Waiting up to 60s for http://127.0.0.1:30000/v1/models to become ready...
+Server ready in 0.0s.
+
+WARNING It is recommended to use the `Chat` or `Instruct` model for benchmarking.
+Because when the tokenizer counts the output tokens, if there is gibberish, it might count incorrectly.
+
+Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=100, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=4096, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=16, output_file='/data/tp4_nvl_on_4k_500_c16.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+
+#Input tokens: 209281
+#Output tokens: 24946
+Starting warmup with 1 sequences...
+Warmup completed with 1 sequences. Starting main benchmark run...
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:01<02:18,  1.40s/it]  2%|▏         | 2/100 [00:01<01:06,  1.48it/s]  3%|▎         | 3/100 [00:02<01:04,  1.51it/s]  4%|▍         | 4/100 [00:02<00:46,  2.08it/s]  5%|▌         | 5/100 [00:02<00:39,  2.41it/s]  6%|▌         | 6/100 [00:02<00:31,  2.98it/s]  7%|▋         | 7/100 [00:03<00:48,  1.94it/s]  8%|▊         | 8/100 [00:03<00:37,  2.46it/s]  9%|▉         | 9/100 [00:04<00:35,  2.53it/s] 10%|█         | 10/100 [00:04<00:31,  2.83it/s] 12%|█▏        | 12/100 [00:04<00:19,  4.50it/s] 13%|█▎        | 13/100 [00:05<00:21,  4.02it/s] 14%|█▍        | 14/100 [00:05<00:24,  3.53it/s] 15%|█▌        | 15/100 [00:05<00:21,  3.88it/s] 16%|█▌        | 16/100 [00:06<00:25,  3.32it/s] 17%|█▋        | 17/100 [00:06<00:28,  2.89it/s] 18%|█▊        | 18/100 [00:06<00:29,  2.80it/s] 19%|█▉        | 19/100 [00:07<00:27,  3.00it/s] 20%|██        | 20/100 [00:07<00:22,  3.57it/s] 21%|██        | 21/100 [00:07<00:19,  4.15it/s] 22%|██▏       | 22/100 [00:07<00:16,  4.74it/s] 23%|██▎       | 23/100 [00:07<00:17,  4.36it/s] 24%|██▍       | 24/100 [00:08<00:18,  4.04it/s] 25%|██▌       | 25/100 [00:08<00:26,  2.87it/s] 26%|██▌       | 26/100 [00:09<00:30,  2.43it/s] 27%|██▋       | 27/100 [00:09<00:24,  2.97it/s] 28%|██▊       | 28/100 [00:09<00:23,  3.08it/s] 29%|██▉       | 29/100 [00:09<00:20,  3.52it/s] 30%|███       | 30/100 [00:10<00:18,  3.80it/s] 31%|███       | 31/100 [00:10<00:15,  4.33it/s] 32%|███▏      | 32/100 [00:10<00:14,  4.80it/s] 33%|███▎      | 33/100 [00:10<00:15,  4.27it/s] 34%|███▍      | 34/100 [00:11<00:16,  4.11it/s] 37%|███▋      | 37/100 [00:11<00:10,  5.80it/s] 39%|███▉      | 39/100 [00:11<00:11,  5.44it/s] 40%|████      | 40/100 [00:11<00:11,  5.41it/s] 41%|████      | 41/100 [00:12<00:13,  4.49it/s] 42%|████▏     | 42/100 [00:12<00:13,  4.18it/s] 43%|████▎     | 43/100 [00:12<00:14,  4.07it/s] 44%|████▍     | 44/100 [00:13<00:15,  3.57it/s] 45%|████▌     | 45/100 [00:13<00:16,  3.26it/s] 47%|████▋     | 47/100 [00:14<00:16,  3.27it/s] 48%|████▊     | 48/100 [00:15<00:23,  2.24it/s] 49%|████▉     | 49/100 [00:15<00:18,  2.69it/s] 50%|█████     | 50/100 [00:15<00:16,  3.06it/s] 51%|█████     | 51/100 [00:15<00:14,  3.49it/s] 52%|█████▏    | 52/100 [00:15<00:13,  3.60it/s] 53%|█████▎    | 53/100 [00:16<00:13,  3.52it/s] 54%|█████▍    | 54/100 [00:16<00:11,  3.98it/s] 55%|█████▌    | 55/100 [00:16<00:11,  3.79it/s] 56%|█████▌    | 56/100 [00:17<00:12,  3.50it/s] 57%|█████▋    | 57/100 [00:17<00:13,  3.22it/s] 58%|█████▊    | 58/100 [00:17<00:12,  3.27it/s] 59%|█████▉    | 59/100 [00:18<00:13,  3.08it/s] 60%|██████    | 60/100 [00:18<00:11,  3.64it/s] 61%|██████    | 61/100 [00:18<00:09,  3.90it/s] 62%|██████▏   | 62/100 [00:18<00:08,  4.44it/s] 63%|██████▎   | 63/100 [00:18<00:09,  3.78it/s] 64%|██████▍   | 64/100 [00:19<00:10,  3.56it/s] 65%|██████▌   | 65/100 [00:19<00:09,  3.74it/s] 66%|██████▌   | 66/100 [00:19<00:09,  3.71it/s] 67%|██████▋   | 67/100 [00:20<00:08,  3.73it/s] 68%|██████▊   | 68/100 [00:20<00:07,  4.13it/s] 69%|██████▉   | 69/100 [00:20<00:09,  3.33it/s] 70%|███████   | 70/100 [00:20<00:07,  3.83it/s] 71%|███████   | 71/100 [00:21<00:07,  3.86it/s] 72%|███████▏  | 72/100 [00:21<00:06,  4.14it/s] 73%|███████▎  | 73/100 [00:21<00:06,  3.92it/s] 74%|███████▍  | 74/100 [00:22<00:14,  1.79it/s] 75%|███████▌  | 75/100 [00:23<00:11,  2.25it/s] 76%|███████▌  | 76/100 [00:23<00:09,  2.65it/s] 77%|███████▋  | 77/100 [00:23<00:10,  2.29it/s] 78%|███████▊  | 78/100 [00:23<00:07,  2.85it/s] 79%|███████▉  | 79/100 [00:24<00:07,  2.81it/s] 80%|████████  | 80/100 [00:24<00:05,  3.37it/s] 81%|████████  | 81/100 [00:24<00:04,  3.91it/s] 82%|████████▏ | 82/100 [00:24<00:04,  4.36it/s] 83%|████████▎ | 83/100 [00:25<00:03,  4.66it/s] 84%|████████▍ | 84/100 [00:25<00:03,  4.25it/s] 85%|████████▌ | 85/100 [00:25<00:03,  4.44it/s] 86%|████████▌ | 86/100 [00:25<00:03,  3.83it/s] 87%|████████▋ | 87/100 [00:25<00:02,  4.54it/s] 88%|████████▊ | 88/100 [00:26<00:02,  4.27it/s] 90%|█████████ | 90/100 [00:26<00:01,  6.48it/s] 91%|█████████ | 91/100 [00:26<00:01,  5.37it/s] 93%|█████████▎| 93/100 [00:26<00:00,  7.14it/s] 94%|█████████▍| 94/100 [00:26<00:00,  6.74it/s] 95%|█████████▌| 95/100 [00:27<00:01,  3.70it/s] 96%|█████████▌| 96/100 [00:27<00:00,  4.35it/s] 98%|█████████▊| 98/100 [00:28<00:00,  2.54it/s] 99%|█████████▉| 99/100 [00:29<00:00,  3.01it/s]100%|██████████| 100/100 [00:29<00:00,  3.43it/s]
+
+============ Serving Benchmark Result ============
+Backend:                                 sglang    
+Traffic request rate:                    inf       
+Max request concurrency:                 16        
+Successful requests:                     100       
+Benchmark duration (s):                  29.18     
+Total input tokens:                      209281    
+Total input text tokens:                 209281    
+Total generated tokens:                  24946     
+Total generated tokens (retokenized):    24946     
+Request throughput (req/s):              3.43      
+Input token throughput (tok/s):          7171.26   
+Output token throughput (tok/s):         854.80    
+Peak output token throughput (tok/s):    1326.00   
+Peak concurrent requests:                23        
+Total token throughput (tok/s):          8026.07   
+Concurrency:                             14.85     
+----------------End-to-End Latency----------------
+Mean E2E Latency (ms):                   4334.89   
+Median E2E Latency (ms):                 4333.48   
+P90 E2E Latency (ms):                    7489.41   
+P99 E2E Latency (ms):                    8822.52   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          227.00    
+Median TTFT (ms):                        159.19    
+P99 TTFT (ms):                           525.67    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          17.27     
+Median TPOT (ms):                        16.92     
+P99 TPOT (ms):                           34.14     
+---------------Inter-Token Latency----------------
+Mean ITL (ms):                           16.53     
+Median ITL (ms):                         10.57     
+P95 ITL (ms):                            24.10     
+P99 ITL (ms):                            135.60    
+Max ITL (ms):                            270.16    
+==================================================
+===== END tp4_nvl_on 4k_500 concurrency=16 rc=0 2026-05-28T09:35:34+00:00 =====

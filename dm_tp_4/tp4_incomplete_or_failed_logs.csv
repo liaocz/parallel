@@ -1,0 +1,8 @@
+log_file,matching_json,end_rc,notes
+tp4_nvl_env_only_128k_500_c1.log,,,no END marker
+tp4_nvl_env_only_server.log,,,no END marker
+tp4_nvl_off_32k_500.log,,,no END marker
+tp4_nvl_off_server.log,,,no END marker
+tp4_nvl_on_32k_500_c128.log,,,no END marker
+tp4_nvl_on_server.log,,,no END marker
+tp4_server.log,,,no END marker
