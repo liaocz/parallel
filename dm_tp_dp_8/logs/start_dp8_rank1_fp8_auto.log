@@ -1,0 +1,4 @@
+=== start dp8 rank1 fp8-auto on node1 ===
+2026-05-28T21:07:30+08:00
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+6aa9cc945f7153d5f8b4b7558a15b56971caf190fccad3872e7c1c310b5b86a1

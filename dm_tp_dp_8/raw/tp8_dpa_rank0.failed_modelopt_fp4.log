@@ -1,0 +1,38 @@
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torchao/quantization/quant_api.py:1731: SyntaxWarning: invalid escape sequence '\.'
+  """Configuration class for applying different quantization configs to modules or parameters based on their fully qualified names (FQNs).
+/sgl-workspace/sglang/python/sglang/launch_server.py:54: UserWarning: 'python -m sglang.launch_server' is still supported, but 'sglang serve' is the recommended entrypoint.
+  Example: sglang serve --model-path <model> [options]
+  warnings.warn(
+[2026-05-28 13:06:44] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 13:06:44] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/sgl-workspace/sglang/python/sglang/launch_server.py", line 66, in <module>
+    server_args = prepare_server_args(sys.argv[1:])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sgl-workspace/sglang/python/sglang/srt/server_args.py", line 7757, in prepare_server_args
+    return ServerArgs.from_cli_args(raw_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sgl-workspace/sglang/python/sglang/srt/server_args.py", line 7141, in from_cli_args
+    return cls(**{attr: getattr(args, attr) for attr in attrs})
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 384, in __init__
+  File "/sgl-workspace/sglang/python/sglang/srt/server_args.py", line 914, in __post_init__
+    self._handle_piecewise_cuda_graph()
+  File "/sgl-workspace/sglang/python/sglang/srt/server_args.py", line 1309, in _handle_piecewise_cuda_graph
+    if self.get_model_config().is_piecewise_cuda_graph_disabled_model:
+       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sgl-workspace/sglang/python/sglang/srt/server_args.py", line 7191, in get_model_config
+    self.model_config = ModelConfig.from_server_args(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sgl-workspace/sglang/python/sglang/srt/configs/model_config.py", line 390, in from_server_args
+    return ModelConfig(
+           ^^^^^^^^^^^^
+  File "/sgl-workspace/sglang/python/sglang/srt/configs/model_config.py", line 344, in __init__
+    self._verify_quantization()
+  File "/sgl-workspace/sglang/python/sglang/srt/configs/model_config.py", line 1225, in _verify_quantization
+    raise ValueError(
+ValueError: Quantization method specified in the model config (fp8) does not match the quantization method specified in the `quantization` argument (modelopt_fp4).

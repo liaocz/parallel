@@ -1,0 +1,21 @@
+=== node0 pre-clean status ===
+2026-05-28T21:01:33+08:00
+-- docker --
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+5e0479825cbf sgl-gpu-final Up 43 minutes
+-- podman --
+5e0479825cbf sgl-gpu-final Up 43 minutes
+-- port 30000 --
+LISTEN 0      2048         0.0.0.0:30000      0.0.0.0:*    users:(("sglang",pid=335696,fd=86))          
+-- sglang processes --
+335696 /usr/bin/python3 /usr/local/bin/sglang serve --trust-remote-code --model-path /data/DeepSeek-V4-Flash --tp 8 --nnodes 2 --node-rank 0 --dist-init-addr 10.56.160.38:29500 --moe-runner-backend flashinfer_mxfp4 --chunked-prefill-size 4096 --disable-flashinfer-autotune --swa-full-tokens-ratio 0.1 --host 0.0.0.0 --port 30000 --enable-nccl-nvls
+335959 sglang::scheduler_TP0                                                                                                             
+335960 sglang::scheduler_TP1                                                                                                             
+335961 sglang::scheduler_TP2                                                                                                             
+335962 sglang::scheduler_TP3                                                                                                             
+362537 ssh root@10.56.160.40 set -o pipefail mkdir -p /home/admin/dm_tp_8/{raw,logs,metrics,scripts} {   echo "=== node1 pre-clean status ==="   date -Is   echo "-- docker --"; docker ps -a --format "{{.ID}} {{.Names}} {{.Status}}" 2>&1 || true   echo "-- podman --"; podman ps -a --format "{{.ID}} {{.Names}} {{.Status}}" 2>&1 || true   echo "-- port 30000 --"; ss -ltnp 2>/dev/null | grep ":30000" || true   echo "-- sglang processes --"; pgrep -af "sglang.launch_server|sglang serve|sglang::scheduler|bench_serving" || true   echo "-- model paths --"; ls -ld /home/admin/DeepSeek-V4-Flash /home/admin/deepSeek-V4-Flash 2>&1 || true } | tee /home/admin/dm_tp_8/logs/node1_pre_clean_status.log
+362538 /bin/bash -c set -o pipefail mkdir -p /home/admin/dm_tp_8/{raw,logs,metrics,scripts} {   echo '=== node0 pre-clean status ==='   date -Is   echo '-- docker --'; docker ps -a --format '{{.ID}} {{.Names}} {{.Status}}' 2>&1 || true   echo '-- podman --'; podman ps -a --format '{{.ID}} {{.Names}} {{.Status}}' 2>&1 || true   echo '-- port 30000 --'; ss -ltnp 2>/dev/null | grep ':30000' || true   echo '-- sglang processes --'; pgrep -af 'sglang.launch_server|sglang serve|sglang::scheduler|bench_serving' || true   echo '-- model paths --'; ls -ld /home/admin/DeepSeek-V4-Flash /home/admin/deepSeek-V4-Flash 2>&1 || true } | tee /home/admin/dm_tp_8/logs/node0_pre_clean_status.log
+362540 /bin/bash -c set -o pipefail mkdir -p /home/admin/dm_tp_8/{raw,logs,metrics,scripts} {   echo '=== node0 pre-clean status ==='   date -Is   echo '-- docker --'; docker ps -a --format '{{.ID}} {{.Names}} {{.Status}}' 2>&1 || true   echo '-- podman --'; podman ps -a --format '{{.ID}} {{.Names}} {{.Status}}' 2>&1 || true   echo '-- port 30000 --'; ss -ltnp 2>/dev/null | grep ':30000' || true   echo '-- sglang processes --'; pgrep -af 'sglang.launch_server|sglang serve|sglang::scheduler|bench_serving' || true   echo '-- model paths --'; ls -ld /home/admin/DeepSeek-V4-Flash /home/admin/deepSeek-V4-Flash 2>&1 || true } | tee /home/admin/dm_tp_8/logs/node0_pre_clean_status.log
+-- model paths --
+ls: cannot access '/home/admin/deepSeek-V4-Flash': No such file or directory
+drwxr-xr-x 6 root root 4096 May 28 14:36 /home/admin/DeepSeek-V4-Flash

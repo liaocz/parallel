@@ -1,0 +1,8 @@
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+containers before
+5e0479825cbf sgl-gpu-final Up 41 minutes
+rm
+containers after
+5e0479825cbf sgl-gpu-final Up 41 minutes
+port
+LISTEN 0      2048         0.0.0.0:30000      0.0.0.0:*    users:(("sglang",pid=335696,fd=86))          

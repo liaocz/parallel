@@ -1,0 +1,6 @@
+=== node0 status after clean ===
+2026-05-28T21:02:16+08:00
+-- containers --
+5e0479825cbf sgl-gpu-final Up 43 minutes
+-- port 30000 --
+-- process snapshot --

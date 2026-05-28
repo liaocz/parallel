@@ -1,0 +1,12 @@
+source_file,category,run_set,workload,concurrency,status,reason
+tp8_dp8_dpa_megamoe_128k_500_c64.log,main_matrix_missing,tp8_dp8_dpa_megamoe,128k_500,64,failed_or_missing,bench warmup 阶段服务端口拒绝连接，服务已退出或不可用
+,main_matrix_missing,tp8_dp8_dpa_megamoe,128k_500,128,failed_or_missing,not_run_or_no_log
+tp8_dp8_dpa_rank0.failed_flashinfer_trtllm.log,failed_attempt_log,tp8_dp8_dpa_rank0,,,failed,flashinfer_trtllm 初始化阶段 AssertionError
+tp8_dp8_dpa_rank0.failed_flashinfer_trtllm_routed.log,failed_attempt_log,tp8_dp8_dpa_rank0,,,failed,flashinfer_trtllm routed 路径不支持 apply_routed_scaling_factor_on_output
+tp8_dp8_dpa_rank1.failed_flashinfer_trtllm_routed.log,failed_attempt_log,tp8_dp8_dpa_rank1,,,failed,flashinfer_trtllm routed 路径不支持 apply_routed_scaling_factor_on_output
+tp8_dpa_rank0.failed_modelopt_fp4.log,failed_attempt_log,tp8_dpa_rank0,,,failed,model config 为 fp8，但启动参数指定 modelopt_fp4，量化配置不匹配
+tp8_pure_megamoe_4k_500_c1.failed_flashmla.log,failed_attempt_log,tp8_pure_megamoe_4k_500_c1,,,failed,bench warmup 阶段服务端口拒绝连接，服务已退出或不可用
+tp8_pure_megamoe_rank0.failed_flashmla.log,failed_attempt_log,tp8_pure_megamoe_rank0,,,failed,纯 TP 路径在 flash-mla decode schedule meta 触发 CUDA invalid argument
+tp8_pure_megamoe_rank0.failed_flashmla_c8.server.log,failed_attempt_log,tp8_pure_megamoe_rank0,,,failed,纯 TP 路径在 flash-mla decode schedule meta 触发 CUDA invalid argument
+tp8_pure_nsa_megamoe_rank0.failed_flashmla.log,failed_attempt_log,tp8_pure_nsa_megamoe_rank0,,,failed,纯 TP 路径在 flash-mla decode schedule meta 触发 CUDA invalid argument
+tp8_pure_nsa_megamoe_rank0.failed_flashmla_c8.server.log,failed_attempt_log,tp8_pure_nsa_megamoe_rank0,,,failed,纯 TP 路径在 flash-mla decode schedule meta 触发 CUDA invalid argument

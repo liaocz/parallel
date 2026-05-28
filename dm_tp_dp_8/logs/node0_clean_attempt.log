@@ -1,0 +1,10 @@
+=== node0 clean attempt ===
+2026-05-28T21:01:57+08:00
+-- kill service inside container --
+-- stop/rm containers --
+Error: no container with name or ID "sglang-dpvs4" found: no such container
+-- direct host pid cleanup if any --
+335696
+362715
+362716
+362820

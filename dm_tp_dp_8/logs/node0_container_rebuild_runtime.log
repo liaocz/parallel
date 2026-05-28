@@ -1,0 +1,7 @@
+=== node0 rebuild container with nvidia runtime ===
+2026-05-28T21:05:17+08:00
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+time="2026-05-28T21:05:27+08:00" level=warning msg="StopSignal SIGTERM failed to stop container sglang-dpvs4 in 10 seconds, resorting to SIGKILL"
+sglang-dpvs4
+70a1691fb50665860b00ce4f527046476c365971c011f0cea5bc240779566f02
+70a1691fb506 sglang-dpvs4 Up Less than a second

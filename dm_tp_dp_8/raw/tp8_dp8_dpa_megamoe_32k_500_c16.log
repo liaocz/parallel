@@ -1,0 +1,78 @@
+BEGIN mode=tp8_dp8_dpa_megamoe case=32k_500 input=32768 output=500 concurrency=16 at 2026-05-28 13:45:55
+models_http=200
+{"object":"list","data":[{"id":"/home/admin/DeepSeek-V4-Flash/","object":"model","created":1779975955,"owned_by":"sglang","root":"/home/admin/DeepSeek-V4-Flash/","parent":null,"max_model_len":202752}]}
+health_http=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   15M  442G   1% /dev/shm
+0, 0 %, 38118 MiB, 189471 MiB
+1, 0 %, 38253 MiB, 189471 MiB
+2, 0 %, 38252 MiB, 189471 MiB
+3, 0 %, 38150 MiB, 189471 MiB
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+benchmark_args=Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=100, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=32768, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=16, output_file='/home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c16.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+Waiting up to 60s for http://127.0.0.1:30000/v1/models to become ready...
+Server ready in 0.0s.
+
+WARNING It is recommended to use the `Chat` or `Instruct` model for benchmarking.
+Because when the tokenizer counts the output tokens, if there is gibberish, it might count incorrectly.
+
+Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=100, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=32768, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=16, output_file='/home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c16.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+
+#Input tokens: 1610113
+#Output tokens: 24946
+Starting warmup with 1 sequences...
+Warmup completed with 1 sequences. Starting main benchmark run...
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:09<15:54,  9.64s/it]  2%|▏         | 2/100 [00:09<06:49,  4.18s/it]  3%|▎         | 3/100 [00:12<05:38,  3.49s/it]  5%|▌         | 5/100 [00:12<02:26,  1.54s/it]  6%|▌         | 6/100 [00:14<02:36,  1.66s/it]  7%|▋         | 7/100 [00:16<02:29,  1.61s/it]  8%|▊         | 8/100 [00:16<01:52,  1.22s/it]  9%|▉         | 9/100 [00:18<01:58,  1.31s/it] 10%|█         | 10/100 [00:20<02:21,  1.57s/it] 11%|█         | 11/100 [00:20<01:53,  1.27s/it] 12%|█▏        | 12/100 [00:21<01:29,  1.02s/it] 13%|█▎        | 13/100 [00:21<01:05,  1.33it/s] 14%|█▍        | 14/100 [00:23<01:35,  1.11s/it] 15%|█▌        | 15/100 [00:24<01:49,  1.29s/it] 16%|█▌        | 16/100 [00:26<01:50,  1.31s/it] 17%|█▋        | 17/100 [00:28<02:08,  1.55s/it] 18%|█▊        | 18/100 [00:30<02:25,  1.77s/it] 20%|██        | 20/100 [00:32<01:45,  1.32s/it] 21%|██        | 21/100 [00:32<01:26,  1.09s/it] 22%|██▏       | 22/100 [00:34<01:31,  1.18s/it] 23%|██▎       | 23/100 [00:35<01:29,  1.17s/it] 24%|██▍       | 24/100 [00:36<01:31,  1.21s/it] 25%|██▌       | 25/100 [00:37<01:15,  1.01s/it] 26%|██▌       | 26/100 [00:38<01:13,  1.01it/s] 28%|██▊       | 28/100 [00:39<00:58,  1.23it/s] 29%|██▉       | 29/100 [00:39<00:55,  1.28it/s] 30%|███       | 30/100 [00:40<00:55,  1.26it/s] 32%|███▏      | 32/100 [00:42<00:51,  1.31it/s] 33%|███▎      | 33/100 [00:42<00:51,  1.30it/s] 34%|███▍      | 34/100 [00:43<00:43,  1.52it/s] 37%|███▋      | 37/100 [00:45<00:40,  1.57it/s] 38%|███▊      | 38/100 [00:46<00:44,  1.40it/s] 39%|███▉      | 39/100 [00:47<00:55,  1.09it/s] 40%|████      | 40/100 [00:47<00:43,  1.37it/s] 41%|████      | 41/100 [00:50<01:08,  1.16s/it] 42%|████▏     | 42/100 [00:50<00:56,  1.04it/s] 43%|████▎     | 43/100 [00:51<00:46,  1.24it/s] 45%|████▌     | 45/100 [00:53<00:52,  1.05it/s] 46%|████▌     | 46/100 [00:54<00:57,  1.06s/it] 47%|████▋     | 47/100 [00:55<00:54,  1.02s/it] 48%|████▊     | 48/100 [00:57<00:58,  1.13s/it] 49%|████▉     | 49/100 [00:57<00:47,  1.07it/s] 51%|█████     | 51/100 [00:58<00:36,  1.35it/s] 52%|█████▏    | 52/100 [00:59<00:40,  1.19it/s] 54%|█████▍    | 54/100 [01:01<00:40,  1.13it/s] 55%|█████▌    | 55/100 [01:02<00:40,  1.12it/s] 57%|█████▋    | 57/100 [01:05<00:43,  1.02s/it] 58%|█████▊    | 58/100 [01:05<00:38,  1.08it/s] 59%|█████▉    | 59/100 [01:05<00:30,  1.33it/s] 60%|██████    | 60/100 [01:06<00:27,  1.44it/s] 61%|██████    | 61/100 [01:07<00:29,  1.32it/s] 62%|██████▏   | 62/100 [01:07<00:23,  1.58it/s] 63%|██████▎   | 63/100 [01:08<00:25,  1.43it/s] 64%|██████▍   | 64/100 [01:10<00:42,  1.18s/it] 66%|██████▌   | 66/100 [01:11<00:30,  1.10it/s] 67%|██████▋   | 67/100 [01:13<00:32,  1.01it/s] 68%|██████▊   | 68/100 [01:14<00:37,  1.16s/it] 69%|██████▉   | 69/100 [01:16<00:37,  1.20s/it] 70%|███████   | 70/100 [01:17<00:33,  1.11s/it] 73%|███████▎  | 73/100 [01:17<00:18,  1.50it/s] 74%|███████▍  | 74/100 [01:20<00:25,  1.04it/s] 77%|███████▋  | 77/100 [01:22<00:20,  1.13it/s] 78%|███████▊  | 78/100 [01:23<00:20,  1.07it/s] 79%|███████▉  | 79/100 [01:23<00:16,  1.24it/s] 80%|████████  | 80/100 [01:24<00:13,  1.53it/s] 81%|████████  | 81/100 [01:24<00:09,  1.91it/s] 82%|████████▏ | 82/100 [01:24<00:08,  2.03it/s] 83%|████████▎ | 83/100 [01:26<00:16,  1.05it/s] 84%|████████▍ | 84/100 [01:27<00:13,  1.21it/s] 86%|████████▌ | 86/100 [01:27<00:08,  1.70it/s] 87%|████████▋ | 87/100 [01:28<00:09,  1.41it/s] 88%|████████▊ | 88/100 [01:29<00:07,  1.57it/s] 90%|█████████ | 90/100 [01:29<00:03,  2.57it/s] 92%|█████████▏| 92/100 [01:29<00:02,  3.54it/s] 94%|█████████▍| 94/100 [01:29<00:01,  4.83it/s] 96%|█████████▌| 96/100 [01:30<00:01,  3.63it/s] 97%|█████████▋| 97/100 [01:30<00:00,  3.80it/s] 98%|█████████▊| 98/100 [01:31<00:00,  2.57it/s]100%|██████████| 100/100 [01:31<00:00,  3.35it/s]100%|██████████| 100/100 [01:31<00:00,  1.09it/s]
+
+============ Serving Benchmark Result ============
+Backend:                                 sglang    
+Traffic request rate:                    inf       
+Max request concurrency:                 16        
+Successful requests:                     100       
+Benchmark duration (s):                  92.00     
+Total input tokens:                      1610113   
+Total input text tokens:                 1610113   
+Total generated tokens:                  24946     
+Total generated tokens (retokenized):    24946     
+Request throughput (req/s):              1.09      
+Input token throughput (tok/s):          17502.07  
+Output token throughput (tok/s):         271.17    
+Peak output token throughput (tok/s):    1616.00   
+Peak concurrent requests:                20        
+Total token throughput (tok/s):          17773.23  
+Concurrency:                             15.63     
+----------------End-to-End Latency----------------
+Mean E2E Latency (ms):                   14382.18  
+Median E2E Latency (ms):                 13173.68  
+P90 E2E Latency (ms):                    26967.03  
+P99 E2E Latency (ms):                    34141.64  
+---------------Time to First Token----------------
+Mean TTFT (ms):                          1713.36   
+Median TTFT (ms):                        1478.36   
+P99 TTFT (ms):                           7912.53   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          52.49     
+Median TPOT (ms):                        55.28     
+P99 TPOT (ms):                           98.57     
+---------------Inter-Token Latency----------------
+Mean ITL (ms):                           50.99     
+Median ITL (ms):                         10.00     
+P95 ITL (ms):                            138.20    
+P99 ITL (ms):                            176.19    
+Max ITL (ms):                            5788.74   
+==================================================
+bench_rc=0
+health_http_after=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   15M  442G   1% /dev/shm
+0, 0 %, 38120 MiB, 189471 MiB
+1, 0 %, 38255 MiB, 189471 MiB
+2, 0 %, 38254 MiB, 189471 MiB
+3, 0 %, 38152 MiB, 189471 MiB
+END mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=16 at 2026-05-28 13:47:50
