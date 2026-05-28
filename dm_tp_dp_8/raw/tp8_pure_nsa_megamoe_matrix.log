@@ -1,0 +1,6 @@
+2026-05-28 14:52:18 completed mode=tp8_pure_nsa_megamoe case=4k_500 concurrency=1
+2026-05-28 14:53:09 completed mode=tp8_pure_nsa_megamoe case=4k_500 concurrency=4
+2026-05-28 14:53:31 failed mode=tp8_pure_nsa_megamoe case=4k_500 concurrency=1 rc=1
+2026-05-28 14:53:31 failed mode=tp8_pure_nsa_megamoe case=4k_500 concurrency=8 rc=1
+2026-05-28 14:53:31 service is unhealthy after failed benchmark; stopping matrix
+2026-05-28 14:53:31 service is unhealthy after failed benchmark; stopping matrix

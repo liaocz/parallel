@@ -1,0 +1,40 @@
+2026-05-28 13:28:04 completed mode=tp8_dp8_dpa_megamoe case=4k_500 concurrency=1
+2026-05-28 13:29:47 completed mode=tp8_dp8_dpa_megamoe case=4k_500 concurrency=4
+2026-05-28 13:30:59 completed mode=tp8_dp8_dpa_megamoe case=4k_500 concurrency=8
+2026-05-28 13:31:53 completed mode=tp8_dp8_dpa_megamoe case=4k_500 concurrency=16
+2026-05-28 13:32:36 completed mode=tp8_dp8_dpa_megamoe case=4k_500 concurrency=32
+2026-05-28 13:33:12 completed mode=tp8_dp8_dpa_megamoe case=4k_500 concurrency=64
+2026-05-28 13:33:44 completed mode=tp8_dp8_dpa_megamoe case=4k_500 concurrency=128
+2026-05-28 13:40:03 completed mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=1
+2026-05-28 13:43:16 completed mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=4
+2026-05-28 13:45:55 completed mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=8
+2026-05-28 13:47:50 completed mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=16
+2026-05-28 13:49:15 completed mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=32
+2026-05-28 13:50:18 completed mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=64
+2026-05-28 13:51:12 completed mode=tp8_dp8_dpa_megamoe case=32k_500 concurrency=128
+2026-05-28 14:04:43 completed mode=tp8_dp8_dpa_megamoe case=128k_500 concurrency=1
+2026-05-28 14:13:08 completed mode=tp8_dp8_dpa_megamoe case=128k_500 concurrency=4
+2026-05-28 14:19:26 completed mode=tp8_dp8_dpa_megamoe case=128k_500 concurrency=8
+2026-05-28 14:24:14 completed mode=tp8_dp8_dpa_megamoe case=128k_500 concurrency=16
+2026-05-28 14:28:45 completed mode=tp8_dp8_dpa_megamoe case=128k_500 concurrency=32
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_4k_500_c1.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_4k_500_c4.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_4k_500_c8.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_4k_500_c16.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_4k_500_c32.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_4k_500_c64.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_4k_500_c128.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c1.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c4.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c8.json
+2026-05-28 14:29:30 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c16.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c32.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c64.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_32k_500_c128.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_128k_500_c1.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_128k_500_c4.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_128k_500_c8.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_128k_500_c16.json
+2026-05-28 14:29:31 skip existing successful result: /home/admin/dm_tp_8/raw/tp8_dp8_dpa_megamoe_128k_500_c32.json
+2026-05-28 14:29:50 failed mode=tp8_dp8_dpa_megamoe case=128k_500 concurrency=64 rc=1
+2026-05-28 14:29:50 service is unhealthy after failed benchmark; stopping matrix

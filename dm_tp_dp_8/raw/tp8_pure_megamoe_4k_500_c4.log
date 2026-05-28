@@ -1,0 +1,78 @@
+BEGIN mode=tp8_pure_megamoe case=4k_500 input=4096 output=500 concurrency=4 at 2026-05-28 14:35:04
+models_http=200
+{"object":"list","data":[{"id":"/home/admin/DeepSeek-V4-Flash/","object":"model","created":1779978904,"owned_by":"sglang","root":"/home/admin/DeepSeek-V4-Flash/","parent":null,"max_model_len":202752}]}
+health_http=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   25M  442G   1% /dev/shm
+0, 98 %, 37001 MiB, 189471 MiB
+1, 98 %, 37002 MiB, 189471 MiB
+2, 98 %, 37000 MiB, 189471 MiB
+3, 98 %, 37000 MiB, 189471 MiB
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+benchmark_args=Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=20, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=4096, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=4, output_file='/home/admin/dm_tp_8/raw/tp8_pure_megamoe_4k_500_c4.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+Waiting up to 60s for http://127.0.0.1:30000/v1/models to become ready...
+Server ready in 0.0s.
+
+WARNING It is recommended to use the `Chat` or `Instruct` model for benchmarking.
+Because when the tokenizer counts the output tokens, if there is gibberish, it might count incorrectly.
+
+Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=60, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=20, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=4096, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=4, output_file='/home/admin/dm_tp_8/raw/tp8_pure_megamoe_4k_500_c4.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+
+#Input tokens: 44113
+#Output tokens: 6196
+Starting warmup with 1 sequences...
+Warmup completed with 1 sequences. Starting main benchmark run...
+  0%|          | 0/20 [00:00<?, ?it/s]  5%|▌         | 1/20 [00:05<01:50,  5.82s/it] 10%|█         | 2/20 [00:07<00:57,  3.20s/it] 15%|█▌        | 3/20 [00:07<00:34,  2.05s/it] 20%|██        | 4/20 [00:08<00:25,  1.61s/it] 25%|██▌       | 5/20 [00:10<00:26,  1.76s/it] 30%|███       | 6/20 [00:11<00:17,  1.28s/it] 35%|███▌      | 7/20 [00:11<00:13,  1.01s/it] 40%|████      | 8/20 [00:12<00:11,  1.08it/s] 45%|████▌     | 9/20 [00:13<00:10,  1.07it/s] 50%|█████     | 10/20 [00:14<00:11,  1.14s/it] 55%|█████▌    | 11/20 [00:16<00:11,  1.27s/it] 60%|██████    | 12/20 [00:17<00:08,  1.07s/it] 65%|██████▌   | 13/20 [00:17<00:05,  1.26it/s] 70%|███████   | 14/20 [00:22<00:12,  2.10s/it] 75%|███████▌  | 15/20 [00:23<00:09,  1.86s/it] 80%|████████  | 16/20 [00:24<00:06,  1.66s/it] 85%|████████▌ | 17/20 [00:25<00:03,  1.29s/it] 90%|█████████ | 18/20 [00:25<00:02,  1.06s/it] 95%|█████████▌| 19/20 [00:26<00:01,  1.05s/it]100%|██████████| 20/20 [00:27<00:00,  1.22it/s]100%|██████████| 20/20 [00:27<00:00,  1.36s/it]
+
+============ Serving Benchmark Result ============
+Backend:                                 sglang    
+Traffic request rate:                    inf       
+Max request concurrency:                 4         
+Successful requests:                     20        
+Benchmark duration (s):                  27.18     
+Total input tokens:                      44113     
+Total input text tokens:                 44113     
+Total generated tokens:                  6196      
+Total generated tokens (retokenized):    6196      
+Request throughput (req/s):              0.74      
+Input token throughput (tok/s):          1623.26   
+Output token throughput (tok/s):         228.00    
+Peak output token throughput (tok/s):    344.00    
+Peak concurrent requests:                6         
+Total token throughput (tok/s):          1851.26   
+Concurrency:                             3.87      
+----------------End-to-End Latency----------------
+Mean E2E Latency (ms):                   5259.82   
+Median E2E Latency (ms):                 5813.36   
+P90 E2E Latency (ms):                    8773.10   
+P99 E2E Latency (ms):                    8807.40   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          269.00    
+Median TTFT (ms):                        176.79    
+P99 TTFT (ms):                           648.97    
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          15.46     
+Median TPOT (ms):                        14.52     
+P99 TPOT (ms):                           21.06     
+---------------Inter-Token Latency----------------
+Mean ITL (ms):                           16.16     
+Median ITL (ms):                         11.58     
+P95 ITL (ms):                            11.68     
+P99 ITL (ms):                            160.81    
+Max ITL (ms):                            2189.51   
+==================================================
+bench_rc=0
+health_http_after=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   25M  442G   1% /dev/shm
+0, 98 %, 37657 MiB, 189471 MiB
+1, 98 %, 37657 MiB, 189471 MiB
+2, 98 %, 37656 MiB, 189471 MiB
+3, 98 %, 37656 MiB, 189471 MiB
+END mode=tp8_pure_megamoe case=4k_500 concurrency=4 at 2026-05-28 14:35:53

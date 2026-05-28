@@ -1,0 +1,6 @@
+2026-05-28 14:35:04 completed mode=tp8_pure_megamoe case=4k_500 concurrency=1
+2026-05-28 14:35:53 completed mode=tp8_pure_megamoe case=4k_500 concurrency=4
+2026-05-28 14:36:15 failed mode=tp8_pure_megamoe case=4k_500 concurrency=8 rc=1
+2026-05-28 14:36:15 service is unhealthy after failed benchmark; stopping matrix
+2026-05-28 14:36:15 failed mode=tp8_pure_megamoe case=4k_500 concurrency=1 rc=1
+2026-05-28 14:36:15 service is unhealthy after failed benchmark; stopping matrix

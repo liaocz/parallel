@@ -1,0 +1,7 @@
+node0 remove old container
+2026-05-28T21:02:31+08:00
+time="2026-05-28T21:02:32+08:00" level=warning msg="StopSignal SIGTERM failed to stop container sgl-gpu-final in 1 seconds, resorting to SIGKILL"
+sgl-gpu-final
+stop_rc=0
+sgl-gpu-final
+rm_rc=0
