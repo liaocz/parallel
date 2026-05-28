@@ -1,0 +1,7 @@
+run_set,workload,concurrency,completed,request_throughput_req_s,output_throughput_tok_s,total_throughput_tok_s,mean_ttft_ms,p99_ttft_ms,mean_tpot_ms,p99_tpot_ms,p99_e2e_latency_ms,source_file
+tp4_nvl_env_only,32k_500,128,100,4.78,1191.79,78114.46,6853.01,14884.64,114.95,760.24,20812.65,tp4_nvl_env_only_32k_500_c128.json
+tp4_nvl_env_only,4k_500,128,100,14.52,3622.21,34010.28,810.74,938.26,14.62,29.25,6803.45,tp4_nvl_env_only_4k_500_c128.json
+tp4_nvl_off,128k_500,128,100,1.35,337.19,92080.75,28609.44,66283.32,515.37,3118.17,73812.55,tp4_nvl_off_128k_500_c128.json
+tp4_nvl_off,32k_500,128,100,4.86,1212.08,79444.64,7030.89,14618.81,110.14,735.57,20436.62,tp4_nvl_off_32k_500_c128.json
+tp4_nvl_off,4k_500,128,100,14.72,3670.97,34468.08,800.73,860.87,13.22,17.04,6722.09,tp4_nvl_off_4k_500_c128.json
+tp4_nvl_on,32k_500,64,100,3.25,810.22,53105.23,3611.55,10248.48,89.27,305.64,28687.29,tp4_nvl_on_32k_500_c64.json

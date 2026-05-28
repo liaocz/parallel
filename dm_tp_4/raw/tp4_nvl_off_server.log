@@ -1,0 +1,503 @@
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/sgl-workspace/sglang/python/sglang/launch_server.py:54: UserWarning: 'python -m sglang.launch_server' is still supported, but 'sglang serve' is the recommended entrypoint.
+  Example: sglang serve --model-path <model> [options]
+  warnings.warn(
+[2026-05-28 08:06:45] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:45] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:45] Use dsv4 attention backend for DeepseekV4ForCausalLM, setting page_size to 256.
+[2026-05-28 08:06:45] Setting KV cache dtype to fp8_e4m3 for DeepseekV4ForCausalLM.
+[2026-05-28 08:06:45] Setting swa_full_tokens_ratio to 0.1 for DeepseekV4ForCausalLM.
+[2026-05-28 08:06:45] Mega MoE is enabled. The expert parallel size is adjusted to be the same as the tensor parallel size[4].
+[2026-05-28 08:06:47] server_args=ServerArgs(model_path='/data/DeepSeek-V4-Flash', tokenizer_path='/data/DeepSeek-V4-Flash', tokenizer_mode='auto', tokenizer_backend='huggingface', tokenizer_worker_num=1, detokenizer_worker_num=1, skip_tokenizer_init=False, load_format='auto', model_loader_extra_config='{}', trust_remote_code=False, context_length=None, is_embedding=False, prefill_only_disable_kv_cache=False, enable_multimodal=None, revision=None, model_impl='auto', model_config_parser='auto', host='0.0.0.0', port=30000, fastapi_root_path='', grpc_mode=False, skip_server_warmup=False, warmups=None, nccl_port=None, checkpoint_engine_wait_weights_before_ready=False, ssl_keyfile=None, ssl_certfile=None, ssl_ca_certs=None, ssl_keyfile_password=None, enable_ssl_refresh=False, enable_http2=False, dtype='bfloat16', quantization='fp8', quantization_param_path=None, kv_cache_dtype='fp8_e4m3', enable_fp32_lm_head=False, modelopt_quant=None, modelopt_checkpoint_restore_path=None, modelopt_checkpoint_save_path=None, modelopt_export_path=None, quantize_and_serve=False, rl_quant_profile=None, mem_fraction_static=0.8, max_running_requests=1024, max_queued_requests=None, max_total_tokens=None, chunked_prefill_size=16384, enable_dynamic_chunking=False, max_prefill_tokens=16384, prefill_max_requests=None, schedule_policy='fcfs', enable_priority_scheduling=False, disable_priority_preemption=False, default_priority_value=None, abort_on_priority_when_disabled=False, schedule_low_priority_values_first=False, priority_scheduling_preemption_threshold=10, schedule_conservativeness=1.0, page_size=256, swa_full_tokens_ratio=0.1, disable_hybrid_swa_memory=False, radix_eviction_policy='lru', enable_prefill_delayer=False, prefill_delayer_max_delay_passes=30, prefill_delayer_token_usage_low_watermark=None, prefill_delayer_forward_passes_buckets=None, prefill_delayer_wait_seconds_buckets=None, prefill_delayer_queue_min_ratio=None, prefill_delayer_max_delay_ms=None, device='cuda', tp_size=4, pp_size=1, pp_max_micro_batch_size=None, pp_async_batch_depth=0, stream_interval=1, batch_notify_size=16, stream_response_default_include_usage=False, incremental_streaming_output=False, enable_streaming_session=False, random_seed=633550308, constrained_json_whitespace_pattern=None, constrained_json_disable_any_whitespace=False, watchdog_timeout=300, soft_watchdog_timeout=None, dist_timeout=None, download_dir=None, model_checksum=None, base_gpu_id=0, gpu_id_step=1, sleep_on_idle=False, use_ray=False, custom_sigquit_handler=None, log_level='info', log_level_http=None, log_requests=False, log_requests_level=2, log_requests_format='text', log_requests_target=None, uvicorn_access_log_exclude_prefixes=[], crash_dump_folder=None, show_time_cost=False, enable_metrics=False, grpc_http_sidecar_port=None, enable_mfu_metrics=False, enable_metrics_for_all_schedulers=False, tokenizer_metrics_custom_labels_header='x-custom-labels', tokenizer_metrics_allowed_custom_labels=None, extra_metric_labels=None, bucket_time_to_first_token=None, bucket_inter_token_latency=None, bucket_e2e_request_latency=None, prompt_tokens_buckets=None, generation_tokens_buckets=None, gc_warning_threshold_secs=0.0, decode_log_interval=40, enable_request_time_stats_logging=False, kv_events_config=None, enable_forward_pass_metrics=False, forward_pass_metrics_worker_id='', forward_pass_metrics_ipc_name=None, enable_trace=False, otlp_traces_endpoint='localhost:4317', export_metrics_to_file=False, export_metrics_to_file_dir=None, api_key=None, admin_api_key=None, served_model_name='/data/DeepSeek-V4-Flash', weight_version='default', chat_template=None, hf_chat_template_name=None, completion_template=None, file_storage_path='sglang_storage', enable_cache_report=True, reasoning_parser=None, strip_thinking_cache=False, enable_strict_thinking=False, tool_call_parser=None, tool_server=None, sampling_defaults='model', dp_size=1, load_balance_method='round_robin', attn_cp_size=1, moe_dp_size=1, dist_init_addr=None, nnodes=1, node_rank=0, json_model_override_args='{}', preferred_sampling_params=None, enable_lora=None, enable_lora_overlap_loading=None, max_lora_rank=None, lora_target_modules=None, lora_paths=None, max_loaded_loras=None, max_loras_per_batch=8, lora_eviction_policy='lru', lora_backend='csgmv', max_lora_chunk_size=16, experts_shared_outer_loras=None, lora_use_virtual_experts=False, lora_strict_loading=False, lora_drain_wait_threshold=0.0, attention_backend='dsv4', decode_attention_backend=None, prefill_attention_backend=None, sampling_backend='flashinfer', grammar_backend='xgrammar', mm_attention_backend=None, fp8_gemm_runner_backend='auto', fp4_gemm_runner_backend='auto', nsa_prefill_backend=None, nsa_decode_backend=None, disable_flashinfer_autotune=False, mamba_backend='triton', speculative_algorithm=None, speculative_draft_model_path=None, speculative_draft_model_revision=None, speculative_draft_load_format=None, speculative_num_steps=None, speculative_eagle_topk=None, speculative_num_draft_tokens=None, speculative_dflash_block_size=None, speculative_accept_threshold_single=1.0, speculative_accept_threshold_acc=1.0, speculative_token_map=None, speculative_attention_mode='prefill', speculative_draft_attention_backend=None, speculative_draft_window_size=None, speculative_moe_runner_backend='auto', speculative_moe_a2a_backend=None, speculative_draft_model_quantization='fp8', speculative_adaptive=False, speculative_adaptive_config=None, speculative_skip_dp_mlp_sync=False, speculative_ngram_min_bfs_breadth=1, speculative_ngram_max_bfs_breadth=10, speculative_ngram_match_type='BFS', speculative_ngram_max_trie_depth=18, speculative_ngram_capacity=10000000, speculative_ngram_external_corpus_path=None, speculative_ngram_external_sam_budget=0, speculative_ngram_external_corpus_max_tokens=10000000, enable_multi_layer_eagle=False, ep_size=4, moe_a2a_backend='megamoe', moe_runner_backend='auto', record_nolora_graph=True, flashinfer_mxfp4_moe_precision='default', enable_flashinfer_allreduce_fusion=False, enforce_disable_flashinfer_allreduce_fusion=False, enable_aiter_allreduce_fusion=False, deepep_mode='auto', ep_num_redundant_experts=0, ep_dispatch_algorithm=None, init_expert_location='trivial', enable_eplb=False, eplb_algorithm='auto', eplb_rebalance_num_iterations=1000, eplb_rebalance_layers_per_chunk=None, eplb_min_rebalancing_utilization_threshold=1.0, expert_distribution_recorder_mode=None, expert_distribution_recorder_buffer_size=1000, enable_expert_distribution_metrics=False, deepep_config=None, moe_dense_tp_size=None, elastic_ep_backend=None, enable_elastic_expert_backup=False, mooncake_ib_device=None, enable_deepep_waterfill=False, elastic_ep_rejoin=False, max_mamba_cache_size=None, mamba_ssm_dtype=None, mamba_full_memory_ratio=0.9, mamba_scheduler_strategy='no_buffer', mamba_track_interval=256, linear_attn_backend='triton', linear_attn_decode_backend=None, linear_attn_prefill_backend=None, enable_hierarchical_cache=False, hicache_ratio=2.0, hicache_size=0, hicache_write_policy='write_through', hicache_io_backend='kernel', hicache_mem_layout='layer_first', hicache_storage_backend=None, hicache_storage_prefetch_policy='timeout', hicache_storage_backend_extra_config=None, enable_hisparse=False, hisparse_config=None, enable_lmcache=False, kt_weight_path=None, kt_method='AMXINT4', kt_cpuinfer=None, kt_threadpool_count=2, kt_num_gpu_experts=None, kt_max_deferred_experts_per_token=None, dllm_algorithm=None, dllm_algorithm_config=None, cpu_offload_gb=0, offload_group_size=-1, offload_num_in_group=1, offload_prefetch_step=1, offload_mode='cpu', enable_mis=False, disable_radix_cache=False, cuda_graph_max_bs=256, cuda_graph_bs=[1, 2, 4, 8, 12, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], disable_cuda_graph=False, disable_cuda_graph_padding=False, enable_breakable_cuda_graph=False, enable_profile_cuda_graph=False, enable_cudagraph_gc=False, debug_cuda_graph=False, enable_layerwise_nvtx_marker=False, enable_nccl_nvls=False, enable_symm_mem=False, disable_flashinfer_cutlass_moe_fp4_allgather=False, enable_tokenizer_batch_encode=False, disable_tokenizer_batch_decode=False, disable_outlines_disk_cache=False, disable_custom_all_reduce=False, enable_mscclpp=False, enable_torch_symm_mem=False, pre_warm_nccl=False, disable_overlap_schedule=False, enable_mixed_chunk=False, enable_dp_attention=False, enable_dp_attention_local_control_broadcast=False, enable_dp_lm_head=False, enable_two_batch_overlap=False, enable_single_batch_overlap=False, tbo_token_distribution_threshold=0.48, enable_torch_compile=False, disable_piecewise_cuda_graph=True, enforce_piecewise_cuda_graph=False, enable_torch_compile_debug_mode=False, torch_compile_max_bs=32, piecewise_cuda_graph_max_tokens=16384, piecewise_cuda_graph_tokens=[4, 8, 12, 16, 20, 24, 28, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 352, 384, 416, 448, 480, 512, 576, 640, 704, 768, 832, 896, 960, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4608, 5120, 5632, 6144, 6656, 7168, 7680, 8192, 8704, 9216, 9728, 10240, 10752, 11264, 11776, 12288, 12800, 13312, 13824, 14336, 14848, 15360, 15872, 16384], piecewise_cuda_graph_compiler='eager', torchao_config='', enable_nan_detection=False, enable_p2p_check=False, triton_attention_reduce_in_fp32=False, triton_attention_num_kv_splits=8, triton_attention_split_tile_size=None, num_continuous_decode_steps=1, delete_ckpt_after_loading=False, enable_memory_saver=False, enable_weights_cpu_backup=False, enable_draft_weights_cpu_backup=False, allow_auto_truncate=False, enable_custom_logit_processor=False, flashinfer_mla_disable_ragged=False, disable_shared_experts_fusion=False, enforce_shared_experts_fusion=False, disable_chunked_prefix_cache=False, disable_fast_image_processor=False, keep_mm_feature_on_device=False, enable_return_hidden_states=False, enable_return_routed_experts=False, enable_return_indexer_topk=False, scheduler_recv_interval=1, numa_node=None, enable_deterministic_inference=False, rl_on_policy_target=None, enable_attn_tp_input_scattered=False, gc_threshold=None, enable_nsa_prefill_context_parallel=False, nsa_prefill_cp_mode='round-robin-split', enable_fused_qk_norm_rope=False, enable_precise_embedding_interpolation=False, enable_fused_moe_sum_all_reduce=False, enable_prefill_context_parallel=False, prefill_cp_mode='in-seq-split', enable_dynamic_batch_tokenizer=False, dynamic_batch_tokenizer_batch_size=32, dynamic_batch_tokenizer_batch_timeout=0.002, debug_tensor_dump_output_folder=None, debug_tensor_dump_layers=None, debug_tensor_dump_input_file=None, debug_tensor_dump_inject=False, disaggregation_mode='null', disaggregation_transfer_backend='mooncake', disaggregation_bootstrap_port=8998, disaggregation_ib_device=None, disaggregation_decode_enable_radix_cache=False, disaggregation_decode_enable_offload_kvcache=False, num_reserved_decode_tokens=512, disaggregation_decode_polling_interval=1, encoder_only=False, language_only=False, encoder_transfer_backend='zmq_to_scheduler', encoder_urls=[], enable_adaptive_dispatch_to_encoder=False, custom_weight_loader=[], weight_loader_disable_mmap=False, weight_loader_prefetch_checkpoints=False, weight_loader_prefetch_num_threads=4, weight_loader_drop_cache_after_load=False, remote_instance_weight_loader_seed_instance_ip=None, remote_instance_weight_loader_seed_instance_service_port=None, remote_instance_weight_loader_send_weights_group_ports=None, remote_instance_weight_loader_backend='nccl', remote_instance_weight_loader_start_seed_via_transfer_engine=False, engine_info_bootstrap_port=6789, modelexpress_config=None, enable_pdmux=False, pdmux_config_path=None, sm_group_num=8, enable_broadcast_mm_inputs_process=False, enable_prefix_mm_cache=False, mm_enable_dp_encoder=False, mm_process_config={}, limit_mm_data_per_request=None, enable_mm_global_cache=False, decrypted_config_file=None, decrypted_draft_config_file=None, forward_hooks=None, enable_quant_communications=False, msprobe_dump_config=None)
+[2026-05-28 08:06:47] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:47] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[2026-05-28 08:06:47] Tokenizer loaded as generic TokenizersBackend for /data/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-28 08:06:48] Loading tokenizer for /data/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-28 08:06:49] Tokenizer for /data/DeepSeek-V4-Flash loaded as generic TokenizersBackend. Set --trust-remote-code to load the model-specific tokenizer.
+[2026-05-28 08:06:49] No HuggingFace chat template found
+[2026-05-28 08:06:49] No chat template found, defaulting to 'string' content format
+[2026-05-28 08:06:55 TP0 EP0] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:55 TP0 EP0] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:55 TP1 EP1] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:55 TP1 EP1] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:55 TP2 EP2] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:55 TP3 EP3] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:55 TP2 EP2] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:55 TP3 EP3] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:55 TP0 EP0] Tokenizer loaded as generic TokenizersBackend for /data/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-28 08:06:55 TP1 EP1] Tokenizer loaded as generic TokenizersBackend for /data/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-28 08:06:55 TP3 EP3] Tokenizer loaded as generic TokenizersBackend for /data/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-28 08:06:55 TP2 EP2] Tokenizer loaded as generic TokenizersBackend for /data/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-28 08:06:56 TP0 EP0] Loading tokenizer for /data/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-28 08:06:56 TP1 EP1] Loading tokenizer for /data/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-28 08:06:56 TP3 EP3] Loading tokenizer for /data/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-28 08:06:56 TP2 EP2] Loading tokenizer for /data/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-28 08:06:56] Tokenizer loaded as generic TokenizersBackend for /data/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-28 08:06:56 TP0 EP0] Tokenizer for /data/DeepSeek-V4-Flash loaded as generic TokenizersBackend. Set --trust-remote-code to load the model-specific tokenizer.
+[2026-05-28 08:06:56 TP1 EP1] Tokenizer for /data/DeepSeek-V4-Flash loaded as generic TokenizersBackend. Set --trust-remote-code to load the model-specific tokenizer.
+[2026-05-28 08:06:57 TP0 EP0] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:57 TP0 EP0] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:57 TP0 EP0] Init torch distributed begin.
+[2026-05-28 08:06:57 TP3 EP3] Tokenizer for /data/DeepSeek-V4-Flash loaded as generic TokenizersBackend. Set --trust-remote-code to load the model-specific tokenizer.
+[2026-05-28 08:06:57 TP2 EP2] Tokenizer for /data/DeepSeek-V4-Flash loaded as generic TokenizersBackend. Set --trust-remote-code to load the model-specific tokenizer.
+[2026-05-28 08:06:57 TP1 EP1] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:57 TP1 EP1] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:57 TP1 EP1] Init torch distributed begin.
+[2026-05-28 08:06:57 TP3 EP3] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:57 TP3 EP3] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:57 TP2 EP2] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-28 08:06:57 TP2 EP2] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-28 08:06:57] Loading tokenizer for /data/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-28 08:06:57 TP3 EP3] Init torch distributed begin.
+[2026-05-28 08:06:57 TP2 EP2] Init torch distributed begin.
+[2026-05-28 08:06:57 TP0 EP0] sglang is using nccl==2.28.9
+[2026-05-28 08:06:57] Tokenizer for /data/DeepSeek-V4-Flash loaded as generic TokenizersBackend. Set --trust-remote-code to load the model-specific tokenizer.
+[2026-05-28 08:06:59 TP0 EP0] Custom allreduce v2 initialized successfully (rank-check failed: tensor model parallel group is not initialized)
+[2026-05-28 08:06:59 TP0 EP0] Init torch distributed ends. elapsed=2.18 s, mem usage=1.47 GB
+[2026-05-28 08:06:59 TP3 EP3] Init torch distributed ends. elapsed=1.88 s, mem usage=1.34 GB
+[2026-05-28 08:06:59 TP2 EP2] Init torch distributed ends. elapsed=1.88 s, mem usage=1.50 GB
+[2026-05-28 08:06:59 TP1 EP1] Init torch distributed ends. elapsed=2.13 s, mem usage=1.50 GB
+[2026-05-28 08:07:00 TP2 EP2] Load weight begin. avail mem=181.74 GB
+[2026-05-28 08:07:00 TP3 EP3] Load weight begin. avail mem=181.90 GB
+[2026-05-28 08:07:00 TP1 EP1] Load weight begin. avail mem=181.75 GB
+[2026-05-28 08:07:00 TP0 EP0] Load weight begin. avail mem=181.78 GB
+[2026-05-28 08:07:00 TP0 EP0] Detected fp8 checkpoint.
+[2026-05-28 08:07:00 TP0 EP0] DeepSeek V4 requires different clamping for shared and routed experts. Shared experts fusion optimization is disabled.
+Multi-thread loading shards:   0% Completed | 0/46 [00:00<?, ?it/s]Multi-thread loading shards:   4% Completed | 2/46 [00:01<00:26,  1.69it/s]Multi-thread loading shards:   7% Completed | 3/46 [00:01<00:20,  2.05it/s]Multi-thread loading shards:   9% Completed | 4/46 [00:01<00:17,  2.42it/s]Multi-thread loading shards:  11% Completed | 5/46 [00:02<00:14,  2.76it/s]Multi-thread loading shards:  13% Completed | 6/46 [00:02<00:17,  2.22it/s]Multi-thread loading shards:  15% Completed | 7/46 [00:02<00:15,  2.57it/s]Multi-thread loading shards:  17% Completed | 8/46 [00:03<00:13,  2.85it/s]Multi-thread loading shards:  20% Completed | 9/46 [00:03<00:12,  3.03it/s]Multi-thread loading shards:  22% Completed | 10/46 [00:03<00:11,  3.20it/s]Multi-thread loading shards:  24% Completed | 11/46 [00:04<00:10,  3.32it/s]Multi-thread loading shards:  26% Completed | 12/46 [00:04<00:10,  3.35it/s]Multi-thread loading shards:  28% Completed | 13/46 [00:04<00:09,  3.49it/s]Multi-thread loading shards:  30% Completed | 14/46 [00:04<00:09,  3.54it/s]Multi-thread loading shards:  33% Completed | 15/46 [00:05<00:08,  3.56it/s]Multi-thread loading shards:  35% Completed | 16/46 [00:05<00:11,  2.65it/s]Multi-thread loading shards:  37% Completed | 17/46 [00:06<00:10,  2.83it/s]Multi-thread loading shards:  39% Completed | 18/46 [00:06<00:09,  3.08it/s]Multi-thread loading shards:  41% Completed | 19/46 [00:06<00:08,  3.19it/s]Multi-thread loading shards:  43% Completed | 20/46 [00:06<00:08,  3.25it/s]Multi-thread loading shards:  46% Completed | 21/46 [00:07<00:07,  3.38it/s]Multi-thread loading shards:  48% Completed | 22/46 [00:07<00:06,  3.45it/s]Multi-thread loading shards:  50% Completed | 23/46 [00:07<00:06,  3.51it/s]Multi-thread loading shards:  52% Completed | 24/46 [00:07<00:06,  3.57it/s]Multi-thread loading shards:  54% Completed | 25/46 [00:08<00:05,  3.56it/s]Multi-thread loading shards:  57% Completed | 26/46 [00:08<00:05,  3.57it/s]Multi-thread loading shards:  59% Completed | 27/46 [00:08<00:05,  3.58it/s]Multi-thread loading shards:  61% Completed | 28/46 [00:09<00:06,  2.58it/s]Multi-thread loading shards:  63% Completed | 29/46 [00:09<00:06,  2.82it/s]Multi-thread loading shards:  65% Completed | 30/46 [00:10<00:05,  2.99it/s]Multi-thread loading shards:  67% Completed | 31/46 [00:10<00:04,  3.13it/s]Multi-thread loading shards:  70% Completed | 32/46 [00:10<00:04,  3.27it/s]Multi-thread loading shards:  72% Completed | 33/46 [00:10<00:03,  3.36it/s]Multi-thread loading shards:  74% Completed | 34/46 [00:11<00:03,  3.43it/s]Multi-thread loading shards:  76% Completed | 35/46 [00:11<00:03,  3.46it/s]Multi-thread loading shards:  78% Completed | 36/46 [00:11<00:02,  3.84it/s]Multi-thread loading shards:  80% Completed | 37/46 [00:11<00:02,  4.00it/s]Multi-thread loading shards:  83% Completed | 38/46 [00:12<00:01,  4.27it/s]Multi-thread loading shards:  87% Completed | 40/46 [00:12<00:00,  6.64it/s]Multi-thread loading shards:  93% Completed | 43/46 [00:12<00:00,  6.10it/s]Multi-thread loading shards: 100% Completed | 46/46 [00:12<00:00,  8.84it/s]Multi-thread loading shards: 100% Completed | 46/46 [00:12<00:00,  3.59it/s]
+[2026-05-28 08:07:15 TP0 EP0] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-28 08:07:15 TP0 EP0] Load weight end. elapsed=15.16 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=140.52 GB, mem usage=41.26 GB.
+[2026-05-28 08:07:16 TP3 EP3] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-28 08:07:16 TP3 EP3] Load weight end. elapsed=16.29 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=140.64 GB, mem usage=41.26 GB.
+[2026-05-28 08:07:16 TP1 EP1] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-28 08:07:16 TP1 EP1] Load weight end. elapsed=16.37 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=140.49 GB, mem usage=41.26 GB.
+[2026-05-28 08:07:16 TP2 EP2] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-28 08:07:16 TP2 EP2] Load weight end. elapsed=16.79 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=140.48 GB, mem usage=41.26 GB.
+[2026-05-28 08:07:16 TP0 EP0] Using KV cache dtype: torch.float8_e4m3fn
+[2026-05-28 08:07:16 TP0 EP0] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=104.12 GB, full_token=7006976
+[2026-05-28 08:07:16 TP0 EP0] DSV4 pool sizes: full=7006976, swa=700672, c4=1751744, c128=54742, c4_state=43792, c128_state=700672
+[2026-05-28 08:07:16 TP2 EP2] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=104.12 GB, full_token=7006976
+[2026-05-28 08:07:16 TP3 EP3] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=104.12 GB, full_token=7006976
+[2026-05-28 08:07:16 TP1 EP1] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=104.12 GB, full_token=7006976
+[2026-05-28 08:07:16 TP2 EP2] DSV4 pool sizes: full=7006976, swa=700672, c4=1751744, c128=54742, c4_state=43792, c128_state=700672
+[2026-05-28 08:07:16 TP1 EP1] DSV4 pool sizes: full=7006976, swa=700672, c4=1751744, c128=54742, c4_state=43792, c128_state=700672
+[2026-05-28 08:07:16 TP3 EP3] DSV4 pool sizes: full=7006976, swa=700672, c4=1751744, c128=54742, c4_state=43792, c128_state=700672
+[2026-05-28 08:07:16 TP0 EP0] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=1024 swa_size=700672 c4_size=1751744 c4_logical_size=1751744 c128_size=54742 c4_state_pool_size=43792 c128_state_pool_size=700672
+[2026-05-28 08:07:16 TP2 EP2] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=1024 swa_size=700672 c4_size=1751744 c4_logical_size=1751744 c128_size=54742 c4_state_pool_size=43792 c128_state_pool_size=700672
+[2026-05-28 08:07:16 TP1 EP1] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=1024 swa_size=700672 c4_size=1751744 c4_logical_size=1751744 c128_size=54742 c4_state_pool_size=43792 c128_state_pool_size=700672
+[2026-05-28 08:07:16 TP3 EP3] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=1024 swa_size=700672 c4_size=1751744 c4_logical_size=1751744 c128_size=54742 c4_state_pool_size=43792 c128_state_pool_size=700672
+[2026-05-28 08:07:17 TP3 EP3] Memory pool end. avail mem=32.84 GB
+[2026-05-28 08:07:17 TP0 EP0] Memory pool end. avail mem=32.71 GB
+[2026-05-28 08:07:17 TP1 EP1] Memory pool end. avail mem=32.68 GB
+[2026-05-28 08:07:17 TP2 EP2] Memory pool end. avail mem=32.68 GB
+[2026-05-28 08:07:17 TP1 EP1] Running DeepSeek V4 MHC prewarm for max_num_tokens=16384
+[2026-05-28 08:07:17 TP0 EP0] Running DeepSeek V4 MHC prewarm for max_num_tokens=16384
+[2026-05-28 08:07:17 TP3 EP3] Running DeepSeek V4 MHC prewarm for max_num_tokens=16384
+[2026-05-28 08:07:17 TP2 EP2] Running DeepSeek V4 MHC prewarm for max_num_tokens=16384
+[2026-05-28 08:07:17 TP0 EP0] DeepSeek V4 MHC prewarm max_num_tokens=16384 representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:17 TP3 EP3] DeepSeek V4 MHC prewarm max_num_tokens=16384 representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:17 TP2 EP2] DeepSeek V4 MHC prewarm max_num_tokens=16384 representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:17 TP1 EP1] DeepSeek V4 MHC prewarm max_num_tokens=16384 representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:18 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=16384 completed in 1.263s
+[2026-05-28 08:07:18 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=16384 completed in 1.262s
+[2026-05-28 08:07:18 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=16384 completed in 0.000s
+[2026-05-28 08:07:18 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=16384 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=16384 completed in 1.314s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=16384 completed in 1.316s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=16384 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=16384 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=4864 completed in 0.111s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=4864 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=4864 completed in 0.117s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=4864 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=4864 completed in 0.115s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=4864 completed in 0.115s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=4864 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=4864 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=3200 completed in 0.106s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=3200 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=3200 completed in 0.103s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=3200 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=3200 completed in 0.110s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=3200 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=3200 completed in 0.112s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=3200 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=2432 completed in 0.110s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=2432 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=2432 completed in 0.107s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=2432 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=2432 completed in 0.104s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=2432 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=2432 completed in 0.110s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=2432 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.112s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.113s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.108s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.107s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.112s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.114s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.112s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.106s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.108s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.109s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.112s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.111s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.105s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.107s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.111s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.111s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.108s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.107s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.108s
+[2026-05-28 08:07:19 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.112s
+[2026-05-28 08:07:19 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.111s
+[2026-05-28 08:07:19 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.112s
+[2026-05-28 08:07:19 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.104s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.108s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.112s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.113s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.111s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.104s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.105s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.110s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.112s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.113s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.108s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.107s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.114s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.114s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.114s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.110s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.102s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.112s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.104s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.112s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.113s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.112s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.108s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.112s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.109s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.102s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.112s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.113s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.102s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.108s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.109s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.114s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.110s
+[2026-05-28 08:07:20 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.114s
+[2026-05-28 08:07:20 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.102s
+[2026-05-28 08:07:20 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.111s
+[2026-05-28 08:07:20 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.112s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.108s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.110s
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.112s
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.112s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.103s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.113s
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.104s
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.114s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.113s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.108s
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm finished in 3.698s for representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.109s
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm finished in 3.724s for representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.109s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm finished in 3.767s for representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.109s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm finished in 3.768s for representative token counts: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP1 EP1] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP3 EP3] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP0 EP0] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP2 EP2] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (16384, 4864, 3200, 2432, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-28 08:07:21 TP1 EP1] Capture cuda graph begin. This can take up to several minutes. avail mem=32.62 GB
+[2026-05-28 08:07:21 TP0 EP0] Capture cuda graph begin. This can take up to several minutes. avail mem=32.65 GB
+[2026-05-28 08:07:21 TP3 EP3] Capture cuda graph begin. This can take up to several minutes. avail mem=32.77 GB
+[2026-05-28 08:07:21 TP2 EP2] Capture cuda graph begin. This can take up to several minutes. avail mem=32.61 GB
+[2026-05-28 08:07:21 TP0 EP0] Capture cuda graph bs [4, 8, 12, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256]
+  0%|          | 0/34 [00:00<?, ?it/s]Capturing batches (bs=256 avail_mem=32.52 GB):   0%|          | 0/34 [00:00<?, ?it/s][2026-05-28 08:07:26 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-28 08:07:26 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=1536, K=4096, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-28 08:07:26 TP0 EP0] Required memory for warmup: 0.224609375GB, Available memory: 32.48504638671875GB
+
+DeepGEMM warmup:   0%|          | 0/32768 [00:00<?, ?it/s][A
+DeepGEMM warmup:   2%|▏         | 665/32768 [00:00<00:04, 6647.03it/s][A
+DeepGEMM warmup:   4%|▍         | 1366/32768 [00:00<00:04, 6856.98it/s][A
+DeepGEMM warmup:   7%|▋         | 2143/32768 [00:00<00:04, 7271.77it/s][A
+DeepGEMM warmup:   9%|▉         | 2956/32768 [00:00<00:03, 7607.85it/s][A
+DeepGEMM warmup:  12%|█▏        | 3777/32768 [00:00<00:03, 7823.56it/s][A
+DeepGEMM warmup:  14%|█▍        | 4560/32768 [00:00<00:03, 7815.74it/s][A
+DeepGEMM warmup:  16%|█▋        | 5342/32768 [00:00<00:03, 7733.74it/s][A
+DeepGEMM warmup:  19%|█▊        | 6116/32768 [00:00<00:03, 7711.01it/s][A
+DeepGEMM warmup:  21%|██        | 6925/32768 [00:00<00:03, 7827.42it/s][A
+DeepGEMM warmup:  24%|██▎       | 7757/32768 [00:01<00:03, 7975.59it/s][A
+DeepGEMM warmup:  26%|██▌       | 8594/32768 [00:01<00:02, 8093.45it/s][A
+DeepGEMM warmup:  29%|██▉       | 9432/32768 [00:01<00:02, 8177.65it/s][A
+DeepGEMM warmup:  31%|███▏      | 10262/32768 [00:01<00:02, 8213.38it/s][A
+DeepGEMM warmup:  34%|███▍      | 11095/32768 [00:01<00:02, 8246.59it/s][A
+DeepGEMM warmup:  36%|███▋      | 11933/32768 [00:01<00:02, 8285.82it/s][A
+DeepGEMM warmup:  39%|███▉      | 12766/32768 [00:01<00:02, 8297.05it/s][A
+DeepGEMM warmup:  42%|████▏     | 13605/32768 [00:01<00:02, 8324.44it/s][A
+DeepGEMM warmup:  44%|████▍     | 14440/32768 [00:01<00:02, 8331.94it/s][A
+DeepGEMM warmup:  47%|████▋     | 15279/32768 [00:01<00:02, 8346.67it/s][A
+DeepGEMM warmup:  49%|████▉     | 16119/32768 [00:02<00:01, 8360.48it/s][A
+DeepGEMM warmup:  52%|█████▏    | 16961/32768 [00:02<00:01, 8376.78it/s][A
+DeepGEMM warmup:  54%|█████▍    | 17804/32768 [00:02<00:01, 8390.84it/s][A
+DeepGEMM warmup:  57%|█████▋    | 18644/32768 [00:02<00:01, 8381.02it/s][A
+DeepGEMM warmup:  59%|█████▉    | 19483/32768 [00:02<00:01, 8374.68it/s][A
+DeepGEMM warmup:  62%|██████▏   | 20321/32768 [00:02<00:01, 8267.19it/s][A
+DeepGEMM warmup:  65%|██████▍   | 21149/32768 [00:02<00:01, 8041.79it/s][A
+DeepGEMM warmup:  67%|██████▋   | 21955/32768 [00:02<00:01, 7859.27it/s][A
+DeepGEMM warmup:  69%|██████▉   | 22743/32768 [00:02<00:01, 7727.99it/s][A
+DeepGEMM warmup:  72%|███████▏  | 23517/32768 [00:02<00:01, 7637.89it/s][A
+DeepGEMM warmup:  74%|███████▍  | 24282/32768 [00:03<00:01, 7580.83it/s][A
+DeepGEMM warmup:  76%|███████▋  | 25041/32768 [00:03<00:01, 7570.50it/s][A
+DeepGEMM warmup:  79%|███████▉  | 25809/32768 [00:03<00:00, 7602.44it/s][A
+DeepGEMM warmup:  81%|████████  | 26581/32768 [00:03<00:00, 7634.25it/s][A
+DeepGEMM warmup:  83%|████████▎ | 27345/32768 [00:03<00:00, 7626.90it/s][A
+DeepGEMM warmup:  86%|████████▌ | 28121/32768 [00:03<00:00, 7665.23it/s][A
+DeepGEMM warmup:  88%|████████▊ | 28902/32768 [00:03<00:00, 7706.75it/s][A
+DeepGEMM warmup:  91%|█████████ | 29676/32768 [00:03<00:00, 7714.61it/s][A
+DeepGEMM warmup:  93%|█████████▎| 30457/32768 [00:03<00:00, 7741.11it/s][A
+DeepGEMM warmup:  95%|█████████▌| 31240/32768 [00:03<00:00, 7766.85it/s][A
+DeepGEMM warmup:  98%|█████████▊| 32019/32768 [00:04<00:00, 7772.03it/s][ADeepGEMM warmup: 100%|██████████| 32768/32768 [00:04<00:00, 7915.31it/s]
+[2026-05-28 08:07:31 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-28 08:07:31 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=8192, K=1024, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-28 08:07:31 TP0 EP0] Required memory for warmup: 0.5390625GB, Available memory: 32.48541259765625GB
+
+DeepGEMM warmup:   0%|          | 0/32768 [00:00<?, ?it/s][A
+DeepGEMM warmup:   2%|▏         | 767/32768 [00:00<00:04, 7659.85it/s][A
+DeepGEMM warmup:   5%|▍         | 1557/32768 [00:00<00:04, 7800.10it/s][A
+DeepGEMM warmup:   7%|▋         | 2343/32768 [00:00<00:03, 7823.87it/s][A
+DeepGEMM warmup:  10%|▉         | 3134/32768 [00:00<00:03, 7856.65it/s][A
+DeepGEMM warmup:  12%|█▏        | 3932/32768 [00:00<00:03, 7899.91it/s][A
+DeepGEMM warmup:  14%|█▍        | 4728/32768 [00:00<00:03, 7919.88it/s][A
+DeepGEMM warmup:  17%|█▋        | 5525/32768 [00:00<00:03, 7934.23it/s][A
+DeepGEMM warmup:  19%|█▉        | 6323/32768 [00:00<00:03, 7945.88it/s][A
+DeepGEMM warmup:  22%|██▏       | 7123/32768 [00:00<00:03, 7961.49it/s][A
+DeepGEMM warmup:  24%|██▍       | 7929/32768 [00:01<00:03, 7991.73it/s][A
+DeepGEMM warmup:  27%|██▋       | 8733/32768 [00:01<00:03, 8003.99it/s][A
+DeepGEMM warmup:  29%|██▉       | 9542/32768 [00:01<00:02, 8027.79it/s][A
+DeepGEMM warmup:  32%|███▏      | 10362/32768 [00:01<00:02, 8077.25it/s][A
+DeepGEMM warmup:  34%|███▍      | 11188/32768 [00:01<00:02, 8131.13it/s][A
+DeepGEMM warmup:  37%|███▋      | 12010/32768 [00:01<00:02, 8154.93it/s][A
+DeepGEMM warmup:  39%|███▉      | 12835/32768 [00:01<00:02, 8181.70it/s][A
+DeepGEMM warmup:  42%|████▏     | 13663/32768 [00:01<00:02, 8209.03it/s][A
+DeepGEMM warmup:  44%|████▍     | 14493/32768 [00:01<00:02, 8234.16it/s][A
+DeepGEMM warmup:  47%|████▋     | 15327/32768 [00:01<00:02, 8264.96it/s][A
+DeepGEMM warmup:  49%|████▉     | 16154/32768 [00:02<00:02, 8257.35it/s][A
+DeepGEMM warmup:  52%|█████▏    | 16980/32768 [00:02<00:01, 8254.92it/s][A
+DeepGEMM warmup:  54%|█████▍    | 17810/32768 [00:02<00:01, 8266.43it/s][A
+DeepGEMM warmup:  57%|█████▋    | 18637/32768 [00:02<00:01, 8095.33it/s][A
+DeepGEMM warmup:  59%|█████▉    | 19448/32768 [00:02<00:01, 7775.17it/s][A
+DeepGEMM warmup:  62%|██████▏   | 20229/32768 [00:02<00:01, 7494.42it/s][A
+DeepGEMM warmup:  64%|██████▍   | 20982/32768 [00:02<00:01, 7245.30it/s][A
+DeepGEMM warmup:  66%|██████▋   | 21710/32768 [00:02<00:01, 7017.75it/s][A
+DeepGEMM warmup:  68%|██████▊   | 22415/32768 [00:02<00:01, 6811.30it/s][A
+DeepGEMM warmup:  70%|███████   | 23099/32768 [00:02<00:01, 6628.41it/s][A
+DeepGEMM warmup:  73%|███████▎  | 23764/32768 [00:03<00:01, 6454.13it/s][A
+DeepGEMM warmup:  74%|███████▍  | 24411/32768 [00:03<00:01, 6286.85it/s][A
+DeepGEMM warmup:  76%|███████▋  | 25041/32768 [00:03<00:01, 6143.20it/s][A
+DeepGEMM warmup:  78%|███████▊  | 25656/32768 [00:03<00:01, 6001.80it/s][A
+DeepGEMM warmup:  80%|████████  | 26257/32768 [00:03<00:01, 5872.24it/s][A
+DeepGEMM warmup:  82%|████████▏ | 26845/32768 [00:03<00:01, 5751.41it/s][A
+DeepGEMM warmup:  84%|████████▎ | 27420/32768 [00:03<00:00, 5639.45it/s][A
+DeepGEMM warmup:  85%|████████▌ | 27984/32768 [00:03<00:00, 5537.72it/s][A
+DeepGEMM warmup:  87%|████████▋ | 28538/32768 [00:03<00:00, 5433.78it/s][A
+DeepGEMM warmup:  89%|████████▉ | 29082/32768 [00:04<00:00, 5337.60it/s][A
+DeepGEMM warmup:  90%|█████████ | 29616/32768 [00:04<00:00, 5247.60it/s][A
+DeepGEMM warmup:  92%|█████████▏| 30141/32768 [00:04<00:00, 5159.56it/s][A
+DeepGEMM warmup:  94%|█████████▎| 30657/32768 [00:04<00:00, 5071.39it/s][A
+DeepGEMM warmup:  95%|█████████▌| 31164/32768 [00:04<00:00, 4995.64it/s][A
+DeepGEMM warmup:  97%|█████████▋| 31664/32768 [00:04<00:00, 4917.78it/s][A
+DeepGEMM warmup:  98%|█████████▊| 32156/32768 [00:04<00:00, 4850.47it/s][A
+DeepGEMM warmup: 100%|█████████▉| 32641/32768 [00:04<00:00, 4783.44it/s][ADeepGEMM warmup: 100%|██████████| 32768/32768 [00:04<00:00, 6786.44it/s]
+[2026-05-28 08:07:36 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-28 08:07:36 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=4096, K=2048, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-28 08:07:36 TP0 EP0] Required memory for warmup: 0.3203125GB, Available memory: 32.464111328125GB
+
+DeepGEMM warmup:   0%|          | 0/32768 [00:00<?, ?it/s][A
+DeepGEMM warmup:   2%|▏         | 795/32768 [00:00<00:04, 7941.83it/s][A
+DeepGEMM warmup:   5%|▍         | 1618/32768 [00:00<00:03, 8108.69it/s][A
+DeepGEMM warmup:   7%|▋         | 2446/32768 [00:00<00:03, 8183.26it/s][A
+DeepGEMM warmup:  10%|█         | 3280/32768 [00:00<00:03, 8244.41it/s][A
+DeepGEMM warmup:  13%|█▎        | 4109/32768 [00:00<00:03, 8259.79it/s][A
+DeepGEMM warmup:  15%|█▌        | 4938/32768 [00:00<00:03, 8267.33it/s][A
+DeepGEMM warmup:  18%|█▊        | 5765/32768 [00:00<00:03, 8259.81it/s][A
+DeepGEMM warmup:  20%|██        | 6595/32768 [00:00<00:03, 8271.75it/s][A
+DeepGEMM warmup:  23%|██▎       | 7431/32768 [00:00<00:03, 8296.66it/s][A
+DeepGEMM warmup:  25%|██▌       | 8261/32768 [00:01<00:02, 8290.34it/s][A
+DeepGEMM warmup:  28%|██▊       | 9091/32768 [00:01<00:02, 8287.71it/s][A
+DeepGEMM warmup:  30%|███       | 9925/32768 [00:01<00:02, 8301.46it/s][A
+DeepGEMM warmup:  33%|███▎      | 10760/32768 [00:01<00:02, 8313.89it/s][A
+DeepGEMM warmup:  35%|███▌      | 11592/32768 [00:01<00:02, 8300.92it/s][A
+DeepGEMM warmup:  38%|███▊      | 12423/32768 [00:01<00:02, 8288.25it/s][A
+DeepGEMM warmup:  40%|████      | 13259/32768 [00:01<00:02, 8309.44it/s][A
+DeepGEMM warmup:  43%|████▎     | 14098/32768 [00:01<00:02, 8331.08it/s][A
+DeepGEMM warmup:  46%|████▌     | 14932/32768 [00:01<00:02, 8332.24it/s][A
+DeepGEMM warmup:  48%|████▊     | 15766/32768 [00:01<00:02, 8333.18it/s][A
+DeepGEMM warmup:  51%|█████     | 16600/32768 [00:02<00:01, 8329.64it/s][A
+DeepGEMM warmup:  53%|█████▎    | 17436/32768 [00:02<00:01, 8337.42it/s][A
+DeepGEMM warmup:  56%|█████▌    | 18273/32768 [00:02<00:01, 8347.04it/s][A
+DeepGEMM warmup:  58%|█████▊    | 19108/32768 [00:02<00:01, 8312.62it/s][A
+DeepGEMM warmup:  61%|██████    | 19940/32768 [00:02<00:01, 8305.44it/s][A
+DeepGEMM warmup:  63%|██████▎   | 20771/32768 [00:02<00:01, 8304.73it/s][A
+DeepGEMM warmup:  66%|██████▌   | 21609/32768 [00:02<00:01, 8326.79it/s][A
+DeepGEMM warmup:  69%|██████▊   | 22452/32768 [00:02<00:01, 8356.46it/s][A
+DeepGEMM warmup:  71%|███████   | 23288/32768 [00:02<00:01, 8348.99it/s][A
+DeepGEMM warmup:  74%|███████▎  | 24123/32768 [00:02<00:01, 8312.44it/s][A
+DeepGEMM warmup:  76%|███████▌  | 24955/32768 [00:03<00:00, 8231.28it/s][A
+DeepGEMM warmup:  79%|███████▊  | 25779/32768 [00:03<00:00, 7952.22it/s][A
+DeepGEMM warmup:  81%|████████  | 26577/32768 [00:03<00:00, 7729.00it/s][A
+DeepGEMM warmup:  83%|████████▎ | 27353/32768 [00:03<00:00, 7525.99it/s][A
+DeepGEMM warmup:  86%|████████▌ | 28108/32768 [00:03<00:00, 7340.32it/s][A
+DeepGEMM warmup:  88%|████████▊ | 28844/32768 [00:03<00:00, 7178.78it/s][A
+DeepGEMM warmup:  90%|█████████ | 29564/32768 [00:03<00:00, 7025.11it/s][A
+DeepGEMM warmup:  92%|█████████▏| 30268/32768 [00:03<00:00, 6867.61it/s][A
+DeepGEMM warmup:  94%|█████████▍| 30956/32768 [00:03<00:00, 6727.26it/s][A
+DeepGEMM warmup:  97%|█████████▋| 31630/32768 [00:03<00:00, 6590.76it/s][A
+DeepGEMM warmup:  99%|█████████▊| 32290/32768 [00:04<00:00, 6472.86it/s][ADeepGEMM warmup: 100%|██████████| 32768/32768 [00:04<00:00, 7845.95it/s]
+[2026-05-28 08:07:40 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-28 08:07:40 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=4096, K=4096, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-28 08:07:40 TP0 EP0] Required memory for warmup: 0.390625GB, Available memory: 32.481689453125GB
+
+DeepGEMM warmup:   0%|          | 0/32768 [00:00<?, ?it/s][A
+DeepGEMM warmup:   2%|▏         | 686/32768 [00:00<00:04, 6851.02it/s][A
+DeepGEMM warmup:   4%|▍         | 1377/32768 [00:00<00:04, 6880.82it/s][A
+DeepGEMM warmup:   6%|▋         | 2085/32768 [00:00<00:04, 6968.28it/s][A
+DeepGEMM warmup:   9%|▊         | 2809/32768 [00:00<00:04, 7074.53it/s][A
+DeepGEMM warmup:  11%|█         | 3544/32768 [00:00<00:04, 7170.85it/s][A
+DeepGEMM warmup:  13%|█▎        | 4280/32768 [00:00<00:03, 7234.17it/s][A
+DeepGEMM warmup:  15%|█▌        | 5012/32768 [00:00<00:03, 7259.35it/s][A
+DeepGEMM warmup:  18%|█▊        | 5757/32768 [00:00<00:03, 7318.35it/s][A
+DeepGEMM warmup:  20%|█▉        | 6506/32768 [00:00<00:03, 7371.72it/s][A
+DeepGEMM warmup:  22%|██▏       | 7257/32768 [00:01<00:03, 7411.97it/s][A
+DeepGEMM warmup:  24%|██▍       | 8018/32768 [00:01<00:03, 7469.78it/s][A
+DeepGEMM warmup:  27%|██▋       | 8765/32768 [00:01<00:03, 7465.15it/s][A
+DeepGEMM warmup:  29%|██▉       | 9535/32768 [00:01<00:03, 7534.03it/s][A
+DeepGEMM warmup:  31%|███▏      | 10305/32768 [00:01<00:02, 7582.48it/s][A
+DeepGEMM warmup:  34%|███▍      | 11069/32768 [00:01<00:02, 7598.86it/s][A
+DeepGEMM warmup:  36%|███▌      | 11831/32768 [00:01<00:02, 7602.57it/s][A
+DeepGEMM warmup:  38%|███▊      | 12602/32768 [00:01<00:02, 7633.76it/s][A
+DeepGEMM warmup:  41%|████      | 13379/32768 [00:01<00:02, 7672.73it/s][A
+DeepGEMM warmup:  43%|████▎     | 14149/32768 [00:01<00:02, 7679.99it/s][A
+DeepGEMM warmup:  46%|████▌     | 14924/32768 [00:02<00:02, 7698.53it/s][A
+DeepGEMM warmup:  48%|████▊     | 15694/32768 [00:02<00:02, 7445.38it/s][A
+DeepGEMM warmup:  50%|█████     | 16441/32768 [00:02<00:02, 7125.37it/s][A
+DeepGEMM warmup:  52%|█████▏    | 17158/32768 [00:02<00:02, 6865.80it/s][A
+DeepGEMM warmup:  54%|█████▍    | 17849/32768 [00:02<00:02, 6603.16it/s][A
+DeepGEMM warmup:  56%|█████▋    | 18513/32768 [00:02<00:02, 6404.00it/s][A
+DeepGEMM warmup:  58%|█████▊    | 19156/32768 [00:02<00:02, 6193.95it/s][A
+DeepGEMM warmup:  60%|██████    | 19778/32768 [00:02<00:02, 6002.86it/s][A
+DeepGEMM warmup:  62%|██████▏   | 20380/32768 [00:02<00:02, 5840.03it/s][A
+DeepGEMM warmup:  64%|██████▍   | 20965/32768 [00:03<00:02, 5679.76it/s][A
+DeepGEMM warmup:  66%|██████▌   | 21534/32768 [00:03<00:02, 5543.46it/s][A
+DeepGEMM warmup:  67%|██████▋   | 22089/32768 [00:03<00:01, 5412.03it/s][A
+DeepGEMM warmup:  69%|██████▉   | 22631/32768 [00:03<00:01, 5291.94it/s][A
+DeepGEMM warmup:  71%|███████   | 23161/32768 [00:03<00:01, 5184.68it/s][A
+DeepGEMM warmup:  72%|███████▏  | 23680/32768 [00:03<00:01, 5072.46it/s][A
+DeepGEMM warmup:  74%|███████▍  | 24188/32768 [00:03<00:01, 4970.82it/s][A
+DeepGEMM warmup:  75%|███████▌  | 24685/32768 [00:03<00:01, 4868.99it/s][A
+DeepGEMM warmup:  77%|███████▋  | 25172/32768 [00:03<00:01, 4792.71it/s][A
+DeepGEMM warmup:  78%|███████▊  | 25651/32768 [00:03<00:01, 4695.71it/s][A
+DeepGEMM warmup:  80%|███████▉  | 26121/32768 [00:04<00:01, 4624.46it/s][A
+DeepGEMM warmup:  81%|████████  | 26584/32768 [00:04<00:01, 4551.58it/s][A
+DeepGEMM warmup:  83%|████████▎ | 27039/32768 [00:04<00:01, 4477.32it/s][A
+DeepGEMM warmup:  84%|████████▍ | 27487/32768 [00:04<00:01, 4423.18it/s][A
+DeepGEMM warmup:  85%|████████▌ | 27930/32768 [00:04<00:01, 4347.36it/s][A
+DeepGEMM warmup:  87%|████████▋ | 28365/32768 [00:04<00:01, 4289.01it/s][A
+DeepGEMM warmup:  88%|████████▊ | 28794/32768 [00:04<00:00, 4224.34it/s][A
+DeepGEMM warmup:  89%|████████▉ | 29217/32768 [00:04<00:00, 4163.76it/s][A
+DeepGEMM warmup:  90%|█████████ | 29634/32768 [00:04<00:00, 4119.69it/s][A
+DeepGEMM warmup:  92%|█████████▏| 30046/32768 [00:05<00:00, 4059.61it/s][A
+DeepGEMM warmup:  93%|█████████▎| 30452/32768 [00:05<00:00, 4009.02it/s][A
+DeepGEMM warmup:  94%|█████████▍| 30853/32768 [00:05<00:00, 3971.15it/s][A
+DeepGEMM warmup:  95%|█████████▌| 31251/32768 [00:05<00:00, 3917.90it/s][A
+DeepGEMM warmup:  97%|█████████▋| 31643/32768 [00:05<00:00, 3873.87it/s][A
+DeepGEMM warmup:  98%|█████████▊| 32031/32768 [00:05<00:00, 3841.17it/s][A
+DeepGEMM warmup:  99%|█████████▉| 32416/32768 [00:05<00:00, 3791.05it/s][ADeepGEMM warmup: 100%|██████████| 32768/32768 [00:05<00:00, 5693.01it/s]
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 4 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked shared_memory objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
