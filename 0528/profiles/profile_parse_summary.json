@@ -1,0 +1,1398 @@
+{
+  "tp4_32k_c1": [
+    {
+      "file": "tp4_32k_c1-1780023158.5150843-TP-0-DP-0-EP-0.trace.json.gz",
+      "size": 1053953,
+      "counts": {
+        "kernel": 480,
+        "cuda_runtime": 3531,
+        "user_annotation": 20,
+        "cpu_op": 5245,
+        "gpu_user_annotation": 10
+      },
+      "cat_total_ms": {
+        "kernel": 1999.9279169999998,
+        "cuda_runtime": 7.213504000000028,
+        "user_annotation": 2043.23285,
+        "cpu_op": 57.99187600000003,
+        "gpu_user_annotation": 2003.4897610000003
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 64u, 16u, 128u, 128u, 8u, 128u, 128u, 215040u, 3440640u, 11u, 128u, 128u, 256u, 152u, 4u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 64u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<4u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            1988.9150209999998
+          ],
+          [
+            "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+            3.991616
+          ],
+          [
+            "nvjet_sm100_tst_128x8_64x12_1x1_h_bz_splitK_TNT",
+            3.3834560000000002
+          ],
+          [
+            "void (anonymous namespace)::all_reduce_one_shot_push_kernel<__nv_bfloat16, 4u, true>((anonymous namespace)::AllReducePushData, device::distributed::PushController)",
+            3.1914559999999996
+          ],
+          [
+            "void (anonymous namespace)::mega_moe_pre_dispatch_kernel<32u, true>((anonymous namespace)::MegaMoEPreDispatchParams)",
+            0.3722240000000003
+          ],
+          [
+            "void cublasLt::splitKreduce_kernel<32, 16, int, float, __nv_bfloat16, float, __nv_bfloat16, false, float, __nv_bfloat16, __nv_bfloat16, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, __nv_bfloat16 const*, float*, __nv_bfloat16*, float const*, float const*, __nv_bfloat16 const*, float const*, __nv_bfloat16*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            0.020928000000000002
+          ],
+          [
+            "void at_cuda_detail::cub::detail::scan::DeviceScanKernel<at_cuda_detail::cub::detail::scan::policy_hub<long, long, long, unsigned int, std::plus<long> >::Policy1000, long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int, long, false, at_cuda_detail::cub::NullType>(long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, int, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int)",
+            0.011424
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            0.009728
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            3.511583999999997
+          ],
+          [
+            "cudaPointerGetAttributes",
+            2.5266880000000307
+          ],
+          [
+            "cudaLaunchKernel",
+            0.407872
+          ],
+          [
+            "cudaMemcpyAsync",
+            0.24185599999999996
+          ],
+          [
+            "cudaEventQuery",
+            0.17068799999999998
+          ],
+          [
+            "cudaDeviceSynchronize",
+            0.097888
+          ],
+          [
+            "cudaStreamIsCapturing",
+            0.048991999999999994
+          ],
+          [
+            "cudaEventRecordWithFlags",
+            0.043904000000000006
+          ]
+        ],
+        "user_annotation": [
+          [
+            "gloo:broadcast",
+            1853.900642
+          ],
+          [
+            "step[IDLE bs=0]",
+            160.75082999999998
+          ],
+          [
+            "gloo:all_gather",
+            28.067682
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.513696
+          ]
+        ],
+        "cpu_op": [
+          [
+            "aten::empty",
+            23.097666000000025
+          ],
+          [
+            "aten::new_empty",
+            6.810368000000005
+          ],
+          [
+            "aten::mul_",
+            3.2964160000000007
+          ],
+          [
+            "aten::slice",
+            3.2422100000000023
+          ],
+          [
+            "aten::to",
+            1.945664000000001
+          ],
+          [
+            "aten::_to_copy",
+            1.6128319999999996
+          ],
+          [
+            "c10d::_allgather_base_",
+            1.3485119999999997
+          ],
+          [
+            "sglang::outplace_all_reduce",
+            1.283392
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[IDLE bs=0]",
+            1999.4981350000003
+          ],
+          [
+            "nccl:_all_gather_base",
+            3.991626
+          ]
+        ]
+      }
+    },
+    {
+      "file": "tp4_32k_c1-1780023158.5150843-TP-1-DP-1-EP-1.trace.json.gz",
+      "size": 1050276,
+      "counts": {
+        "kernel": 475,
+        "cuda_runtime": 3527,
+        "user_annotation": 20,
+        "cpu_op": 5230,
+        "gpu_user_annotation": 10
+      },
+      "cat_total_ms": {
+        "kernel": 2003.0607200000002,
+        "cuda_runtime": 6.641825000000018,
+        "user_annotation": 2046.3410100000003,
+        "cpu_op": 48.78387399999996,
+        "gpu_user_annotation": 2006.008996
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 64u, 16u, 128u, 128u, 8u, 128u, 128u, 215040u, 3440640u, 11u, 128u, 128u, 256u, 152u, 4u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 64u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<4u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            1992.0166550000004
+          ],
+          [
+            "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+            3.9868490000000003
+          ],
+          [
+            "nvjet_sm100_tst_128x8_64x12_1x1_h_bz_splitK_TNT",
+            3.398624
+          ],
+          [
+            "void (anonymous namespace)::all_reduce_one_shot_push_kernel<__nv_bfloat16, 4u, true>((anonymous namespace)::AllReducePushData, device::distributed::PushController)",
+            3.2094399999999994
+          ],
+          [
+            "void (anonymous namespace)::mega_moe_pre_dispatch_kernel<32u, true>((anonymous namespace)::MegaMoEPreDispatchParams)",
+            0.3790719999999998
+          ],
+          [
+            "void cublasLt::splitKreduce_kernel<32, 16, int, float, __nv_bfloat16, float, __nv_bfloat16, false, float, __nv_bfloat16, __nv_bfloat16, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, __nv_bfloat16 const*, float*, __nv_bfloat16*, float const*, float const*, __nv_bfloat16 const*, float const*, __nv_bfloat16*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            0.022080000000000002
+          ],
+          [
+            "void at_cuda_detail::cub::detail::scan::DeviceScanKernel<at_cuda_detail::cub::detail::scan::policy_hub<long, long, long, unsigned int, std::plus<long> >::Policy1000, long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int, long, false, at_cuda_detail::cub::NullType>(long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, int, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int)",
+            0.011552000000000002
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            0.01056
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            3.265024999999996
+          ],
+          [
+            "cudaPointerGetAttributes",
+            2.2144640000000217
+          ],
+          [
+            "cudaLaunchKernel",
+            0.3939199999999999
+          ],
+          [
+            "cudaMemcpyAsync",
+            0.25756799999999996
+          ],
+          [
+            "cudaEventQuery",
+            0.14217600000000002
+          ],
+          [
+            "cudaDeviceSynchronize",
+            0.117024
+          ],
+          [
+            "cudaEventRecordWithFlags",
+            0.04931200000000001
+          ],
+          [
+            "cudaStreamIsCapturing",
+            0.048799999999999975
+          ]
+        ],
+        "user_annotation": [
+          [
+            "gloo:all_gather",
+            1882.214116
+          ],
+          [
+            "step[IDLE bs=0]",
+            131.52142
+          ],
+          [
+            "gloo:broadcast",
+            32.003298
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.602176
+          ]
+        ],
+        "cpu_op": [
+          [
+            "aten::empty",
+            18.248447999999964
+          ],
+          [
+            "aten::new_empty",
+            5.353375999999995
+          ],
+          [
+            "aten::mul_",
+            2.872832
+          ],
+          [
+            "aten::slice",
+            2.7565759999999995
+          ],
+          [
+            "aten::to",
+            1.6921920000000008
+          ],
+          [
+            "aten::_to_copy",
+            1.4331840000000005
+          ],
+          [
+            "c10d::_allgather_base_",
+            1.3341440000000002
+          ],
+          [
+            "sglang::outplace_all_reduce",
+            1.217184
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[IDLE bs=0]",
+            2002.0221370000002
+          ],
+          [
+            "nccl:_all_gather_base",
+            3.9868589999999995
+          ]
+        ]
+      }
+    },
+    {
+      "file": "tp4_32k_c1-1780023158.5150843-TP-2-DP-2-EP-2.trace.json.gz",
+      "size": 10846930,
+      "counts": {
+        "kernel": 12265,
+        "cuda_runtime": 23604,
+        "user_annotation": 20,
+        "cpu_op": 57795,
+        "gpu_user_annotation": 10
+      },
+      "cat_total_ms": {
+        "kernel": 573.1799450000001,
+        "cuda_runtime": 241.94412000000008,
+        "user_annotation": 2015.20027,
+        "cpu_op": 1073.4688150000004,
+        "gpu_user_annotation": 2010.298287
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 8u, 192u, 128u, 128u, 32u, 256u, 128u, 215040u, 3440640u, 6u, 128u, 128u, 256u, 152u, 4u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 64u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<4u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            210.75989200000006
+          ],
+          [
+            "void sm100::decode::head64::flash_fwd_splitkv_mla_fp8_sparse_kernel<sm100::decode::head64::KernelTemplate<(ModelType)1>, sm100::decode::head64::KernelTemplate<(ModelType)1>::TmaParams<cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_LOAD, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<8> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<4096> > > > >, cute::tuple<cute::C<64>, cute::C<512> > >, cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_STORE, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<1> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<0> > > > >, cute::tuple<cute::C<64>, cute::C<64> > > > >(SparseAttnDecodeParams, sm100::decode::head64::KernelTemplate<(ModelType)1>::TmaParams<cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_LOAD, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<8> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<4096> > > > >, cute::tuple<cute::C<64>, cute::C<512> > >, cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_STORE, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<1> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<0> > > > >, cute::tuple<cute::C<64>, cute::C<64> > > >)",
+            88.70346700000007
+          ],
+          [
+            "void deep_gemm::sm100_fp8_fp4_gemm_1d1d_impl<(cute::UMMA::Major)0, (cute::UMMA::Major)0, 128u, 128u, 0u, 0u, 0u, 128u, 224u, 128u, 1u, 128u, 128u, 64u, 6u, 128u, 128u, 2u, false, 152u, false, (deep_gemm::GemmType)0, false, cutlass::float_e4m3_t, cutlass::float_e4m3_t, cutlass::bfloat16_t, deep_gemm::epilogue::transform::EpilogueIdentity>(int*, unsigned int, unsigned int, unsigned int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            60.550886999999975
+          ],
+          [
+            "void deep_gemm::sm100_fp8_fp4_gemm_1d1d_impl<(cute::UMMA::Major)0, (cute::UMMA::Major)0, 128u, 128u, 0u, 1024u, 4096u, 224u, 128u, 128u, 8u, 128u, 128u, 128u, 6u, 128u, 128u, 2u, true, 152u, true, (deep_gemm::GemmType)4, false, cutlass::float_e4m3_t, cutlass::float_e4m3_t, cutlass::bfloat16_t, deep_gemm::epilogue::transform::EpilogueIdentity>(int*, unsigned int, unsigned int, unsigned int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            20.822052000000003
+          ],
+          [
+            "mhc_post_tilelang_kernel",
+            18.421665
+          ],
+          [
+            "void (anonymous namespace)::fused_q_norm_rope<__nv_bfloat16, 512l, 64l, long, true>((anonymous namespace)::FusedQNormRopeParams)",
+            17.168644999999994
+          ],
+          [
+            "void (anonymous namespace)::deepseek_rope_kernel<true, true, long>((anonymous namespace)::FusedQKRopeParams)",
+            15.340261
+          ],
+          [
+            "void per_token_group_quant_8bit_kernel<NaiveScheduler, 128, 8, __nv_bfloat16, c10::Float8_e4m3fn, false, false, false, float>(__nv_bfloat16 const*, c10::Float8_e4m3fn*, float*, int const*, int, int, int, int, int)",
+            15.261669000000007
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            128.7082000000001
+          ],
+          [
+            "cudaLaunchKernel",
+            87.07050800000026
+          ],
+          [
+            "cudaPointerGetAttributes",
+            16.49776299999971
+          ],
+          [
+            "cudaMalloc",
+            4.061184
+          ],
+          [
+            "cudaMemcpyAsync",
+            2.5117449999999995
+          ],
+          [
+            "cudaFuncSetAttribute",
+            1.5032639999999988
+          ],
+          [
+            "INVALID",
+            0.4293120000000001
+          ],
+          [
+            "cudaEventQuery",
+            0.222656
+          ]
+        ],
+        "user_annotation": [
+          [
+            "step[EXTEND bs=1 toks=4096]",
+            2012.0879180000002
+          ],
+          [
+            "gloo:all_gather",
+            1.9248319999999999
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.7414080000000001
+          ],
+          [
+            "gloo:broadcast",
+            0.44611199999999995
+          ]
+        ],
+        "cpu_op": [
+          [
+            "sglang::deep_gemm_fp8_fp8_bf16_nt",
+            170.8780659999999
+          ],
+          [
+            "aten::empty",
+            133.32129300000065
+          ],
+          [
+            "sgl_kernel::sgl_per_token_group_quant_8bit_v2",
+            58.269985999999946
+          ],
+          [
+            "aten::view",
+            55.33376299999996
+          ],
+          [
+            "aten::to",
+            46.4641639999999
+          ],
+          [
+            "aten::_to_copy",
+            40.69558699999998
+          ],
+          [
+            "aten::new_empty",
+            40.66371900000005
+          ],
+          [
+            "aten::copy_",
+            40.56406800000001
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[EXTEND bs=1 toks=4096]",
+            2010.184005
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.11428200000000001
+          ]
+        ]
+      }
+    },
+    {
+      "file": "tp4_32k_c1-1780023158.5150843-TP-3-DP-3-EP-3.trace.json.gz",
+      "size": 1045096,
+      "counts": {
+        "kernel": 475,
+        "cuda_runtime": 3535,
+        "user_annotation": 20,
+        "cpu_op": 5230,
+        "gpu_user_annotation": 10
+      },
+      "cat_total_ms": {
+        "kernel": 2004.4043709999999,
+        "cuda_runtime": 6.901345000000027,
+        "user_annotation": 2046.8187679999999,
+        "cpu_op": 42.80761799999998,
+        "gpu_user_annotation": 2007.253701
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 64u, 16u, 128u, 128u, 8u, 128u, 128u, 215040u, 3440640u, 11u, 128u, 128u, 256u, 152u, 4u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 64u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<4u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            1993.3625459999998
+          ],
+          [
+            "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+            3.998817
+          ],
+          [
+            "nvjet_sm100_tst_128x8_64x12_1x1_h_bz_splitK_TNT",
+            3.3993599999999997
+          ],
+          [
+            "void (anonymous namespace)::all_reduce_one_shot_push_kernel<__nv_bfloat16, 4u, true>((anonymous namespace)::AllReducePushData, device::distributed::PushController)",
+            3.214976
+          ],
+          [
+            "void (anonymous namespace)::mega_moe_pre_dispatch_kernel<32u, true>((anonymous namespace)::MegaMoEPreDispatchParams)",
+            0.3678399999999998
+          ],
+          [
+            "void cublasLt::splitKreduce_kernel<32, 16, int, float, __nv_bfloat16, float, __nv_bfloat16, false, float, __nv_bfloat16, __nv_bfloat16, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, __nv_bfloat16 const*, float*, __nv_bfloat16*, float const*, float const*, __nv_bfloat16 const*, float const*, __nv_bfloat16*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+            0.021632
+          ],
+          [
+            "void at_cuda_detail::cub::detail::scan::DeviceScanKernel<at_cuda_detail::cub::detail::scan::policy_hub<long, long, long, unsigned int, std::plus<long> >::Policy1000, long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int, long, false, at_cuda_detail::cub::NullType>(long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, int, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int)",
+            0.009408
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            0.007904000000000001
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            3.5588480000000002
+          ],
+          [
+            "cudaPointerGetAttributes",
+            2.1428810000000262
+          ],
+          [
+            "cudaLaunchKernel",
+            0.379136
+          ],
+          [
+            "cudaMemcpyAsync",
+            0.23977600000000002
+          ],
+          [
+            "cudaEventQuery",
+            0.16486400000000007
+          ],
+          [
+            "cudaDeviceSynchronize",
+            0.110208
+          ],
+          [
+            "cudaEventRecordWithFlags",
+            0.074784
+          ],
+          [
+            "cudaStreamIsCapturing",
+            0.04751999999999998
+          ]
+        ],
+        "user_annotation": [
+          [
+            "gloo:all_gather",
+            1881.774372
+          ],
+          [
+            "step[IDLE bs=0]",
+            116.53226500000001
+          ],
+          [
+            "gloo:broadcast",
+            47.91728300000001
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.5948479999999999
+          ]
+        ],
+        "cpu_op": [
+          [
+            "aten::empty",
+            14.848321999999973
+          ],
+          [
+            "aten::new_empty",
+            4.564928
+          ],
+          [
+            "aten::mul_",
+            2.800672000000001
+          ],
+          [
+            "aten::slice",
+            2.6913920000000005
+          ],
+          [
+            "c10d::_allgather_base_",
+            1.40688
+          ],
+          [
+            "aten::to",
+            1.3725120000000008
+          ],
+          [
+            "sglang::reg_all_gather_into_tensor",
+            1.223008
+          ],
+          [
+            "sglang::outplace_all_reduce",
+            1.2225920000000001
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[IDLE bs=0]",
+            2003.254874
+          ],
+          [
+            "nccl:_all_gather_base",
+            3.9988270000000004
+          ]
+        ]
+      }
+    }
+  ],
+  "tp8_32k_c1": [
+    {
+      "file": "tp8_32k_c1-1780022922.2167828-TP-0-DP-0-EP-0.trace.json.gz",
+      "size": 1043768,
+      "counts": {
+        "kernel": 475,
+        "cuda_runtime": 3645,
+        "user_annotation": 25,
+        "cpu_op": 5375,
+        "gpu_user_annotation": 15
+      },
+      "cat_total_ms": {
+        "kernel": 2121.261928999999,
+        "cuda_runtime": 7.144418000000026,
+        "user_annotation": 2169.2312739999998,
+        "cpu_op": 50.401634999999956,
+        "gpu_user_annotation": 2136.262759
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 32u, 16u, 128u, 128u, 8u, 128u, 128u, 411648u, 6586368u, 11u, 128u, 128u, 256u, 152u, 8u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 32u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<8u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            2108.8684239999993
+          ],
+          [
+            "ncclDevKernel_AllReduce_Sum_bf16_TREE_LL(ncclDevKernelArgsStorage<4096ul>)",
+            8.861984
+          ],
+          [
+            "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+            2.994241
+          ],
+          [
+            "void (anonymous namespace)::mega_moe_pre_dispatch_kernel<32u, true>((anonymous namespace)::MegaMoEPreDispatchParams)",
+            0.3710080000000005
+          ],
+          [
+            "nvjet_sm100_tst_128x8_64x12_4x1_v_bz_TNT",
+            0.10998400000000001
+          ],
+          [
+            "void at_cuda_detail::cub::detail::scan::DeviceScanKernel<at_cuda_detail::cub::detail::scan::policy_hub<long, long, long, unsigned int, std::plus<long> >::Policy1000, long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int, long, false, at_cuda_detail::cub::NullType>(long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, int, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int)",
+            0.01248
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul>)",
+            0.010432
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            0.010048
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            3.4973459999999985
+          ],
+          [
+            "cudaPointerGetAttributes",
+            2.2693120000000273
+          ],
+          [
+            "cudaLaunchKernel",
+            0.4608960000000001
+          ],
+          [
+            "cudaMemcpyAsync",
+            0.262272
+          ],
+          [
+            "cudaEventQuery",
+            0.22025599999999998
+          ],
+          [
+            "cudaDeviceSynchronize",
+            0.114848
+          ],
+          [
+            "cudaStreamIsCapturing",
+            0.05551999999999998
+          ],
+          [
+            "cudaEventRecordWithFlags",
+            0.045856
+          ]
+        ],
+        "user_annotation": [
+          [
+            "gloo:broadcast",
+            2008.407997
+          ],
+          [
+            "step[IDLE bs=0]",
+            130.13665
+          ],
+          [
+            "gloo:all_gather",
+            29.710275
+          ],
+          [
+            "nccl:all_reduce",
+            0.563744
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.41260800000000003
+          ]
+        ],
+        "cpu_op": [
+          [
+            "aten::empty",
+            17.97843499999996
+          ],
+          [
+            "aten::new_empty",
+            5.266240000000003
+          ],
+          [
+            "aten::slice",
+            2.8980159999999984
+          ],
+          [
+            "aten::mul_",
+            2.8660159999999997
+          ],
+          [
+            "aten::to",
+            1.634688
+          ],
+          [
+            "aten::_to_copy",
+            1.3797760000000008
+          ],
+          [
+            "c10d::_allgather_base_",
+            1.26624
+          ],
+          [
+            "record_param_comms",
+            1.256288
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[IDLE bs=0]",
+            2124.406514
+          ],
+          [
+            "nccl:all_reduce",
+            8.861994000000001
+          ],
+          [
+            "nccl:_all_gather_base",
+            2.9942509999999998
+          ]
+        ]
+      }
+    },
+    {
+      "file": "tp8_32k_c1-1780022922.2167828-TP-1-DP-1-EP-1.trace.json.gz",
+      "size": 1040218,
+      "counts": {
+        "kernel": 470,
+        "cuda_runtime": 3641,
+        "user_annotation": 25,
+        "cpu_op": 5360,
+        "gpu_user_annotation": 15
+      },
+      "cat_total_ms": {
+        "kernel": 2120.504149000002,
+        "cuda_runtime": 6.9362250000000225,
+        "user_annotation": 2168.443849,
+        "cpu_op": 51.73555499999998,
+        "gpu_user_annotation": 2135.3554449999997
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 32u, 16u, 128u, 128u, 8u, 128u, 128u, 411648u, 6586368u, 11u, 128u, 128u, 256u, 152u, 8u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 32u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<8u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            2108.099251000002
+          ],
+          [
+            "ncclDevKernel_AllReduce_Sum_bf16_TREE_LL(ncclDevKernelArgsStorage<4096ul>)",
+            8.890626000000001
+          ],
+          [
+            "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+            2.9711680000000005
+          ],
+          [
+            "void (anonymous namespace)::mega_moe_pre_dispatch_kernel<32u, true>((anonymous namespace)::MegaMoEPreDispatchParams)",
+            0.379392
+          ],
+          [
+            "nvjet_sm100_tst_128x8_64x12_4x1_v_bz_TNT",
+            0.11417599999999999
+          ],
+          [
+            "void at_cuda_detail::cub::detail::scan::DeviceScanKernel<at_cuda_detail::cub::detail::scan::policy_hub<long, long, long, unsigned int, std::plus<long> >::Policy1000, long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int, long, false, at_cuda_detail::cub::NullType>(long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, int, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int)",
+            0.011968
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul>)",
+            0.010976000000000001
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            0.010784
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            3.4618559999999987
+          ],
+          [
+            "cudaPointerGetAttributes",
+            2.2179850000000236
+          ],
+          [
+            "cudaLaunchKernel",
+            0.395584
+          ],
+          [
+            "cudaMemcpyAsync",
+            0.255008
+          ],
+          [
+            "cudaEventQuery",
+            0.21820799999999996
+          ],
+          [
+            "cudaDeviceSynchronize",
+            0.098944
+          ],
+          [
+            "cudaStreamIsCapturing",
+            0.050176000000000005
+          ],
+          [
+            "cudaEventRecordWithFlags",
+            0.04185600000000001
+          ]
+        ],
+        "user_annotation": [
+          [
+            "gloo:all_gather",
+            2030.1544949999998
+          ],
+          [
+            "step[IDLE bs=0]",
+            136.133354
+          ],
+          [
+            "gloo:broadcast",
+            1.2591999999999999
+          ],
+          [
+            "nccl:all_reduce",
+            0.46841600000000005
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.428384
+          ]
+        ],
+        "cpu_op": [
+          [
+            "aten::empty",
+            19.370817999999982
+          ],
+          [
+            "aten::new_empty",
+            5.6574399999999985
+          ],
+          [
+            "aten::slice",
+            3.0505600000000004
+          ],
+          [
+            "aten::mul_",
+            2.9136650000000004
+          ],
+          [
+            "aten::to",
+            1.7855999999999999
+          ],
+          [
+            "aten::_to_copy",
+            1.4968959999999998
+          ],
+          [
+            "c10d::_allgather_base_",
+            1.241504
+          ],
+          [
+            "record_param_comms",
+            1.198464
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[IDLE bs=0]",
+            2123.4936310000003
+          ],
+          [
+            "nccl:all_reduce",
+            8.890636
+          ],
+          [
+            "nccl:_all_gather_base",
+            2.971178
+          ]
+        ]
+      }
+    },
+    {
+      "file": "tp8_32k_c1-1780022922.2167828-TP-2-DP-2-EP-2.trace.json.gz",
+      "size": 10841843,
+      "counts": {
+        "kernel": 12367,
+        "cuda_runtime": 23753,
+        "user_annotation": 25,
+        "cpu_op": 57928,
+        "gpu_user_annotation": 15
+      },
+      "cat_total_ms": {
+        "kernel": 277.475566,
+        "cuda_runtime": 244.10026899999974,
+        "user_annotation": 2138.5320710000005,
+        "cpu_op": 1145.331778,
+        "gpu_user_annotation": 2131.3478059999998
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 8u, 192u, 128u, 128u, 32u, 256u, 128u, 411648u, 6586368u, 6u, 128u, 128u, 256u, 152u, 8u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 32u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<8u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            82.33290199999999
+          ],
+          [
+            "void sm100::decode::head64::flash_fwd_splitkv_mla_fp8_sparse_kernel<sm100::decode::head64::KernelTemplate<(ModelType)1>, sm100::decode::head64::KernelTemplate<(ModelType)1>::TmaParams<cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_LOAD, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<8> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<4096> > > > >, cute::tuple<cute::C<64>, cute::C<512> > >, cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_STORE, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<1> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<0> > > > >, cute::tuple<cute::C<64>, cute::C<64> > > > >(SparseAttnDecodeParams, sm100::decode::head64::KernelTemplate<(ModelType)1>::TmaParams<cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_LOAD, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<8> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<4096> > > > >, cute::tuple<cute::C<64>, cute::C<512> > >, cute::tuple<int, int, int, int>, cute::TiledCopy<cute::Copy_Atom<cute::Copy_Traits<cute::SM90_TMA_STORE, cute::C<65536>, cute::AuxTmaParams<cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> >, cute::Layout<cute::tuple<cute::C<64>, cute::C<64>, cute::C<1>, cute::C<1> >, cute::tuple<cute::ScaledBasis<cute::C<1>, 1>, cute::ScaledBasis<cute::C<1>, 0>, cute::ScaledBasis<cute::C<1>, 2>, cute::ScaledBasis<cute::C<1>, 3> > > const&, cute::Swizzle<3, 4, 3> const&> >, cutlass::bfloat16_t>, cute::Layout<cute::tuple<cute::C<1>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<64> >, cute::C<1> > > >, cute::tuple<cute::C<0>, cute::tuple<cute::tuple<cute::tuple<cute::C<64>, cute::C<1> >, cute::C<0> > > > >, cute::tuple<cute::C<64>, cute::C<64> > > >)",
+            45.183105000000005
+          ],
+          [
+            "void deep_gemm::sm100_fp8_fp4_gemm_1d1d_impl<(cute::UMMA::Major)0, (cute::UMMA::Major)0, 128u, 128u, 0u, 0u, 0u, 128u, 224u, 128u, 1u, 128u, 128u, 64u, 6u, 128u, 128u, 2u, false, 152u, false, (deep_gemm::GemmType)0, false, cutlass::float_e4m3_t, cutlass::float_e4m3_t, cutlass::bfloat16_t, deep_gemm::epilogue::transform::EpilogueIdentity>(int*, unsigned int, unsigned int, unsigned int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            33.56195400000004
+          ],
+          [
+            "void deep_gemm::sm100_fp8_fp4_gemm_1d1d_impl<(cute::UMMA::Major)0, (cute::UMMA::Major)0, 128u, 128u, 0u, 1024u, 4096u, 240u, 128u, 128u, 8u, 128u, 128u, 128u, 6u, 128u, 128u, 2u, true, 152u, true, (deep_gemm::GemmType)4, false, cutlass::float_e4m3_t, cutlass::float_e4m3_t, cutlass::bfloat16_t, deep_gemm::epilogue::transform::EpilogueIdentity>(int*, unsigned int, unsigned int, unsigned int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            11.372895999999995
+          ],
+          [
+            "mhc_post_tilelang_kernel",
+            9.941025000000007
+          ],
+          [
+            "void (anonymous namespace)::fused_q_norm_rope<__nv_bfloat16, 512l, 64l, long, true>((anonymous namespace)::FusedQNormRopeParams)",
+            8.832383999999996
+          ],
+          [
+            "void (anonymous namespace)::deepseek_rope_kernel<true, true, long>((anonymous namespace)::FusedQKRopeParams)",
+            7.888319999999998
+          ],
+          [
+            "mhc_pre_big_fuse_with_norm_tilelang_kernel",
+            7.869728000000006
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            128.70762200000016
+          ],
+          [
+            "cudaLaunchKernel",
+            89.55930199999982
+          ],
+          [
+            "cudaPointerGetAttributes",
+            17.621567999999762
+          ],
+          [
+            "cudaMalloc",
+            2.639936
+          ],
+          [
+            "cudaMemcpyAsync",
+            2.40672
+          ],
+          [
+            "cudaFuncSetAttribute",
+            1.4920319999999991
+          ],
+          [
+            "INVALID",
+            0.456865
+          ],
+          [
+            "cudaEventQuery",
+            0.276256
+          ]
+        ],
+        "user_annotation": [
+          [
+            "step[EXTEND bs=1 toks=2048]",
+            2132.9710470000005
+          ],
+          [
+            "gloo:all_gather",
+            3.7143040000000003
+          ],
+          [
+            "nccl:all_reduce",
+            0.6883199999999999
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.609696
+          ],
+          [
+            "gloo:broadcast",
+            0.548704
+          ]
+        ],
+        "cpu_op": [
+          [
+            "sglang::deep_gemm_fp8_fp8_bf16_nt",
+            177.06628400000002
+          ],
+          [
+            "aten::empty",
+            144.198188
+          ],
+          [
+            "aten::view",
+            61.858116
+          ],
+          [
+            "sgl_kernel::sgl_per_token_group_quant_8bit_v2",
+            59.077859999999994
+          ],
+          [
+            "aten::to",
+            50.85562299999995
+          ],
+          [
+            "aten::_to_copy",
+            44.68323900000006
+          ],
+          [
+            "aten::copy_",
+            43.84458200000001
+          ],
+          [
+            "aten::new_empty",
+            43.44250200000006
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[EXTEND bs=1 toks=2048]",
+            2131.0610979999997
+          ],
+          [
+            "nccl:all_reduce",
+            0.14644200000000002
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.140266
+          ]
+        ]
+      }
+    },
+    {
+      "file": "tp8_32k_c1-1780022922.2167828-TP-3-DP-3-EP-3.trace.json.gz",
+      "size": 1036665,
+      "counts": {
+        "kernel": 470,
+        "cuda_runtime": 3640,
+        "user_annotation": 25,
+        "cpu_op": 5360,
+        "gpu_user_annotation": 15
+      },
+      "cat_total_ms": {
+        "kernel": 2122.2449350000015,
+        "cuda_runtime": 6.933281000000028,
+        "user_annotation": 2169.7699279999997,
+        "cpu_op": 47.79536099999995,
+        "gpu_user_annotation": 2137.109671
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 32u, 16u, 128u, 128u, 8u, 128u, 128u, 411648u, 6586368u, 11u, 128u, 128u, 256u, 152u, 8u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 32u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<8u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            2109.8547250000015
+          ],
+          [
+            "ncclDevKernel_AllReduce_Sum_bf16_TREE_LL(ncclDevKernelArgsStorage<4096ul>)",
+            8.914081
+          ],
+          [
+            "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+            2.9395849999999997
+          ],
+          [
+            "void (anonymous namespace)::mega_moe_pre_dispatch_kernel<32u, true>((anonymous namespace)::MegaMoEPreDispatchParams)",
+            0.37123200000000045
+          ],
+          [
+            "nvjet_sm100_tst_128x8_64x12_4x1_v_bz_TNT",
+            0.120832
+          ],
+          [
+            "void at_cuda_detail::cub::detail::scan::DeviceScanKernel<at_cuda_detail::cub::detail::scan::policy_hub<long, long, long, unsigned int, std::plus<long> >::Policy1000, long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int, long, false, at_cuda_detail::cub::NullType>(long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, int, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int)",
+            0.011456000000000001
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul>)",
+            0.009824
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            0.009023999999999999
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            3.3832319999999982
+          ],
+          [
+            "cudaPointerGetAttributes",
+            2.2757450000000286
+          ],
+          [
+            "cudaLaunchKernel",
+            0.3535360000000001
+          ],
+          [
+            "cudaMemcpyAsync",
+            0.24912000000000006
+          ],
+          [
+            "cudaEventQuery",
+            0.220608
+          ],
+          [
+            "cudaDeviceSynchronize",
+            0.11536
+          ],
+          [
+            "cudaEventRecordWithFlags",
+            0.053759999999999995
+          ],
+          [
+            "cudaStreamIsCapturing",
+            0.05260799999999999
+          ]
+        ],
+        "user_annotation": [
+          [
+            "gloo:all_gather",
+            2029.9639029999998
+          ],
+          [
+            "step[IDLE bs=0]",
+            126.175113
+          ],
+          [
+            "gloo:broadcast",
+            12.586079999999999
+          ],
+          [
+            "nccl:all_reduce",
+            0.5557439999999999
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.489088
+          ]
+        ],
+        "cpu_op": [
+          [
+            "aten::empty",
+            16.91094499999996
+          ],
+          [
+            "aten::new_empty",
+            4.984511999999999
+          ],
+          [
+            "aten::mul_",
+            3.0145279999999985
+          ],
+          [
+            "aten::slice",
+            2.7936959999999993
+          ],
+          [
+            "aten::to",
+            1.5245760000000004
+          ],
+          [
+            "record_param_comms",
+            1.338336
+          ],
+          [
+            "c10d::_allgather_base_",
+            1.3221120000000002
+          ],
+          [
+            "aten::_to_copy",
+            1.2946560000000003
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[IDLE bs=0]",
+            2125.255985
+          ],
+          [
+            "nccl:all_reduce",
+            8.914091
+          ],
+          [
+            "nccl:_all_gather_base",
+            2.9395949999999997
+          ]
+        ]
+      }
+    }
+  ],
+  "pd_prefill_32k_c1": [
+    {
+      "file": "pd_prefill_32k_c1-1780022197.2590663-TP-0-DP-0-EP-0.trace.json.gz",
+      "size": 176170108,
+      "counts": {
+        "kernel": 475,
+        "cuda_runtime": 3615,
+        "user_annotation": 1323,
+        "cpu_op": 94937,
+        "gpu_user_annotation": 15
+      },
+      "cat_total_ms": {
+        "kernel": 1551.3496060000002,
+        "cuda_runtime": 7.193344000000024,
+        "user_annotation": 2796.5859429999996,
+        "cpu_op": 462.4973779999996,
+        "gpu_user_annotation": 1564.522852
+      },
+      "top": {
+        "kernel": [
+          [
+            "void deep_gemm::sm100_fp8_fp4_mega_moe_impl<8448u, 4096u, 2048u, 256u, 6u, 32u, 16u, 128u, 128u, 8u, 128u, 128u, 411648u, 6586368u, 11u, 128u, 128u, 256u, 152u, 8u, (float)[41200000], true, false, false, false, 4096u, 4096u, 4096u, 2048u, 4u, 4u, 8u, 2u, 512u, 5u, 32u>(void*, int*, unsigned int, deep_gemm::layout::SymBuffer<8u>, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st)",
+            1541.290438
+          ],
+          [
+            "ncclDevKernel_AllReduce_Sum_bf16_TREE_LL(ncclDevKernelArgsStorage<4096ul>)",
+            7.142943999999999
+          ],
+          [
+            "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+            2.3381440000000002
+          ],
+          [
+            "void (anonymous namespace)::mega_moe_pre_dispatch_kernel<32u, true>((anonymous namespace)::MegaMoEPreDispatchParams)",
+            0.40534400000000054
+          ],
+          [
+            "nvjet_sm100_tst_128x8_64x12_4x1_v_bz_TNT",
+            0.11635199999999998
+          ],
+          [
+            "void at_cuda_detail::cub::detail::scan::DeviceScanKernel<at_cuda_detail::cub::detail::scan::policy_hub<long, long, long, unsigned int, std::plus<long> >::Policy1000, long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int, long, false, at_cuda_detail::cub::NullType>(long const*, long*, at_cuda_detail::cub::ScanTileState<long, true>, int, std::plus<long>, at_cuda_detail::cub::NullType, unsigned int)",
+            0.012320000000000001
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::launch_clamp_scalar(at::TensorIteratorBase&, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::{lambda()#1}::operator()() const::{lambda()#3}::operator()() const::{lambda(int)#1}, std::array<char*, 2ul>)",
+            0.010688000000000001
+          ],
+          [
+            "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul> >(int, at::native::CUDAFunctorOnSelf_add<int>, std::array<char*, 2ul>)",
+            0.010336
+          ]
+        ],
+        "cuda_runtime": [
+          [
+            "cudaLaunchKernelExC",
+            3.49696
+          ],
+          [
+            "cudaPointerGetAttributes",
+            2.289152000000024
+          ],
+          [
+            "cudaLaunchKernel",
+            0.46112000000000003
+          ],
+          [
+            "cudaMemcpyAsync",
+            0.28288
+          ],
+          [
+            "cudaEventQuery",
+            0.21798399999999996
+          ],
+          [
+            "cudaDeviceSynchronize",
+            0.1024
+          ],
+          [
+            "cudaStreamIsCapturing",
+            0.05158399999999999
+          ],
+          [
+            "cudaEventRecordWithFlags",
+            0.05142399999999999
+          ]
+        ],
+        "user_annotation": [
+          [
+            "gloo:broadcast",
+            2093.5735759999993
+          ],
+          [
+            "gloo:all_gather",
+            579.0597470000001
+          ],
+          [
+            "step[IDLE bs=0]",
+            122.85511600000001
+          ],
+          [
+            "nccl:all_reduce",
+            0.6264959999999999
+          ],
+          [
+            "nccl:_all_gather_base",
+            0.47100800000000004
+          ]
+        ],
+        "cpu_op": [
+          [
+            "c10d::_allgather_base_",
+            56.031234000000026
+          ],
+          [
+            "aten::select",
+            40.95815000000048
+          ],
+          [
+            "aten::empty",
+            32.108868999999885
+          ],
+          [
+            "aten::chunk",
+            29.94262599999999
+          ],
+          [
+            "aten::split",
+            28.182496999999994
+          ],
+          [
+            "aten::slice",
+            21.98528099999993
+          ],
+          [
+            "c10d::broadcast_",
+            20.755073999999993
+          ],
+          [
+            "aten::index_put_",
+            20.47484900000003
+          ]
+        ],
+        "gpu_user_annotation": [
+          [
+            "step[IDLE bs=0]",
+            1555.0417439999999
+          ],
+          [
+            "nccl:all_reduce",
+            7.142954
+          ],
+          [
+            "nccl:_all_gather_base",
+            2.338154
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,1326 @@
+=== tp8_dp8_dpa_nvl_cg16_profile32k rank 0 server start ===
+2026-05-29T02:46:30+00:00
+dist_init_addr=10.56.160.38:29530
+export SGLANG_OPT_DEEPGEMM_MEGA_MOE_NUM_MAX_TOKENS_PER_RANK=8320
+export GLOO_SOCKET_IFNAME=eth0
+export NCCL_SOCKET_IFNAME=eth0
+export NCCL_MNNVL_ENABLE=1
+export NCCL_CUMEM_ENABLE=1
+export NCCL_NVLS_ENABLE=1
+export NCCL_P2P_LEVEL=NVL
+export NCCL_PROTO=LL128
+export NVSHMEM_ENABLE_NIC_PE_MAPPING=1
+export NVSHMEM_HCA_LIST=mlx5_0,mlx5_1,mlx5_2,mlx5_3
+export NCCL_IB_HCA=mlx5_0,mlx5_1,mlx5_2,mlx5_3
+export NCCL_DEBUG=INFO
+
+python3 -m sglang.launch_server \
+  --trust-remote-code \
+  --model-path /home/admin/DeepSeek-V4-Flash \
+  --host 0.0.0.0 \
+  --port 30000 \
+  --tp-size 8 \
+  --nnodes 2 \
+  --node-rank 0 \
+  --dist-init-addr 10.56.160.38:29530 \
+  --dp-size 8 \
+  --enable-dp-attention \
+  --quantization fp8 \
+  --dtype bfloat16 \
+  --kv-cache-dtype fp8_e4m3 \
+  --mem-fraction-static 0.8 \
+  --chunked-prefill-size 16384 \
+  --max-prefill-tokens 16384 \
+  --max-running-requests 256 \
+  --schedule-conservativeness 0.3 \
+  --moe-a2a-backend megamoe \
+  --enable-cache-report \
+  --enable-nccl-nvls \
+  --pre-warm-nccl \
+  --cuda-graph-max-bs 16
+
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   73M  442G   1% /dev/shm
+	[4mGPU0	GPU1	GPU2	GPU3	NIC0	NIC1	NIC2	NIC3	CPU Affinity	NUMA Affinity	GPU NUMA ID[0m
+GPU0	 X 	NV18	NV18	NV18	NODE	NODE	SYS	SYS	0-69	0		2
+GPU1	NV18	 X 	NV18	NV18	NODE	NODE	SYS	SYS	0-69	0		10
+GPU2	NV18	NV18	 X 	NV18	SYS	SYS	NODE	NODE	70-139	1		18
+GPU3	NV18	NV18	NV18	 X 	SYS	SYS	NODE	NODE	70-139	1		26
+NIC0	NODE	NODE	SYS	SYS	 X 	NODE	SYS	SYS				
+NIC1	NODE	NODE	SYS	SYS	NODE	 X 	SYS	SYS				
+NIC2	SYS	SYS	NODE	NODE	SYS	SYS	 X 	NODE				
+NIC3	SYS	SYS	NODE	NODE	SYS	SYS	NODE	 X 				
+
+Legend:
+
+  X    = Self
+  SYS  = Connection traversing PCIe as well as the SMP interconnect between NUMA nodes (e.g., QPI/UPI)
+  NODE = Connection traversing PCIe as well as the interconnect between PCIe Host Bridges within a NUMA node
+  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the CPU)
+  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)
+  PIX  = Connection traversing at most a single PCIe bridge
+  NV#  = Connection traversing a bonded set of # NVLinks
+
+NIC Legend:
+
+  NIC0: mlx5_0
+  NIC1: mlx5_1
+  NIC2: mlx5_2
+  NIC3: mlx5_3
+
+0, NVIDIA L20A , 13 MiB, 189471 MiB
+1, NVIDIA L20A , 6 MiB, 189471 MiB
+2, NVIDIA L20A , 6 MiB, 189471 MiB
+3, NVIDIA L20A , 5 MiB, 189471 MiB
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/sgl-workspace/sglang/python/sglang/launch_server.py:54: UserWarning: 'python -m sglang.launch_server' is still supported, but 'sglang serve' is the recommended entrypoint.
+  Example: sglang serve --model-path <model> [options]
+  warnings.warn(
+[2026-05-29 02:46:38] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:38] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:38] Use dsv4 attention backend for DeepseekV4ForCausalLM, setting page_size to 256.
+[2026-05-29 02:46:38] Setting swa_full_tokens_ratio to 0.1 for DeepseekV4ForCausalLM.
+[2026-05-29 02:46:38] DP attention is enabled. The chunked prefill size is adjusted to 2048 to avoid MoE kernel issues. 
+[2026-05-29 02:46:38] Mega MoE is enabled. The expert parallel size is adjusted to be the same as the tensor parallel size[8].
+[2026-05-29 02:46:39] server_args=ServerArgs(model_path='/home/admin/DeepSeek-V4-Flash', tokenizer_path='/home/admin/DeepSeek-V4-Flash', tokenizer_mode='auto', tokenizer_backend='huggingface', tokenizer_worker_num=1, detokenizer_worker_num=1, skip_tokenizer_init=False, load_format='auto', model_loader_extra_config='{}', trust_remote_code=True, context_length=None, is_embedding=False, prefill_only_disable_kv_cache=False, enable_multimodal=None, revision=None, model_impl='auto', model_config_parser='auto', host='0.0.0.0', port=30000, fastapi_root_path='', grpc_mode=False, skip_server_warmup=False, warmups=None, nccl_port=None, checkpoint_engine_wait_weights_before_ready=False, ssl_keyfile=None, ssl_certfile=None, ssl_ca_certs=None, ssl_keyfile_password=None, enable_ssl_refresh=False, enable_http2=False, dtype='bfloat16', quantization='fp8', quantization_param_path=None, kv_cache_dtype='fp8_e4m3', enable_fp32_lm_head=False, modelopt_quant=None, modelopt_checkpoint_restore_path=None, modelopt_checkpoint_save_path=None, modelopt_export_path=None, quantize_and_serve=False, rl_quant_profile=None, mem_fraction_static=0.8, max_running_requests=256, max_queued_requests=None, max_total_tokens=None, chunked_prefill_size=2048, enable_dynamic_chunking=False, max_prefill_tokens=16384, prefill_max_requests=None, schedule_policy='fcfs', enable_priority_scheduling=False, disable_priority_preemption=False, default_priority_value=None, abort_on_priority_when_disabled=False, schedule_low_priority_values_first=False, priority_scheduling_preemption_threshold=10, schedule_conservativeness=0.09, page_size=256, swa_full_tokens_ratio=0.1, disable_hybrid_swa_memory=False, radix_eviction_policy='lru', enable_prefill_delayer=False, prefill_delayer_max_delay_passes=30, prefill_delayer_token_usage_low_watermark=None, prefill_delayer_forward_passes_buckets=None, prefill_delayer_wait_seconds_buckets=None, prefill_delayer_queue_min_ratio=None, prefill_delayer_max_delay_ms=None, device='cuda', tp_size=8, pp_size=1, pp_max_micro_batch_size=None, pp_async_batch_depth=0, stream_interval=1, batch_notify_size=16, stream_response_default_include_usage=False, incremental_streaming_output=False, enable_streaming_session=False, random_seed=611307898, constrained_json_whitespace_pattern=None, constrained_json_disable_any_whitespace=False, watchdog_timeout=300, soft_watchdog_timeout=None, dist_timeout=None, download_dir=None, model_checksum=None, base_gpu_id=0, gpu_id_step=1, sleep_on_idle=False, use_ray=False, custom_sigquit_handler=None, log_level='info', log_level_http=None, log_requests=False, log_requests_level=2, log_requests_format='text', log_requests_target=None, uvicorn_access_log_exclude_prefixes=[], crash_dump_folder=None, show_time_cost=False, enable_metrics=False, grpc_http_sidecar_port=None, enable_mfu_metrics=False, enable_metrics_for_all_schedulers=False, tokenizer_metrics_custom_labels_header='x-custom-labels', tokenizer_metrics_allowed_custom_labels=None, extra_metric_labels=None, bucket_time_to_first_token=None, bucket_inter_token_latency=None, bucket_e2e_request_latency=None, prompt_tokens_buckets=None, generation_tokens_buckets=None, gc_warning_threshold_secs=0.0, decode_log_interval=40, enable_request_time_stats_logging=False, kv_events_config=None, enable_forward_pass_metrics=False, forward_pass_metrics_worker_id='', forward_pass_metrics_ipc_name=None, enable_trace=False, otlp_traces_endpoint='localhost:4317', export_metrics_to_file=False, export_metrics_to_file_dir=None, api_key=None, admin_api_key=None, served_model_name='/home/admin/DeepSeek-V4-Flash', weight_version='default', chat_template=None, hf_chat_template_name=None, completion_template=None, file_storage_path='sglang_storage', enable_cache_report=True, reasoning_parser=None, strip_thinking_cache=False, enable_strict_thinking=False, tool_call_parser=None, tool_server=None, sampling_defaults='model', dp_size=8, load_balance_method='round_robin', attn_cp_size=1, moe_dp_size=1, dist_init_addr='10.56.160.38:29530', nnodes=2, node_rank=0, json_model_override_args='{}', preferred_sampling_params=None, enable_lora=None, enable_lora_overlap_loading=None, max_lora_rank=None, lora_target_modules=None, lora_paths=None, max_loaded_loras=None, max_loras_per_batch=8, lora_eviction_policy='lru', lora_backend='csgmv', max_lora_chunk_size=16, experts_shared_outer_loras=None, lora_use_virtual_experts=False, lora_strict_loading=False, lora_drain_wait_threshold=0.0, attention_backend='dsv4', decode_attention_backend=None, prefill_attention_backend=None, sampling_backend='flashinfer', grammar_backend='xgrammar', mm_attention_backend=None, fp8_gemm_runner_backend='auto', fp4_gemm_runner_backend='auto', nsa_prefill_backend=None, nsa_decode_backend=None, disable_flashinfer_autotune=False, mamba_backend='triton', speculative_algorithm=None, speculative_draft_model_path=None, speculative_draft_model_revision=None, speculative_draft_load_format=None, speculative_num_steps=None, speculative_eagle_topk=None, speculative_num_draft_tokens=None, speculative_dflash_block_size=None, speculative_accept_threshold_single=1.0, speculative_accept_threshold_acc=1.0, speculative_token_map=None, speculative_attention_mode='prefill', speculative_draft_attention_backend=None, speculative_draft_window_size=None, speculative_moe_runner_backend='auto', speculative_moe_a2a_backend=None, speculative_draft_model_quantization='fp8', speculative_adaptive=False, speculative_adaptive_config=None, speculative_skip_dp_mlp_sync=False, speculative_ngram_min_bfs_breadth=1, speculative_ngram_max_bfs_breadth=10, speculative_ngram_match_type='BFS', speculative_ngram_max_trie_depth=18, speculative_ngram_capacity=10000000, speculative_ngram_external_corpus_path=None, speculative_ngram_external_sam_budget=0, speculative_ngram_external_corpus_max_tokens=10000000, enable_multi_layer_eagle=False, ep_size=8, moe_a2a_backend='megamoe', moe_runner_backend='auto', record_nolora_graph=True, flashinfer_mxfp4_moe_precision='default', enable_flashinfer_allreduce_fusion=False, enforce_disable_flashinfer_allreduce_fusion=False, enable_aiter_allreduce_fusion=False, deepep_mode='auto', ep_num_redundant_experts=0, ep_dispatch_algorithm=None, init_expert_location='trivial', enable_eplb=False, eplb_algorithm='auto', eplb_rebalance_num_iterations=1000, eplb_rebalance_layers_per_chunk=None, eplb_min_rebalancing_utilization_threshold=1.0, expert_distribution_recorder_mode=None, expert_distribution_recorder_buffer_size=1000, enable_expert_distribution_metrics=False, deepep_config=None, moe_dense_tp_size=None, elastic_ep_backend=None, enable_elastic_expert_backup=False, mooncake_ib_device=None, enable_deepep_waterfill=False, elastic_ep_rejoin=False, max_mamba_cache_size=None, mamba_ssm_dtype=None, mamba_full_memory_ratio=0.9, mamba_scheduler_strategy='no_buffer', mamba_track_interval=256, linear_attn_backend='triton', linear_attn_decode_backend=None, linear_attn_prefill_backend=None, enable_hierarchical_cache=False, hicache_ratio=2.0, hicache_size=0, hicache_write_policy='write_through', hicache_io_backend='kernel', hicache_mem_layout='layer_first', hicache_storage_backend=None, hicache_storage_prefetch_policy='timeout', hicache_storage_backend_extra_config=None, enable_hisparse=False, hisparse_config=None, enable_lmcache=False, kt_weight_path=None, kt_method='AMXINT4', kt_cpuinfer=None, kt_threadpool_count=2, kt_num_gpu_experts=None, kt_max_deferred_experts_per_token=None, dllm_algorithm=None, dllm_algorithm_config=None, cpu_offload_gb=0, offload_group_size=-1, offload_num_in_group=1, offload_prefetch_step=1, offload_mode='cpu', enable_mis=False, disable_radix_cache=False, cuda_graph_max_bs=16, cuda_graph_bs=[1, 2, 4, 8, 12, 16], disable_cuda_graph=False, disable_cuda_graph_padding=False, enable_breakable_cuda_graph=False, enable_profile_cuda_graph=False, enable_cudagraph_gc=False, debug_cuda_graph=False, enable_layerwise_nvtx_marker=False, enable_nccl_nvls=True, enable_symm_mem=False, disable_flashinfer_cutlass_moe_fp4_allgather=False, enable_tokenizer_batch_encode=False, disable_tokenizer_batch_decode=False, disable_outlines_disk_cache=False, disable_custom_all_reduce=False, enable_mscclpp=False, enable_torch_symm_mem=False, pre_warm_nccl=True, disable_overlap_schedule=False, enable_mixed_chunk=False, enable_dp_attention=True, enable_dp_attention_local_control_broadcast=False, enable_dp_lm_head=False, enable_two_batch_overlap=False, enable_single_batch_overlap=False, tbo_token_distribution_threshold=0.48, enable_torch_compile=False, disable_piecewise_cuda_graph=True, enforce_piecewise_cuda_graph=False, enable_torch_compile_debug_mode=False, torch_compile_max_bs=32, piecewise_cuda_graph_max_tokens=16384, piecewise_cuda_graph_tokens=[4, 8, 12, 16, 20, 24, 28, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 352, 384, 416, 448, 480, 512, 576, 640, 704, 768, 832, 896, 960, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 2816, 3072, 3328, 3584, 3840, 4096, 4608, 5120, 5632, 6144, 6656, 7168, 7680, 8192, 8704, 9216, 9728, 10240, 10752, 11264, 11776, 12288, 12800, 13312, 13824, 14336, 14848, 15360, 15872, 16384], piecewise_cuda_graph_compiler='eager', torchao_config='', enable_nan_detection=False, enable_p2p_check=False, triton_attention_reduce_in_fp32=False, triton_attention_num_kv_splits=8, triton_attention_split_tile_size=None, num_continuous_decode_steps=1, delete_ckpt_after_loading=False, enable_memory_saver=False, enable_weights_cpu_backup=False, enable_draft_weights_cpu_backup=False, allow_auto_truncate=False, enable_custom_logit_processor=False, flashinfer_mla_disable_ragged=False, disable_shared_experts_fusion=False, enforce_shared_experts_fusion=False, disable_chunked_prefix_cache=False, disable_fast_image_processor=False, keep_mm_feature_on_device=False, enable_return_hidden_states=False, enable_return_routed_experts=False, enable_return_indexer_topk=False, scheduler_recv_interval=1, numa_node=None, enable_deterministic_inference=False, rl_on_policy_target=None, enable_attn_tp_input_scattered=False, gc_threshold=None, enable_nsa_prefill_context_parallel=False, nsa_prefill_cp_mode='round-robin-split', enable_fused_qk_norm_rope=False, enable_precise_embedding_interpolation=False, enable_fused_moe_sum_all_reduce=False, enable_prefill_context_parallel=False, prefill_cp_mode='in-seq-split', enable_dynamic_batch_tokenizer=False, dynamic_batch_tokenizer_batch_size=32, dynamic_batch_tokenizer_batch_timeout=0.002, debug_tensor_dump_output_folder=None, debug_tensor_dump_layers=None, debug_tensor_dump_input_file=None, debug_tensor_dump_inject=False, disaggregation_mode='null', disaggregation_transfer_backend='mooncake', disaggregation_bootstrap_port=8998, disaggregation_ib_device=None, disaggregation_decode_enable_radix_cache=False, disaggregation_decode_enable_offload_kvcache=False, num_reserved_decode_tokens=512, disaggregation_decode_polling_interval=1, encoder_only=False, language_only=False, encoder_transfer_backend='zmq_to_scheduler', encoder_urls=[], enable_adaptive_dispatch_to_encoder=False, custom_weight_loader=[], weight_loader_disable_mmap=False, weight_loader_prefetch_checkpoints=False, weight_loader_prefetch_num_threads=4, weight_loader_drop_cache_after_load=False, remote_instance_weight_loader_seed_instance_ip=None, remote_instance_weight_loader_seed_instance_service_port=None, remote_instance_weight_loader_send_weights_group_ports=None, remote_instance_weight_loader_backend='nccl', remote_instance_weight_loader_start_seed_via_transfer_engine=False, engine_info_bootstrap_port=6789, modelexpress_config=None, enable_pdmux=False, pdmux_config_path=None, sm_group_num=8, enable_broadcast_mm_inputs_process=False, enable_prefix_mm_cache=False, mm_enable_dp_encoder=False, mm_process_config={}, limit_mm_data_per_request=None, enable_mm_global_cache=False, decrypted_config_file=None, decrypted_draft_config_file=None, forward_hooks=None, enable_quant_communications=False, msprobe_dump_config=None)
+[2026-05-29 02:46:39] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:39] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[2026-05-29 02:46:40] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:46:41] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:46:41] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:46:41] No HuggingFace chat template found
+[2026-05-29 02:46:41] No chat template found, defaulting to 'string' content format
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[2026-05-29 02:46:49] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:46:49] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:46:50] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:46:54 DP1 TP1 EP1] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:54 DP1 TP1 EP1] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:54 DP0 TP0 EP0] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:54 DP0 TP0 EP0] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:55 DP2 TP2 EP2] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:55 DP3 TP3 EP3] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:55 DP3 TP3 EP3] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:55 DP2 TP2 EP2] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:55 DP1 TP1 EP1] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:46:55 DP0 TP0 EP0] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:46:55 DP2 TP2 EP2] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:46:55 DP3 TP3 EP3] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:46:56 DP1 TP1 EP1] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:46:56 DP0 TP0 EP0] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:46:56 DP2 TP2 EP2] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:46:56 DP3 TP3 EP3] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:46:56 DP1 TP1 EP1] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:46:56 DP0 TP0 EP0] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:46:56 DP2 TP2 EP2] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:46:56 DP3 TP3 EP3] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:46:56 DP1 TP1 EP1] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:56 DP1 TP1 EP1] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:56 DP0 TP0 EP0] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:56 DP0 TP0 EP0] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:56 DP1 TP1 EP1] Init torch distributed begin.
+[2026-05-29 02:46:57 DP0 TP0 EP0] Init torch distributed begin.
+[2026-05-29 02:46:57 DP2 TP2 EP2] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:57 DP2 TP2 EP2] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:57 DP3 TP3 EP3] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 02:46:57 DP3 TP3 EP3] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 02:46:57 DP2 TP2 EP2] Init torch distributed begin.
+[2026-05-29 02:46:57 DP3 TP3 EP3] Init torch distributed begin.
+[2026-05-29 02:46:58 DP0 TP0 EP0] sglang is using nccl==2.28.9
+gb200-test-2-015:11134:11134 [0] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11134:11134 [0] NCCL INFO Bootstrap: Using eth0:10.56.160.38<0>
+gb200-test-2-015:11134:11134 [0] NCCL INFO cudaDriverVersion 13000
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL version 2.28.9+cuda13.0
+gb200-test-2-015:11134:11134 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_IB_HCA set to mlx5_0,mlx5_1,mlx5_2,mlx5_3
+gb200-test-2-015:11134:11134 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]mlx5_1:1/RoCE [2]mlx5_2:1/RoCE [3]mlx5_3:1/RoCE [RO]; OOB eth0:10.56.160.38<0>
+gb200-test-2-015:11134:11134 [0] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11134:11134 [0] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11134:11134 [0] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11134:11134 [0] NCCL INFO Using network IB
+gb200-test-2-015:11134:11134 [0] NCCL INFO DMA-BUF is available on GPU device 0
+gb200-test-2-015:11134:11134 [0] NCCL INFO ncclCommInitRank comm 0x3d7279c0 rank 0 nranks 8 cudaDev 0 nvmlDev 0 busId 89000 commId 0x500ad3d4c8b88fba - Init START
+gb200-test-2-015:11134:11134 [0] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gb200-test-2-015:11134:11134 [0] NCCL INFO Bootstrap timings total 0.028635 (create 0.000027, send 0.000076, recv 0.000505, ring 0.027690, delay 0.000001)
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_CUMEM_ENABLE set by environment to 1.
+gb200-test-2-015:11134:11134 [0] NCCL INFO MNNVL busId 0x89000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_P2P_LEVEL set by environment to NVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_MNNVL_ENABLE set by environment to 1.
+gb200-test-2-015:11134:11134 [0] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 0
+gb200-test-2-015:11134:11134 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is 0-69. (GPU affinity = 0-69 ; CPU affinity = 0-69).
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_NVLS_ENABLE set by environment to 1.
+gb200-test-2-015:11134:11134 [0] NCCL INFO NVLS multicast support is available on dev 0 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11134:11134 [0] NCCL INFO comm 0x3d7279c0 rank 0 nRanks 8 nNodes 1 localRanks 8 localRank 0 MNNVL 1
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 00/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 01/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 02/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 03/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 04/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 05/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 06/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 07/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 08/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 09/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 10/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 11/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 12/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 13/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 14/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 15/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 16/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 17/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 18/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 19/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 20/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 21/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 22/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 23/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 24/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 25/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 26/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 27/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 28/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 29/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 30/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 31/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1 [2] 1/-1/-1->0->-1 [3] 1/-1/-1->0->-1 [4] 1/-1/-1->0->-1 [5] 1/-1/-1->0->-1 [6] 1/-1/-1->0->-1 [7] 1/-1/-1->0->-1 [8] 1/-1/-1->0->-1 [9] 1/-1/-1->0->-1 [10] 1/-1/-1->0->-1 [11] 1/-1/-1->0->-1 [12] 1/-1/-1->0->-1 [13] 1/-1/-1->0->-1 [14] 1/-1/-1->0->-1 [15] 1/-1/-1->0->-1 [16] 1/-1/-1->0->-1 [17] 1/-1/-1->0->-1 [18] 1/-1/-1->0->-1 [19] 1/-1/-1->0->-1 [20] 1/-1/-1->0->-1 [21] 1/-1/-1->0->-1 [22] 1/-1/-1->0->-1 [23] 1/-1/-1->0->-1 [24] 1/-1/-1->0->-1 [25] 1/-1/-1->0->-1 [26] 1/-1/-1->0->-1 [27] 1/-1/-1->0->-1 [28] 1/-1/-1->0->-1 [29] 1/-1/-1->0->-1 [30] 1/-1/-1->0->-1 [31] 1/-1/-1->0->-1
+gb200-test-2-015:11134:11134 [0] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11134:11134 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+gb200-test-2-015:11134:11134 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11134:11759 [0] NCCL INFO [Proxy Service] Device 0 CPU core 18
+gb200-test-2-015:11134:11761 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 19
+gb200-test-2-015:11134:11134 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11134:11134 [0] NCCL INFO Enabled NCCL Func/Proto/Algo Matrix:
+     Function |       LL     LL128    Simple   |          Tree           Ring  CollNetDirect   CollNetChain           NVLS       NVLSTree            PAT  
+    Broadcast |        0         1         0   |             1              1              1              1              1              1              1  
+       Reduce |        0         1         0   |             1              1              1              1              1              1              1  
+    AllGather |        0         1         0   |             1              1              1              1              1              1              1  
+ReduceScatter |        0         1         0   |             1              1              1              1              1              1              1  
+    AllReduce |        0         1         0   |             1              1              1              1              1              1              1  
+
+gb200-test-2-015:11134:11134 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+gb200-test-2-015:11134:11134 [0] NCCL INFO 32 coll channels, 32 collnet channels, 24 nvls channels, 32 p2p channels, 32 p2p channels per peer
+gb200-test-2-015:11134:11134 [0] NCCL INFO CC Off, workFifoBytes 1048576
+gb200-test-2-015:11134:11134 [0] NCCL INFO ncclCommInitRank comm 0x3d7279c0 rank 0 nranks 8 cudaDev 0 nvmlDev 0 busId 89000 commId 0x500ad3d4c8b88fba - Init COMPLETE
+gb200-test-2-015:11134:11134 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 8 total 1.37 (kernels 0.12, alloc 0.11, bootstrap 0.03, allgathers 0.00, topo 0.69, graphs 0.02, connections 0.39, rest 0.01)
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 02/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:111gb200-test-2-015:11137:11137 [3] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+gb200-test-2-015:11137:11137 [3] NCCL INFO cudaDriverVersion 13000
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11137:11137 [3] NCCL INFO Bootstrap: Using eth0:10.56.160.38<0>
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL version 2.28.9+cuda13.0
+gb200-test-2-015:11137:11137 [3] NCCL INFO NET/Plugin: Could not find: libnccl-net.so
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_IB_HCA set to mlx5_0,mlx5_1,mlx5_2,mlx5_3
+gb200-test-2-015:11137:11137 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]mlx5_1:1/RoCE [2]mlx5_2:1/RoCE [3]mlx5_3:1/RoCE [RO]; OOB eth0:10.56.160.38<0>
+gb200-test-2-015:11137:11137 [3] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11137:11137 [3] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11137:11137 [3] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11137:11137 [3] NCCL INFO Using network IB
+gb200-test-2-015:11137:11137 [3] NCCL INFO DMA-BUF is available on GPU device 3
+gb200-test-2-015:11137:11137 [3] NCCL INFO ncclCommInitRank comm 0x1657b550 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId c2000 commId 0x500ad3d4c8b88fba - Init START
+gb200-test-2-015:11137:11137 [3] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gb200-test-2-015:11137:11137 [3] NCCL INFO Bootstrap timings total 0.036175 (create 0.000030, send 0.000115, recv 0.000124, ring 0.000329, delay 0.000001)
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_CUMEM_ENABLE set by environment to 1.
+gb200-test-2-015:11137:11137 [3] NCCL INFO MNNVL busId 0xc2000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_P2P_LEVEL set by environment to NVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_MNNVL_ENABLE set by environment to 1.
+gb200-test-2-015:11137:11137 [3] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 3
+gb200-test-2-015:11137:11137 [3] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 3 is 70-139. (GPU affinity = 70-139 ; CPU affinity = 70-139).
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_NVLS_ENABLE set by environment to 1.
+gb200-test-2-015:11137:11137 [3] NCCL INFO NVLS multicast support is available on dev 3 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11137:11137 [3] NCCL INFO comm 0x1657b550 rank 3 nRanks 8 nNodes 1 localRanks 8 localRank 3 MNNVL 1
+gb200-test-2-015:11137:11137 [3] NCCL INFO Trees [0] 4/-1/-1->3->2 [1] 4/-1/-1->3->2 [2] 4/-1/-1->3->2 [3] 4/-1/-1->3->2 [4] 4/-1/-1->3->2 [5] 4/-1/-1->3->2 [6] 4/-1/-1->3->2 [7] 4/-1/-1->3->2 [8] 4/-1/-1->3->2 [9] 4/-1/-1->3->2 [10] 4/-1/-1->3->2 [11] 4/-1/-1->3->2 [12] 4/-1/-1->3->2 [13] 4/-1/-1->3->2 [14] 4/-1/-1->3->2 [15] 4/-1/-1->3->2 [16] 4/-1/-1->3->2 [17] 4/-1/-1->3->2 [18] 4/-1/-1->3->2 [19] 4/-1/-1->3->2 [20] 4/-1/-1->3->2 [21] 4/-1/-1->3->2 [22] 4/-1/-1->3->2 [23] 4/-1/-1->3->2 [24] 4/-1/-1->3->2 [25] 4/-1/-1->3->2 [26] 4/-1/-1->3->2 [27] 4/-1/-1->3->2 [28] 4/-1/-1->3->2 [29] 4/-1/-1->3->2 [30] 4/-1/-1->3->2 [31] 4/-1/-1->3->2
+gb200-test-2-015:11137:11137 [3] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11137:11137 [3] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+gb200-test-2-015:11137:11137 [3] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11137:11764 [0] NCCL INFO [Proxy Service] Device 3 CPU core 78
+gb200-test-2-015:11137:11765 [0] NCCL INFO [Proxy Service UDS] Device 3 CPU core 79
+gb200-test-2-015:11137:11137 [3] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11137:11137 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+gb200-test-2-015:11137:11137 [3] NCCL INFO 32 coll channels, 32 collnet channels, 24 nvls channels, 32 p2p channels, 32 p2p channels per peer
+gb200-test-2-015:11137:11137 [3] NCCL INFO ncclCommInitRank comm 0x1657b550 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId c2000 commId 0x500ad3d4c8b88fba - Init COMPLETE
+gb200-test-2-015:11137:11137 [3] NCCL INFO Init timings - ncclCommInitRank: rank 3 nranks 8 total 1.37 (kernels 0.12, alloc 0.10, bootstrap 0.04, allgathers 0.00, topo 0.69, graphs 0.02, connections 0.38, rest 0.01)
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 00/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 01/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 02/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 03/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 04/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 05/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 06/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 07/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 08/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 09/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 10/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 11/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 12/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 13/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 14/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 15/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 16/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 17/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 18/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 19/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 20/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 21/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 22/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 23/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 24/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 25/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 26/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 27/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 28/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 29/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 30/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 31/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 00/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 01/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 02/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 03/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 04/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 05/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 06/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 07/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 08/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 09/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 10/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 11/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Chgb200-test-2-015:11136:11136 [2] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+gb200-test-2-015:11136:11136 [2] NCCL INFO cudaDriverVersion 13000
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11136:11136 [2] NCCL INFO Bootstrap: Using eth0:10.56.160.38<0>
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL version 2.28.9+cuda13.0
+gb200-test-2-015:11136:11136 [2] NCCL INFO NET/Plugin: Could not find: libnccl-net.so
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_IB_HCA set to mlx5_0,mlx5_1,mlx5_2,mlx5_3
+gb200-test-2-015:11136:11136 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]mlx5_1:1/RoCE [2]mlx5_2:1/RoCE [3]mlx5_3:1/RoCE [RO]; OOB eth0:10.56.160.38<0>
+gb200-test-2-015:11136:11136 [2] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11136:11136 [2] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11136:11136 [2] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11136:11136 [2] NCCL INFO Using network IB
+gb200-test-2-015:11136:11136 [2] NCCL INFO DMA-BUF is available on GPU device 2
+gb200-test-2-015:11136:11136 [2] NCCL INFO ncclCommInitRank comm 0x2e08df60 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId c1000 commId 0x500ad3d4c8b88fba - Init START
+gb200-test-2-015:11136:11136 [2] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gb200-test-2-015:11136:11136 [2] NCCL INFO Bootstrap timings total 0.029883 (create 0.000026, send 0.000112, recv 0.000102, ring 0.000499, delay 0.000000)
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_CUMEM_ENABLE set by environment to 1.
+gb200-test-2-015:11136:11136 [2] NCCL INFO MNNVL busId 0xc1000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_P2P_LEVEL set by environment to NVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_MNNVL_ENABLE set by environment to 1.
+gb200-test-2-015:11136:11136 [2] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 2
+gb200-test-2-015:11136:11136 [2] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 2 is 70-139. (GPU affinity = 70-139 ; CPU affinity = 70-139).
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_NVLS_ENABLE set by environment to 1.
+gb200-test-2-015:11136:11136 [2] NCCL INFO NVLS multicast support is available on dev 2 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11136:11136 [2] NCCL INFO comm 0x2e08df60 rank 2 nRanks 8 nNodes 1 localRanks 8 localRank 2 MNNVL 1
+gb200-test-2-015:11136:11136 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1 [2] 3/-1/-1->2->1 [3] 3/-1/-1->2->1 [4] 3/-1/-1->2->1 [5] 3/-1/-1->2->1 [6] 3/-1/-1->2->1 [7] 3/-1/-1->2->1 [8] 3/-1/-1->2->1 [9] 3/-1/-1->2->1 [10] 3/-1/-1->2->1 [11] 3/-1/-1->2->1 [12] 3/-1/-1->2->1 [13] 3/-1/-1->2->1 [14] 3/-1/-1->2->1 [15] 3/-1/-1->2->1 [16] 3/-1/-1->2->1 [17] 3/-1/-1->2->1 [18] 3/-1/-1->2->1 [19] 3/-1/-1->2->1 [20] 3/-1/-1->2->1 [21] 3/-1/-1->2->1 [22] 3/-1/-1->2->1 [23] 3/-1/-1->2->1 [24] 3/-1/-1->2->1 [25] 3/-1/-1->2->1 [26] 3/-1/-1->2->1 [27] 3/-1/-1->2->1 [28] 3/-1/-1->2->1 [29] 3/-1/-1->2->1 [30] 3/-1/-1->2->1 [31] 3/-1/-1->2->1
+gb200-test-2-015:11136:11136 [2] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11136:11136 [2] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+gb200-test-2-015:11136:11136 [2] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11136:11763 [0] NCCL INFO [Proxy Service] Device 2 CPU core 71
+gb200-test-2-015:11136:11766 [0] NCCL INFO [Proxy Service UDS] Device 2 CPU core 72
+gb200-test-2-015:11136:11136 [2] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11136:11136 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+gb200-test-2-015:11136:11136 [2] NCCL INFO 32 coll channels, 32 collnet channels, 24 nvls channels, 32 p2p channels, 32 p2p channels per peer
+gb200-test-2-015:11136:11136 [2] NCCL INFO ncclCommInitRank comm 0x2e08df60 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId c1000 commId 0x500ad3d4c8b88fba - Init COMPLETE
+gb200-test-2-015:11136:11136 [2] NCCL INFO Init timings - ncclCommInitRank: rank 2 nranks 8 total 1.37 (kernels 0.12, alloc 0.11, bootstrap 0.03, allgathers 0.01, topo 0.69, graphs 0.02, connections 0.39, rest 0.01)
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 00/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 01/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 02/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 03/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 04/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 05/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 06/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 07/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 08/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 09/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 10/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 11/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 12/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 13/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 14/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 15/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 16/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 17/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 18/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 19/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 20/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 21/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 22/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 23/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 24/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 25/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 26/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 27/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 28/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 29/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 30/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 31/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 00/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 01/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 02/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 03/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 04/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 05/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 06/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 07/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 08/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 09/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 10/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 11/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Chgb200-test-2-015:11135:11135 [1] NCCL INFO ENV/Plugin: Could not find: libnccl-env.so
+gb200-test-2-015:11135:11135 [1] NCCL INFO cudaDriverVersion 13000
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11135:11135 [1] NCCL INFO Bootstrap: Using eth0:10.56.160.38<0>
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL version 2.28.9+cuda13.0
+gb200-test-2-015:11135:11135 [1] NCCL INFO NET/Plugin: Could not find: libnccl-net.so
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_SOCKET_IFNAME set by environment to eth0
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_IB_HCA set to mlx5_0,mlx5_1,mlx5_2,mlx5_3
+gb200-test-2-015:11135:11135 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/RoCE [1]mlx5_1:1/RoCE [2]mlx5_2:1/RoCE [3]mlx5_3:1/RoCE [RO]; OOB eth0:10.56.160.38<0>
+gb200-test-2-015:11135:11135 [1] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11135:11135 [1] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11135:11135 [1] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11135:11135 [1] NCCL INFO Using network IB
+gb200-test-2-015:11135:11135 [1] NCCL INFO DMA-BUF is available on GPU device 1
+gb200-test-2-015:11135:11135 [1] NCCL INFO ncclCommInitRank comm 0x32f53210 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 8a000 commId 0x500ad3d4c8b88fba - Init START
+gb200-test-2-015:11135:11135 [1] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+gb200-test-2-015:11135:11135 [1] NCCL INFO Bootstrap timings total 0.028148 (create 0.000022, send 0.000069, recv 0.000063, ring 0.000698, delay 0.000000)
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_CUMEM_ENABLE set by environment to 1.
+gb200-test-2-015:11135:11135 [1] NCCL INFO MNNVL busId 0x8a000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_P2P_LEVEL set by environment to NVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_MNNVL_ENABLE set by environment to 1.
+gb200-test-2-015:11135:11135 [1] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 1
+gb200-test-2-015:11135:11135 [1] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 1 is 0-69. (GPU affinity = 0-69 ; CPU affinity = 0-69).
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_NVLS_ENABLE set by environment to 1.
+gb200-test-2-015:11135:11135 [1] NCCL INFO NVLS multicast support is available on dev 1 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11135:11135 [1] NCCL INFO comm 0x32f53210 rank 1 nRanks 8 nNodes 1 localRanks 8 localRank 1 MNNVL 1
+gb200-test-2-015:11135:11135 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0 [2] 2/-1/-1->1->0 [3] 2/-1/-1->1->0 [4] 2/-1/-1->1->0 [5] 2/-1/-1->1->0 [6] 2/-1/-1->1->0 [7] 2/-1/-1->1->0 [8] 2/-1/-1->1->0 [9] 2/-1/-1->1->0 [10] 2/-1/-1->1->0 [11] 2/-1/-1->1->0 [12] 2/-1/-1->1->0 [13] 2/-1/-1->1->0 [14] 2/-1/-1->1->0 [15] 2/-1/-1->1->0 [16] 2/-1/-1->1->0 [17] 2/-1/-1->1->0 [18] 2/-1/-1->1->0 [19] 2/-1/-1->1->0 [20] 2/-1/-1->1->0 [21] 2/-1/-1->1->0 [22] 2/-1/-1->1->0 [23] 2/-1/-1->1->0 [24] 2/-1/-1->1->0 [25] 2/-1/-1->1->0 [26] 2/-1/-1->1->0 [27] 2/-1/-1->1->0 [28] 2/-1/-1->1->0 [29] 2/-1/-1->1->0 [30] 2/-1/-1->1->0 [31] 2/-1/-1->1->0
+gb200-test-2-015:11135:11135 [1] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11135:11135 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so
+gb200-test-2-015:11135:11135 [1] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11135:11762 [0] NCCL INFO [Proxy Service UDS] Device 1 CPU core 19
+gb200-test-2-015:11135:11760 [0] NCCL INFO [Proxy Service] Device 1 CPU core 18
+gb200-test-2-015:11135:11135 [1] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11135:11135 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+gb200-test-2-015:11135:11135 [1] NCCL INFO 32 coll channels, 32 collnet channels, 24 nvls channels, 32 p2p channels, 32 p2p channels per peer
+gb200-test-2-015:11135:11135 [1] NCCL INFO ncclCommInitRank comm 0x32f53210 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 8a000 commId 0x500ad3d4c8b88fba - Init COMPLETE
+gb200-test-2-015:11135:11135 [1] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 8 total 1.37 (kernels 0.12, alloc 0.11, bootstrap 0.03, allgathers 0.01, topo 0.69, graphs 0.02, connections 0.39, rest 0.01)
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 00/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 01/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 02/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 03/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 04/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 05/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 06/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 07/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 08/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 09/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 10/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 11/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 12/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 13/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 14/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 15/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 16/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 17/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 18/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 19/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 20/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 21/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 22/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 23/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 24/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 25/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 26/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 27/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 28/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 29/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 30/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 31/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 02/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 03/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 04/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 05/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 06/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 07/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 08/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 09/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 10/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 11/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel [2026-05-29 02:47:00 DP0 TP0 EP0] CustomAllreduce is disabled because this process group spans across nodes.
+[2026-05-29 02:47:00 DP1 TP1 EP1] CustomAllreduce is disabled because this process group spans across nodes.
+[2026-05-29 02:47:00 DP2 TP2 EP2] CustomAllreduce is disabled because this process group spans across nodes.
+[2026-05-29 02:47:00 DP3 TP3 EP3] CustomAllreduce is disabled because this process group spans across nodes.
+34:11134 [0] NCCL INFO Channel 03/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 04/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 05/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 06/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 07/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 08/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 09/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 10/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 11/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 12/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 13/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 14/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 15/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 16/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 17/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 18/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 19/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 20/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 21/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 22/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 23/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 24/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 25/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 26/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 27/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 28/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 29/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 30/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 31/0 : 0[0] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11134:11134 [0] NCCL INFO Connected all trees
+gb200-test-2-015:11134:11134 [0] NCCL INFO Comm config Blocking set to 1
+gb200-test-2-015:11134:11134 [0] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11134:11134 [0] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11134:11134 [0] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11134:11134 [0] NCCL INFO Using network IB
+gb200-test-2-015:11134:11134 [0] NCCL INFO DMA-BUF is available on GPU device 0
+gb200-test-2-015:11134:11134 [0] NCCL INFO ncclCommInitRankConfig comm 0x4307ae80 rank 0 nranks 8 cudaDev 0 nvmlDev 0 busId 89000 commId 0x957f54195cc06746 - Init START
+gb200-test-2-015:11134:11134 [0] NCCL INFO Bootstrap timings total 0.003023 (create 0.000020, send 0.000067, recv 0.000880, ring 0.001347, delay 0.000000)
+gb200-test-2-015:11134:11134 [0] NCCL INFO MNNVL busId 0x89000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11134:11134 [0] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 0
+gb200-test-2-015:11134:11134 [0] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 0 is 0-69. (GPU affinity = 0-69 ; CPU affinity = 0-69).
+gb200-test-2-015:11134:11134 [0] NCCL INFO NVLS multicast support is available on dev 0 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11134:11134 [0] NCCL INFO comm 0x4307ae80 rank 0 nRanks 8 nNodes 1 localRanks 8 localRank 0 MNNVL 1
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 00/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 01/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 02/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 03/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 04/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 05/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 06/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 07/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 08/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 09/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 10/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 11/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 12/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 13/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 14/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 15/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 16/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 17/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 18/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 19/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 20/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 21/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 22/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 23/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 24/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 25/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 26/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 27/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 28/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 29/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 30/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Channel 31/32 : 0 1 2 3 4 5 6 7
+gb200-test-2-015:11134:11134 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] 1/-1/-1->0->-1 [2] 1/-1/-1->0->-1 [3] 1/-1/-1->0->-1 [4] 1/-1/-1->0->-1 [5] 1/-1/-1->0->-1 [6] 1/-1/-1->0->-1 [7] 1/-1/-1->0->-1 [8] 1/-1/-1->0->-1 [9] 1/-1/-1->0->-1 [10] 1/-1/-1->0->-1 [11] 1/-1/-1->0->-1 [12] 1/-1/-1->0->-1 [13] 1/-1/-1->0->-1 [14] 1/-1/-1->0->-1 [15] 1/-1/-1->0->-1 [16] 1/-1/-1->0->-1 [17] 1/-1/-1->0->-1 [18] 1/-1/-1->0->-1 [19] 1/-1/-1->0->-1 [20] 1/-1/-1->0->-1 [21] 1/-1/-1->0->-1 [22] 1/-1/-1->0->-1 [23] 1/-1/-1->0->-1 [24] 1/-1/-1->0->-1 [25] 1/-1/-1->0->-1 [26] 1/-1/-1->0->-1 [27] 1/-1/-1->0->-1 [28] 1/-1/-1->0->-1 [29] 1/-1/-1->0->-1 [30] 1/-1/-1->0->-1 [31] 1/-1/-1->0->-1
+gb200-test-2-015:11134:11134 [0] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11134:11134 [0] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11134:11879 [0] NCCL INFO [Proxy Service] Device 0 CPU core 18
+gb200-test-2-015:11134:11883 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 21
+gb200-test-2-015:11134:11134 [0] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11134:11134 [0] NCCL INFO Enabled NCCL Func/Proto/Algo Matrix:
+     Function |       LL     LL128    Simple   |          Tree           Ring  CollNetDirect   CollNetChain           NVLS       NVLSTree            PAT  
+    Broadcast |        0         1         0   |             1              1              1              1              1              1              1  
+       Reduce |        0         1         0   |             1              1              1              1              1              1              1  
+    AllGather |        0         1         0   |             1              1              1              1              1              1              1  
+ReduceScatter |        0         1         0   |             1              1              1              1             annel 12/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 13/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 14/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 15/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 16/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 17/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 18/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 19/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 20/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 21/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 22/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 23/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 24/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 25/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 26/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 27/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 28/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 29/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 30/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 31/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Connected all trees
+gb200-test-2-015:11137:11137 [3] NCCL INFO Comm config Blocking set to 1
+gb200-test-2-015:11137:11137 [3] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11137:11137 [3] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11137:11137 [3] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11137:11137 [3] NCCL INFO Using network IB
+gb200-test-2-015:11137:11137 [3] NCCL INFO DMA-BUF is available on GPU device 3
+gb200-test-2-015:11137:11137 [3] NCCL INFO ncclCommInitRankConfig comm 0x1ff39e30 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId c2000 commId 0x957f54195cc06746 - Init START
+gb200-test-2-015:11137:11137 [3] NCCL INFO Bootstrap timings total 0.002190 (create 0.000020, send 0.000092, recv 0.000512, ring 0.000308, delay 0.000000)
+gb200-test-2-015:11137:11137 [3] NCCL INFO MNNVL busId 0xc2000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11137:11137 [3] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 3
+gb200-test-2-015:11137:11137 [3] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 3 is 70-139. (GPU affinity = 70-139 ; CPU affinity = 70-139).
+gb200-test-2-015:11137:11137 [3] NCCL INFO NVLS multicast support is available on dev 3 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11137:11137 [3] NCCL INFO comm 0x1ff39e30 rank 3 nRanks 8 nNodes 1 localRanks 8 localRank 3 MNNVL 1
+gb200-test-2-015:11137:11137 [3] NCCL INFO Trees [0] 4/-1/-1->3->2 [1] 4/-1/-1->3->2 [2] 4/-1/-1->3->2 [3] 4/-1/-1->3->2 [4] 4/-1/-1->3->2 [5] 4/-1/-1->3->2 [6] 4/-1/-1->3->2 [7] 4/-1/-1->3->2 [8] 4/-1/-1->3->2 [9] 4/-1/-1->3->2 [10] 4/-1/-1->3->2 [11] 4/-1/-1->3->2 [12] 4/-1/-1->3->2 [13] 4/-1/-1->3->2 [14] 4/-1/-1->3->2 [15] 4/-1/-1->3->2 [16] 4/-1/-1->3->2 [17] 4/-1/-1->3->2 [18] 4/-1/-1->3->2 [19] 4/-1/-1->3->2 [20] 4/-1/-1->3->2 [21] 4/-1/-1->3->2 [22] 4/-1/-1->3->2 [23] 4/-1/-1->3->2 [24] 4/-1/-1->3->2 [25] 4/-1/-1->3->2 [26] 4/-1/-1->3->2 [27] 4/-1/-1->3->2 [28] 4/-1/-1->3->2 [29] 4/-1/-1->3->2 [30] 4/-1/-1->3->2 [31] 4/-1/-1->3->2
+gb200-test-2-015:11137:11137 [3] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11137:11137 [3] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11137:11876 [0] NCCL INFO [Proxy Service] Device 3 CPU core 78
+gb200-test-2-015:11137:11881 [0] NCCL INFO [Proxy Service UDS] Device 3 CPU core 79
+gb200-test-2-015:11137:11137 [3] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11137:11137 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+gb200-test-2-015:11137:11137 [3] NCCL INFO 32 coll channels, 32 collnet channels, 24 nvls channels, 32 p2p channels, 32 p2p channels per peer
+gb200-test-2-015:11137:11137 [3] NCCL INFO ncclCommInitRankConfig comm 0x1ff39e30 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId c2000 commId 0x957f54195cc06746 - Init COMPLETE
+gb200-test-2-015:11137:11137 [3] NCCL INFO Init timings - ncclCommInitRankConfig: rank 3 nranks 8 total 0.99 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.71, graphs 0.02, connections 0.24, rest 0.01)
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 00/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 01/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 02/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 03/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 04/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 05/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 06/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 07/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 08/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 09/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 10/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 11/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 12/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 13/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 14/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 15/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 16/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 17/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 18/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 19/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 20/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 21/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 22/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 23/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 24/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 25/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 26/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 27/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 28/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 29/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 30/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 31/0 : 3[3] -> 4[0] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 00/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 01/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 02/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 03/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 04/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 05/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 06/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11137:11137 [3] NCCL INFO Channel 07/0 : 3[3] -> 2[2] via P2P/MNNVL
+gb200-test-12/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 13/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 14/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 15/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 16/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 17/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 18/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 19/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 20/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 21/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 22/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 23/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 24/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 25/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 26/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 27/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 28/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 29/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 30/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 31/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Connected all trees
+gb200-test-2-015:11135:11135 [1] NCCL INFO Comm config Blocking set to 1
+gb200-test-2-015:11135:11135 [1] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11135:11135 [1] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11135:11135 [1] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11135:11135 [1] NCCL INFO Using network IB
+gb200-test-2-015:11135:11135 [1] NCCL INFO DMA-BUF is available on GPU device 1
+gb200-test-2-015:11135:11135 [1] NCCL INFO ncclCommInitRankConfig comm 0x383e99e0 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 8a000 commId 0x957f54195cc06746 - Init START
+gb200-test-2-015:11135:11135 [1] NCCL INFO Bootstrap timings total 0.002218 (create 0.000021, send 0.000071, recv 0.001674, ring 0.000343, delay 0.000000)
+gb200-test-2-015:11135:11135 [1] NCCL INFO MNNVL busId 0x8a000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11135:11135 [1] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 1
+gb200-test-2-015:11135:11135 [1] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 1 is 0-69. (GPU affinity = 0-69 ; CPU affinity = 0-69).
+gb200-test-2-015:11135:11135 [1] NCCL INFO NVLS multicast support is available on dev 1 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11135:11135 [1] NCCL INFO comm 0x383e99e0 rank 1 nRanks 8 nNodes 1 localRanks 8 localRank 1 MNNVL 1
+gb200-test-2-015:11135:11135 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0 [2] 2/-1/-1->1->0 [3] 2/-1/-1->1->0 [4] 2/-1/-1->1->0 [5] 2/-1/-1->1->0 [6] 2/-1/-1->1->0 [7] 2/-1/-1->1->0 [8] 2/-1/-1->1->0 [9] 2/-1/-1->1->0 [10] 2/-1/-1->1->0 [11] 2/-1/-1->1->0 [12] 2/-1/-1->1->0 [13] 2/-1/-1->1->0 [14] 2/-1/-1->1->0 [15] 2/-1/-1->1->0 [16] 2/-1/-1->1->0 [17] 2/-1/-1->1->0 [18] 2/-1/-1->1->0 [19] 2/-1/-1->1->0 [20] 2/-1/-1->1->0 [21] 2/-1/-1->1->0 [22] 2/-1/-1->1->0 [23] 2/-1/-1->1->0 [24] 2/-1/-1->1->0 [25] 2/-1/-1->1->0 [26] 2/-1/-1->1->0 [27] 2/-1/-1->1->0 [28] 2/-1/-1->1->0 [29] 2/-1/-1->1->0 [30] 2/-1/-1->1->0 [31] 2/-1/-1->1->0
+gb200-test-2-015:11135:11135 [1] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11135:11135 [1] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11135:11878 [0] NCCL INFO [Proxy Service] Device 1 CPU core 18
+gb200-test-2-015:11135:11882 [0] NCCL INFO [Proxy Service UDS] Device 1 CPU core 19
+gb200-test-2-015:11135:11135 [1] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11135:11135 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+gb200-test-2-015:11135:11135 [1] NCCL INFO 32 coll channels, 32 collnet channels, 24 nvls channels, 32 p2p channels, 32 p2p channels per peer
+gb200-test-2-015:11135:11135 [1] NCCL INFO ncclCommInitRankConfig comm 0x383e99e0 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 8a000 commId 0x957f54195cc06746 - Init COMPLETE
+gb200-test-2-015:11135:11135 [1] NCCL INFO Init timings - ncclCommInitRankConfig: rank 1 nranks 8 total 0.99 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.71, graphs 0.02, connections 0.24, rest 0.01)
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 00/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 01/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 02/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 03/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 04/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 05/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 06/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 07/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 08/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 09/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 10/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 11/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 12/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 13/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 14/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 15/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 16/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 17/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 18/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 19/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 20/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 21/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 22/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 23/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 24/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 25/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 26/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 27/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 28/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 29/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 30/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 31/0 : 1[1] -> 2[2] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 02/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 03/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 04/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 05/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 06/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:11135 [1] NCCL INFO Channel 07/0 : 1[1] -> 0[0] via P2P/MNNVL
+gb200-test-2-015:11135:annel 12/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 13/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 14/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 15/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 16/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 17/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 18/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 19/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 20/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 21/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 22/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 23/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 24/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 25/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 26/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 27/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 28/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 29/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 30/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 31/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Connected all trees
+gb200-test-2-015:11136:11136 [2] NCCL INFO Comm config Blocking set to 1
+gb200-test-2-015:11136:11136 [2] NCCL INFO Initialized NET plugin IB
+gb200-test-2-015:11136:11136 [2] NCCL INFO Assigned NET plugin IB to comm
+gb200-test-2-015:11136:11136 [2] NCCL INFO Assigned GIN plugin GIN_IB_GDAKI to comm
+gb200-test-2-015:11136:11136 [2] NCCL INFO Using network IB
+gb200-test-2-015:11136:11136 [2] NCCL INFO DMA-BUF is available on GPU device 2
+gb200-test-2-015:11136:11136 [2] NCCL INFO ncclCommInitRankConfig comm 0x3235e5f0 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId c1000 commId 0x957f54195cc06746 - Init START
+gb200-test-2-015:11136:11136 [2] NCCL INFO Bootstrap timings total 0.000691 (create 0.000022, send 0.000097, recv 0.000130, ring 0.000310, delay 0.000000)
+gb200-test-2-015:11136:11136 [2] NCCL INFO MNNVL busId 0xc1000 fabric UUID a2482cd5695bf4ff.644e2975cc580193 cliqueId 0x3b state 3 healthMask 0xaa
+gb200-test-2-015:11136:11136 [2] NCCL INFO MNNVL 1 cliqueId 3b cliqueSize 8 cliqueRank 2
+gb200-test-2-015:11136:11136 [2] NCCL INFO ncclTopoGetCpuAffinity: Affinity for GPU 2 is 70-139. (GPU affinity = 70-139 ; CPU affinity = 70-139).
+gb200-test-2-015:11136:11136 [2] NCCL INFO NVLS multicast support is available on dev 2 (NVLS_NCHANNELS 24)
+gb200-test-2-015:11136:11136 [2] NCCL INFO comm 0x3235e5f0 rank 2 nRanks 8 nNodes 1 localRanks 8 localRank 2 MNNVL 1
+gb200-test-2-015:11136:11136 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1 [2] 3/-1/-1->2->1 [3] 3/-1/-1->2->1 [4] 3/-1/-1->2->1 [5] 3/-1/-1->2->1 [6] 3/-1/-1->2->1 [7] 3/-1/-1->2->1 [8] 3/-1/-1->2->1 [9] 3/-1/-1->2->1 [10] 3/-1/-1->2->1 [11] 3/-1/-1->2->1 [12] 3/-1/-1->2->1 [13] 3/-1/-1->2->1 [14] 3/-1/-1->2->1 [15] 3/-1/-1->2->1 [16] 3/-1/-1->2->1 [17] 3/-1/-1->2->1 [18] 3/-1/-1->2->1 [19] 3/-1/-1->2->1 [20] 3/-1/-1->2->1 [21] 3/-1/-1->2->1 [22] 3/-1/-1->2->1 [23] 3/-1/-1->2->1 [24] 3/-1/-1->2->1 [25] 3/-1/-1->2->1 [26] 3/-1/-1->2->1 [27] 3/-1/-1->2->1 [28] 3/-1/-1->2->1 [29] 3/-1/-1->2->1 [30] 3/-1/-1->2->1 [31] 3/-1/-1->2->1
+gb200-test-2-015:11136:11136 [2] NCCL INFO P2P Chunksize set to 524288
+gb200-test-2-015:11136:11136 [2] NCCL INFO Check P2P Type isAllDirectP2p 1 directMode 0 isAllCudaP2p 1
+gb200-test-2-015:11136:11877 [0] NCCL INFO [Proxy Service] Device 2 CPU core 94
+gb200-test-2-015:11136:11880 [0] NCCL INFO [Proxy Service UDS] Device 2 CPU core 95
+gb200-test-2-015:11136:11136 [2] NCCL INFO NCCL_PROTO set by environment to LL128
+gb200-test-2-015:11136:11136 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+gb200-test-2-015:11136:11136 [2] NCCL INFO 32 coll channels, 32 collnet channels, 24 nvls channels, 32 p2p channels, 32 p2p channels per peer
+gb200-test-2-015:11136:11136 [2] NCCL INFO ncclCommInitRankConfig comm 0x3235e5f0 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId c1000 commId 0x957f54195cc06746 - Init COMPLETE
+gb200-test-2-015:11136:11136 [2] NCCL INFO Init timings - ncclCommInitRankConfig: rank 2 nranks 8 total 0.99 (kernels 0.00, alloc 0.00, bootstrap 0.00, allgathers 0.00, topo 0.71, graphs 0.02, connections 0.24, rest 0.01)
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 00/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 01/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 02/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 03/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 04/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 05/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 06/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 07/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 08/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 09/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 10/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 11/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 12/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 13/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 14/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 15/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 16/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 17/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 18/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 19/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 20/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 21/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 22/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 23/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 24/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 25/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 26/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 27/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 28/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 29/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 30/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 31/0 : 2[2] -> 3[3] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 00/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 01/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 02/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 03/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 04/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 05/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 06/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-2-015:11136:11136 [2] NCCL INFO Channel 07/0 : 2[2] -> 1[1] via P2P/MNNVL
+gb200-test-[2026-05-29 02:47:01 DP2 TP2 EP2] NCCL/RCCL warmup completed in 1.231s (tp_size=8, pp_size=1, ep_size=8)
+[2026-05-29 02:47:01 DP3 TP3 EP3] NCCL/RCCL warmup completed in 1.233s (tp_size=8, pp_size=1, ep_size=8)
+[2026-05-29 02:47:01 DP1 TP1 EP1] NCCL/RCCL warmup completed in 1.233s (tp_size=8, pp_size=1, ep_size=8)
+[2026-05-29 02:47:01 DP0 TP0 EP0] NCCL/RCCL warmup completed in 1.235s (tp_size=8, pp_size=1, ep_size=8)
+[2026-05-29 02:47:01 DP0 TP0 EP0] Init torch distributed ends. elapsed=4.45 s, mem usage=1.77 GB
+[2026-05-29 02:47:01 DP3 TP3 EP3] Init torch distributed ends. elapsed=4.41 s, mem usage=2.52 GB
+[2026-05-29 02:47:01 DP2 TP2 EP2] Init torch distributed ends. elapsed=4.42 s, mem usage=2.52 GB
+[2026-05-29 02:47:01 DP1 TP1 EP1] Init torch distributed ends. elapsed=4.47 s, mem usage=2.52 GB
+[2026-05-29 02:47:02 DP0 TP0 EP0] Load weight begin. avail mem=181.47 GB
+[2026-05-29 02:47:02 DP0 TP0 EP0] Detected fp8 checkpoint.
+[2026-05-29 02:47:02 DP0 TP0 EP0] DeepSeek V4 requires different clamping for shared and routed experts. Shared experts fusion optimization is disabled.
+[2026-05-29 02:47:02 DP2 TP2 EP2] Load weight begin. avail mem=180.72 GB
+[2026-05-29 02:47:02 DP1 TP1 EP1] Load weight begin. avail mem=180.72 GB
+[2026-05-29 02:47:02 DP3 TP3 EP3] Load weight begin. avail mem=180.73 GB
+Multi-thread loading shards:   0% Completed | 0/46 [00:00<?, ?it/s]Multi-thread loading shards:   4% Completed | 2/46 [00:01<00:27,  1.62it/s]Multi-thread loading shards:   7% Completed | 3/46 [00:01<00:21,  2.03it/s]Multi-thread loading shards:   9% Completed | 4/46 [00:01<00:17,  2.47it/s]Multi-thread loading shards:  11% Completed | 5/46 [00:02<00:14,  2.92it/s]Multi-thread loading shards:  13% Completed | 6/46 [00:02<00:17,  2.34it/s]Multi-thread loading shards:  15% Completed | 7/46 [00:02<00:14,  2.70it/s]Multi-thread loading shards:  17% Completed | 8/46 [00:03<00:12,  3.04it/s]Multi-thread loading shards:  20% Completed | 9/46 [00:03<00:11,  3.26it/s]Multi-thread loading shards:  22% Completed | 10/46 [00:03<00:10,  3.38it/s]Multi-thread loading shards:  24% Completed | 11/46 [00:03<00:09,  3.60it/s]Multi-thread loading shards:  26% Completed | 12/46 [00:04<00:09,  3.67it/s]Multi-thread loading shards:  28% Completed | 13/46 [00:04<00:08,  3.75it/s]Multi-thread loading shards:  30% Completed | 14/46 [00:04<00:08,  3.82it/s]Multi-thread loading shards:  33% Completed | 15/46 [00:04<00:07,  3.91it/s]Multi-thread loading shards:  35% Completed | 16/46 [00:05<00:10,  2.76it/s]Multi-thread loading shards:  37% Completed | 17/46 [00:05<00:09,  3.09it/s]Multi-thread loading shards:  39% Completed | 18/46 [00:05<00:08,  3.30it/s]Multi-thread loading shards:  41% Completed | 19/46 [00:06<00:07,  3.55it/s]Multi-thread loading shards:  43% Completed | 20/46 [00:06<00:07,  3.67it/s]Multi-thread loading shards:  46% Completed | 21/46 [00:06<00:06,  3.82it/s]Multi-thread loading shards:  48% Completed | 22/46 [00:06<00:06,  3.87it/s]Multi-thread loading shards:  50% Completed | 23/46 [00:07<00:05,  3.87it/s]Multi-thread loading shards:  52% Completed | 24/46 [00:07<00:05,  4.00it/s]Multi-thread loading shards:  54% Completed | 25/46 [00:07<00:05,  4.03it/s]Multi-thread loading shards:  57% Completed | 26/46 [00:07<00:05,  3.94it/s]Multi-thread loading shards:  59% Completed | 27/46 [00:08<00:04,  3.96it/s]Multi-thread loading shards:  61% Completed | 28/46 [00:08<00:06,  2.71it/s]Multi-thread loading shards:  63% Completed | 29/46 [00:09<00:05,  3.06it/s]Multi-thread loading shards:  65% Completed | 30/46 [00:09<00:04,  3.32it/s]Multi-thread loading shards:  67% Completed | 31/46 [00:09<00:04,  3.50it/s]Multi-thread loading shards:  70% Completed | 32/46 [00:09<00:03,  3.73it/s]Multi-thread loading shards:  72% Completed | 33/46 [00:10<00:03,  3.75it/s]Multi-thread loading shards:  74% Completed | 34/46 [00:10<00:03,  3.74it/s]Multi-thread loading shards:  76% Completed | 35/46 [00:10<00:02,  3.83it/s]Multi-thread loading shards:  78% Completed | 36/46 [00:10<00:02,  4.32it/s]Multi-thread loading shards:  80% Completed | 37/46 [00:10<00:01,  4.71it/s]Multi-thread loading shards:  83% Completed | 38/46 [00:11<00:01,  5.09it/s]Multi-thread loading shards:  85% Completed | 39/46 [00:11<00:01,  5.44it/s]Multi-thread loading shards:  87% Completed | 40/46 [00:11<00:01,  5.95it/s]Multi-thread loading shards:  89% Completed | 41/46 [00:11<00:00,  6.41it/s]Multi-thread loading shards:  91% Completed | 42/46 [00:11<00:00,  7.10it/s]Multi-thread loading shards:  96% Completed | 44/46 [00:12<00:00,  5.09it/s]Multi-thread loading shards: 100% Completed | 46/46 [00:12<00:00,  6.93it/s]Multi-thread loading shards: 100% Completed | 46/46 [00:12<00:00,  3.76it/s]
+[2026-05-29 02:47:16 DP0 TP0 EP0] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-29 02:47:16 DP0 TP0 EP0] Load weight end. elapsed=13.70 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=155.29 GB, mem usage=26.18 GB.
+[2026-05-29 02:47:16 DP1 TP1 EP1] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-29 02:47:16 DP1 TP1 EP1] Load weight end. elapsed=13.85 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=154.54 GB, mem usage=26.18 GB.
+[2026-05-29 02:47:16 DP2 TP2 EP2] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-29 02:47:16 DP2 TP2 EP2] Load weight end. elapsed=14.26 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=154.54 GB, mem usage=26.18 GB.
+[2026-05-29 02:47:17 DP3 TP3 EP3] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0. This may lead to less accurate results!
+[2026-05-29 02:47:17 DP3 TP3 EP3] Load weight end. elapsed=15.19 s, type=DeepseekV4ForCausalLM, quant=fp8, fmt=e4m3, avail mem=154.55 GB, mem usage=26.18 GB.
+[2026-05-29 02:47:17 DP0 TP0 EP0] Using KV cache dtype: torch.float8_e4m3fn
+[2026-05-29 02:47:17 DP0 TP0 EP0] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=118.39 GB, full_token=7966720
+[2026-05-29 02:47:17 DP0 TP0 EP0] DSV4 pool sizes: full=7966720, swa=796672, c4=1991680, c128=62240, c4_state=49792, c128_state=796672
+[2026-05-29 02:47:17 DP3 TP3 EP3] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=118.39 GB, full_token=7966720
+[2026-05-29 02:47:17 DP3 TP3 EP3] DSV4 pool sizes: full=7966720, swa=796672, c4=1991680, c128=62240, c4_state=49792, c128_state=796672
+[2026-05-29 02:47:17 DP2 TP2 EP2] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=118.39 GB, full_token=7966720
+[2026-05-29 02:47:17 DP2 TP2 EP2] DSV4 pool sizes: full=7966720, swa=796672, c4=1991680, c128=62240, c4_state=49792, c128_state=796672
+[2026-05-29 02:47:17 DP1 TP1 EP1] DSV4 memory calculation: bytes_per_full_token=15955.85, available_bytes=118.39 GB, full_token=7966720
+[2026-05-29 02:47:17 DP1 TP1 EP1] DSV4 pool sizes: full=7966720, swa=796672, c4=1991680, c128=62240, c4_state=49792, c128_state=796672
+[2026-05-29 02:47:17 DP3 TP3 EP3] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=32 swa_size=796672 c4_size=1991680 c4_logical_size=1991680 c128_size=62240 c4_state_pool_size=49792 c128_state_pool_size=796672
+[2026-05-29 02:47:17 DP0 TP0 EP0] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=32 swa_size=796672 c4_size=1991680 c4_logical_size=1991680 c128_size=62240 c4_state_pool_size=49792 c128_state_pool_size=796672
+[2026-05-29 02:47:17 DP1 TP1 EP1] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=32 swa_size=796672 c4_size=1991680 c4_logical_size=1991680 c128_size=62240 c4_state_pool_size=49792 c128_state_pool_size=796672
+[2026-05-29 02:47:17 DP2 TP2 EP2] Initialize DeepSeekV4TokenToKVPool with max_num_reqs=32 swa_size=796672 c4_size=1991680 c4_logical_size=1991680 c128_size=62240 c4_state_pool_size=49792 c128_state_pool_size=796672
+[2026-05-29 02:47:18 DP2 TP2 EP2] Memory pool end. avail mem=35.81 GB
+[2026-05-29 02:47:18 DP0 TP0 EP0] Memory pool end. avail mem=36.55 GB
+[2026-05-29 02:47:18 DP1 TP1 EP1] Memory pool end. avail mem=35.81 GB
+[2026-05-29 02:47:18 DP3 TP3 EP3] Memory pool end. avail mem=35.81 GB
+[2026-05-29 02:47:18 DP2 TP2 EP2] Running DeepSeek V4 MHC prewarm for max_num_tokens=2048
+[2026-05-29 02:47:18 DP0 TP0 EP0] Running DeepSeek V4 MHC prewarm for max_num_tokens=2048
+[2026-05-29 02:47:18 DP1 TP1 EP1] Running DeepSeek V4 MHC prewarm for max_num_tokens=2048
+[2026-05-29 02:47:18 DP3 TP3 EP3] Running DeepSeek V4 MHC prewarm for max_num_tokens=2048
+[2026-05-29 02:47:18 DP2 TP2 EP2] DeepSeek V4 MHC prewarm max_num_tokens=2048 representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:18 DP0 TP0 EP0] DeepSeek V4 MHC prewarm max_num_tokens=2048 representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:18 DP1 TP1 EP1] DeepSeek V4 MHC prewarm max_num_tokens=2048 representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:18 DP3 TP3 EP3] DeepSeek V4 MHC prewarm max_num_tokens=2048 representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:19 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=2048 completed in 1.261s
+[2026-05-29 02:47:19 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=2048 completed in 0.000s
+[2026-05-29 02:47:19 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=2048 completed in 1.266s
+[2026-05-29 02:47:19 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=2048 completed in 0.000s
+[2026-05-29 02:47:19 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=2048 completed in 1.292s
+[2026-05-29 02:47:19 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=2048 completed in 0.000s
+[2026-05-29 02:47:19 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=2048 completed in 1.302s
+[2026-05-29 02:47:19 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=2048 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.114s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.104s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.112s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1920 completed in 0.116s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1920 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.103s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.111s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.112s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1600 completed in 0.115s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1600 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.113s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.113s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.104s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1344 completed in 0.112s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1344 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.112s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.106s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.111s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1216 completed in 0.114s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1216 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.113s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.107s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.111s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=1024 completed in 0.114s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=1024 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.113s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.115s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.102s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=960 completed in 0.116s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=960 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.120s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.125s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.121s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=832 completed in 0.108s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=832 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.107s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.117s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.114s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=768 completed in 0.116s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=768 completed in 0.000s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.113s
+[2026-05-29 02:47:20 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.113s
+[2026-05-29 02:47:20 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.105s
+[2026-05-29 02:47:20 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=704 completed in 0.114s
+[2026-05-29 02:47:20 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=704 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.116s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.109s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.113s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=640 completed in 0.106s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=640 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.111s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.110s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.108s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=576 completed in 0.113s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=576 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.105s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.105s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.105s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=512 completed in 0.113s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=512 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.110s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.114s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.108s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=448 completed in 0.108s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=448 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.110s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.112s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.118s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=384 completed in 0.114s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=384 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.104s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.103s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.112s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=320 completed in 0.115s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=320 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.109s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.113s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.116s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=256 completed in 0.112s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=256 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.116s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.119s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.118s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=192 completed in 0.104s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=192 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.111s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-29 02:47:21 DP2 TP2 EP2] DeepSeek V4 MHC prewarm finished in 3.390s for representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.117s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-29 02:47:21 DP0 TP0 EP0] DeepSeek V4 MHC prewarm finished in 3.410s for representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.117s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-29 02:47:21 DP3 TP3 EP3] DeepSeek V4 MHC prewarm finished in 3.422s for representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=attn num_tokens=128 completed in 0.109s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm path=ffn num_tokens=128 completed in 0.000s
+[2026-05-29 02:47:21 DP1 TP1 EP1] DeepSeek V4 MHC prewarm finished in 3.449s for representative token counts: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:22 DP2 TP2 EP2] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:22 DP3 TP3 EP3] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:22 DP0 TP0 EP0] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:22 DP1 TP1 EP1] DeepSeek V4 MHC prewarm completed for representative token-count shapes: (2048, 1920, 1600, 1344, 1216, 1024, 960, 832, 768, 704, 640, 576, 512, 448, 384, 320, 256, 192, 128)
+[2026-05-29 02:47:22 DP2 TP2 EP2] Capture cuda graph begin. This can take up to several minutes. avail mem=35.74 GB
+[2026-05-29 02:47:22 DP0 TP0 EP0] Capture cuda graph begin. This can take up to several minutes. avail mem=36.49 GB
+[2026-05-29 02:47:22 DP0 TP0 EP0] Capture cuda graph bs [1, 2, 4, 8, 12, 16]
+[2026-05-29 02:47:22 DP3 TP3 EP3] Capture cuda graph begin. This can take up to several minutes. avail mem=35.75 GB
+[2026-05-29 02:47:22 DP1 TP1 EP1] Capture cuda graph begin. This can take up to several minutes. avail mem=35.74 GB
+  0%|          | 0/6 [00:00<?, ?it/s]Capturing batches (bs=16 avail_mem=36.49 GB):   0%|          | 0/6 [00:00<?, ?it/s][2026-05-29 02:47:22 DP0 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-29 02:47:22 DP0 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=1536, K=4096, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-29 02:47:22 DP0 TP0 EP0] Required memory for warmup: 0.115234375GB, Available memory: 36.4881591796875GB
+
+DeepGEMM warmup:   0%|          | 0/16384 [00:00<?, ?it/s][A
+DeepGEMM warmup:   6%|▌         | 923/16384 [00:00<00:01, 9220.62it/s][A
+DeepGEMM warmup:  11%|█▏        | 1878/16384 [00:00<00:01, 9410.55it/s][A
+DeepGEMM warmup:  17%|█▋        | 2849/16384 [00:00<00:01, 9546.55it/s][A
+DeepGEMM warmup:  23%|██▎       | 3835/16384 [00:00<00:01, 9667.67it/s][A
+DeepGEMM warmup:  30%|██▉       | 4834/16384 [00:00<00:01, 9783.53it/s][A
+DeepGEMM warmup:  36%|███▌      | 5823/16384 [00:00<00:01, 9816.72it/s][A
+DeepGEMM warmup:  42%|████▏     | 6813/16384 [00:00<00:00, 9843.68it/s][A
+DeepGEMM warmup:  48%|████▊     | 7801/16384 [00:00<00:00, 9852.06it/s][A
+DeepGEMM warmup:  54%|█████▎    | 8787/16384 [00:00<00:00, 9829.86it/s][A
+DeepGEMM warmup:  60%|█████▉    | 9779/16384 [00:01<00:00, 9856.09it/s][A
+DeepGEMM warmup:  66%|██████▌   | 10765/16384 [00:01<00:00, 9842.12it/s][A
+DeepGEMM warmup:  72%|███████▏  | 11760/16384 [00:01<00:00, 9872.20it/s][A
+DeepGEMM warmup:  78%|███████▊  | 12748/16384 [00:01<00:00, 9853.53it/s][A
+DeepGEMM warmup:  84%|████████▍ | 13735/16384 [00:01<00:00, 9855.70it/s][A
+DeepGEMM warmup:  90%|████████▉ | 14730/16384 [00:01<00:00, 9882.88it/s][A
+DeepGEMM warmup:  96%|█████████▌| 15728/16384 [00:01<00:00, 9910.37it/s][ADeepGEMM warmup: 100%|██████████| 16384/16384 [00:01<00:00, 9818.95it/s]
+[2026-05-29 02:47:24 DP0 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-29 02:47:24 DP0 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=32768, K=1024, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-29 02:47:24 DP0 TP0 EP0] Required memory for warmup: 1.046875GB, Available memory: 36.484619140625GB
+
+DeepGEMM warmup:   0%|          | 0/16384 [00:00<?, ?it/s][A
+DeepGEMM warmup:   6%|▌         | 960/16384 [00:00<00:01, 9595.41it/s][A
+DeepGEMM warmup:  12%|█▏        | 1959/16384 [00:00<00:01, 9827.08it/s][A
+DeepGEMM warmup:  18%|█▊        | 2975/16384 [00:00<00:01, 9977.77it/s][A
+DeepGEMM warmup:  24%|██▍       | 3973/16384 [00:00<00:01, 9643.54it/s][A
+DeepGEMM warmup:  30%|███       | 4939/16384 [00:00<00:01, 8463.62it/s][A
+DeepGEMM warmup:  35%|███▌      | 5806/16384 [00:00<00:01, 7508.43it/s][A
+DeepGEMM warmup:  40%|████      | 6583/16384 [00:00<00:01, 6763.73it/s][A
+DeepGEMM warmup:  44%|████▍     | 7283/16384 [00:00<00:01, 6170.33it/s][A
+DeepGEMM warmup:  48%|████▊     | 7919/16384 [00:01<00:01, 5686.00it/s][A
+DeepGEMM warmup:  52%|█████▏    | 8501/16384 [00:01<00:01, 5281.95it/s][A
+DeepGEMM warmup:  55%|█████▌    | 9039/16384 [00:01<00:01, 4940.20it/s][A
+DeepGEMM warmup:  58%|█████▊    | 9539/16384 [00:01<00:01, 4654.13it/s][A
+DeepGEMM warmup:  61%|██████    | 10007/16384 [00:01<00:01, 4398.48it/s][A
+DeepGEMM warmup:  64%|██████▍   | 10448/16384 [00:01<00:01, 4182.44it/s][A
+DeepGEMM warmup:  66%|██████▋   | 10866/16384 [00:01<00:01, 3991.50it/s][A
+DeepGEMM warmup:  69%|██████▉   | 11264/16384 [00:01<00:01, 3825.95it/s][A
+DeepGEMM warmup:  71%|███████   | 11645/16384 [00:02<00:01, 3678.80it/s][A
+DeepGEMM warmup:  73%|███████▎  | 12012/16384 [00:02<00:01, 3546.52it/s][A
+DeepGEMM warmup:  75%|███████▌  | 12365/16384 [00:02<00:01, 3431.06it/s][A
+DeepGEMM warmup:  78%|███████▊  | 12707/16384 [00:02<00:01, 3326.01it/s][A
+DeepGEMM warmup:  80%|███████▉  | 13039/16384 [00:02<00:01, 3231.15it/s][A
+DeepGEMM warmup:  82%|████████▏ | 13361/16384 [00:02<00:00, 3147.87it/s][A
+DeepGEMM warmup:  83%|████████▎ | 13675/16384 [00:02<00:00, 3066.76it/s][A
+DeepGEMM warmup:  85%|████████▌ | 13981/16384 [00:02<00:00, 2996.52it/s][A
+DeepGEMM warmup:  87%|████████▋ | 14280/16384 [00:02<00:00, 2929.00it/s][A
+DeepGEMM warmup:  89%|████████▉ | 14573/16384 [00:03<00:00, 2865.83it/s][A
+DeepGEMM warmup:  91%|█████████ | 14860/16384 [00:03<00:00, 2808.28it/s][A
+DeepGEMM warmup:  92%|█████████▏| 15141/16384 [00:03<00:00, 2752.70it/s][A
+DeepGEMM warmup:  94%|█████████▍| 15416/16384 [00:03<00:00, 2702.52it/s][A
+DeepGEMM warmup:  96%|█████████▌| 15686/16384 [00:03<00:00, 2656.52it/s][A
+DeepGEMM warmup:  97%|█████████▋| 15952/16384 [00:03<00:00, 2610.46it/s][A
+DeepGEMM warmup:  99%|█████████▉| 16213/16384 [00:03<00:00, 2570.13it/s][ADeepGEMM warmup: 100%|██████████| 16384/16384 [00:03<00:00, 4313.81it/s]
+[2026-05-29 02:47:28 DP0 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-29 02:47:28 DP0 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=4096, K=8192, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-29 02:47:28 DP0 TP0 EP0] Required memory for warmup: 0.28125GB, Available memory: 36.4830322265625GB
+
+DeepGEMM warmup:   0%|          | 0/16384 [00:00<?, ?it/s][A
+DeepGEMM warmup:   6%|▌         | 957/16384 [00:00<00:01, 9560.28it/s][A
+DeepGEMM warmup:  12%|█▏        | 1940/16384 [00:00<00:01, 9712.57it/s][A
+DeepGEMM warmup:  18%|█▊        | 2927/16384 [00:00<00:01, 9781.20it/s][A
+DeepGEMM warmup:  24%|██▍       | 3926/16384 [00:00<00:01, 9862.58it/s][A
+DeepGEMM warmup:  30%|███       | 4936/16384 [00:00<00:01, 9945.84it/s][A
+DeepGEMM warmup:  36%|███▋      | 5949/16384 [00:00<00:01, 10005.70it/s][A
+DeepGEMM warmup:  42%|████▏     | 6950/16384 [00:00<00:01, 9191.87it/s] [A
+DeepGEMM warmup:  48%|████▊     | 7881/16384 [00:00<00:01, 8401.52it/s][A
+DeepGEMM warmup:  53%|█████▎    | 8739/16384 [00:00<00:00, 7729.41it/s][A
+DeepGEMM warmup:  58%|█████▊    | 9530/16384 [00:01<00:00, 7174.97it/s][A
+DeepGEMM warmup:  63%|██████▎   | 10263/16384 [00:01<00:00, 6675.72it/s][A
+DeepGEMM warmup:  67%|██████▋   | 10943/16384 [00:01<00:00, 6235.68it/s][A
+DeepGEMM warmup:  71%|███████   | 11576/16384 [00:01<00:00, 5895.65it/s][A
+DeepGEMM warmup:  74%|███████▍  | 12172/16384 [00:01<00:00, 5572.28it/s][A
+DeepGEMM warmup:  78%|███████▊  | 12733/16384 [00:01<00:00, 5323.99it/s][A
+DeepGEMM warmup:  81%|████████  | 13267/16384 [00:01<00:00, 5073.32it/s][A
+DeepGEMM warmup:  84%|████████▍ | 13775/16384 [00:01<00:00, 4879.62it/s][A
+DeepGEMM warmup:  87%|████████▋ | 14263/16384 [00:02<00:00, 4666.40it/s][A
+DeepGEMM warmup:  90%|████████▉ | 14729/16384 [00:02<00:00, 4505.16it/s][A
+DeepGEMM warmup:  93%|█████████▎| 15179/16384 [00:02<00:00, 4345.50it/s][A
+DeepGEMM warmup:  95%|█████████▌| 15613/16384 [00:02<00:00, 4206.51it/s][A
+DeepGEMM warmup:  98%|█████████▊| 16033/16384 [00:02<00:00, 4106.33it/s][ADeepGEMM warmup: 100%|██████████| 16384/16384 [00:02<00:00, 6185.40it/s]
+[2026-05-29 02:47:31 DP0 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-29 02:47:31 DP0 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=4096, K=4096, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-29 02:47:31 DP0 TP0 EP0] Required memory for warmup: 0.203125GB, Available memory: 36.48321533203125GB
+
+DeepGEMM warmup:   0%|          | 0/16384 [00:00<?, ?it/s][A
+DeepGEMM warmup:   6%|▌         | 925/16384 [00:00<00:01, 9246.88it/s][A
+DeepGEMM warmup:  12%|█▏        | 1885/16384 [00:00<00:01, 9449.99it/s][A
+DeepGEMM warmup:  17%|█▋        | 2841/16384 [00:00<00:01, 9497.86it/s][A
+DeepGEMM warmup:  23%|██▎       | 3798/16384 [00:00<00:01, 9523.38it/s][A
+DeepGEMM warmup:  29%|██▉       | 4759/16384 [00:00<00:01, 9551.08it/s][A
+DeepGEMM warmup:  35%|███▍      | 5726/16384 [00:00<00:01, 9588.29it/s][A
+DeepGEMM warmup:  41%|████      | 6705/16384 [00:00<00:01, 9653.15it/s][A
+DeepGEMM warmup:  47%|████▋     | 7685/16384 [00:00<00:00, 9697.34it/s][A
+DeepGEMM warmup:  53%|█████▎    | 8664/16384 [00:00<00:00, 9723.79it/s][A
+DeepGEMM warmup:  59%|█████▉    | 9644/16384 [00:01<00:00, 9747.05it/s][A
+DeepGEMM warmup:  65%|██████▍   | 10631/16384 [00:01<00:00, 9781.80it/s][A
+DeepGEMM warmup:  71%|███████   | 11610/16384 [00:01<00:00, 9628.89it/s][A
+DeepGEMM warmup:  77%|███████▋  | 12574/16384 [00:01<00:00, 9114.69it/s][A
+DeepGEMM warmup:  82%|████████▏ | 13492/16384 [00:01<00:00, 8640.53it/s][A
+DeepGEMM warmup:  88%|████████▊ | 14364/16384 [00:01<00:00, 8206.90it/s][A
+DeepGEMM warmup:  93%|█████████▎| 15193/16384 [00:01<00:00, 7812.31it/s][A
+DeepGEMM warmup:  98%|█████████▊| 15981/16384 [00:01<00:00, 7469.73it/s][ADeepGEMM warmup: 100%|██████████| 16384/16384 [00:01<00:00, 8785.85it/s]
+[2026-05-29 02:47:33 DP0 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-29 02:47:33 DP0 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=4096, K=2048, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-29 02:47:33 DP0 TP0 EP0] Required memory for warmup: 0.1640625GB, Available memory: 36.4833984375GB
+
+DeepGEMM warmup:   0%|          | 0/16384 [00:00<?, ?it/s][A
+DeepGEMM warmup:   6%|▌         | 967/16384 [00:00<00:01, 9666.00it/s][A
+DeepGEMM warmup:  12%|█▏        | 1951/16384 [00:00<00:01, 9766.31it/s][A
+DeepGEMM warmup:  18%|█▊        | 2932/16384 [00:00<00:01, 9782.08it/s][A
+DeepGEMM warmup:  24%|██▍       | 3911/16384 [00:00<00:01, 9778.52it/s][A
+DeepGEMM warmup:  30%|██▉       | 4896/16384 [00:00<00:01, 9801.88it/s][A
+DeepGEMM warmup:  36%|███▌      | 5883/16384 [00:00<00:01, 9822.02it/s][A
+DeepGEMM warmup:  42%|████▏     | 6868/16384 [00:00<00:00, 9830.25it/s][A
+DeepGEMM warmup:  48%|████▊     | 7857/16384 [00:00<00:00, 9848.20it/s][A
+DeepGEMM warmup:  54%|█████▍    | 8853/16384 [00:00<00:00, 9880.94it/s][A
+DeepGEMM warmup:  60%|██████    | 9845/16384 [00:01<00:00, 9890.69it/s][A
+DeepGEMM warmup:  66%|██████▌   | 10848/16384 [00:01<00:00, 9930.25it/s][A
+DeepGEMM warmup:  72%|███████▏  | 11852/16384 [00:01<00:00, 9961.55it/s][A
+DeepGEMM warmup:  78%|███████▊  | 12860/16384 [00:01<00:00, 9995.05it/s][A
+DeepGEMM warmup:  85%|████████▍ | 13874/16384 [00:01<00:00, 10036.52it/s][A
+DeepGEMM warmup:  91%|█████████ | 14893/16384 [00:01<00:00, 10081.56it/s][A
+DeepGEMM warmup:  97%|█████████▋| 15915/16384 [00:01<00:00, 10120.68it/s][ADeepGEMM warmup: 100%|██████████| 16384/16384 [00:01<00:00, 9945.00it/s] 
+[2026-05-29 02:47:37 DP0 TP0 EP0] Entering DeepGEMM JIT Pre-Compile session. It may take a long time (typically 10-20 mins) if you have not run `sglang.compile_deep_gemm`. It is recommended to run `sglang.compile_deep_gemm` with same args as `sglang.launch_server` for pre-compilation to reduce the overhead if you have not run it before. For example: `python3 -m sglang.compile_deep_gemm --model deepseek-ai/DeepSeek-V3 --tp 8 --trust-remote-code`
+[2026-05-29 02:47:37 DP0 TP0 EP0] Try DeepGEMM JIT Compiling for <GEMM_NT_F8F8BF16> N=8192, K=1024, num_groups=1 with all Ms. It only takes a little time (typically 1 sec) if you have run `python3 -m sglang.compile_deep_gemm`. 
+[2026-05-29 02:47:37 DP0 TP0 EP0] Required memory for warmup: 0.2734375GB, Available memory: 32.39569091796875GB
+
+DeepGEMM warmup:   0%|          | 0/16384 [00:00<?, ?it/s][A
+DeepGEMM warmup:   6%|▌         | 923/16384 [00:00<00:01, 9228.29it/s][A
+DeepGEMM warmup:  11%|█▏        | 1874/16384 [00:00<00:01, 9392.97it/s][A
+DeepGEMM warmup:  17%|█▋        | 2840/16384 [00:00<00:01, 9510.84it/s][A
+DeepGEMM warmup:  23%|██▎       | 3804/16384 [00:00<00:01, 9561.14it/s][A
+DeepGEMM warmup:  29%|██▉       | 4786/16384 [00:00<00:01, 9653.49it/s][A
+DeepGEMM warmup:  35%|███▌      | 5756/16384 [00:00<00:01, 9666.06it/s][A
+DeepGEMM warmup:  41%|████      | 6731/16384 [00:00<00:00, 9693.35it/s][A
+DeepGEMM warmup:  47%|████▋     | 7722/16384 [00:00<00:00, 9761.49it/s][A
+DeepGEMM warmup:  53%|█████▎    | 8721/16384 [00:00<00:00, 9830.44it/s][A
+DeepGEMM warmup:  59%|█████▉    | 9705/16384 [00:01<00:00, 9823.41it/s][A
+DeepGEMM warmup:  65%|██████▌   | 10706/16384 [00:01<00:00, 9880.27it/s][A
+DeepGEMM warmup:  71%|███████▏  | 11712/16384 [00:01<00:00, 9933.76it/s][A
+DeepGEMM warmup:  78%|███████▊  | 12721/16384 [00:01<00:00, 9979.03it/s][A
+DeepGEMM warmup:  84%|████████▍ | 13736/16384 [00:01<00:00, 10028.17it/s][A
+DeepGEMM warmup:  90%|████████▉ | 14739/16384 [00:01<00:00, 9741.49it/s] [A
+DeepGEMM warmup:  96%|█████████▌| 15715/16384 [00:01<00:00, 9292.36it/s][ADeepGEMM warmup: 100%|██████████| 16384/16384 [00:01<00:00, 9579.88it/s]
+Capturing batches (bs=16 avail_mem=36.49 GB):  17%|█▋        | 1/6 [00:19<01:39, 19.99s/it]Capturing batches (bs=12 avail_mem=31.91 GB):  17%|█▋        | 1/6 [00:19<01:39, 19.99s/it]Capturing batches (bs=12 avail_mem=31.91 GB):  33%|███▎      | 2/6 [00:20<00:34,  8.67s/it]Capturing batches (bs=8 avail_mem=31.89 GB):  33%|███▎      | 2/6 [00:20<00:34,  8.67s/it] Capturing batches (bs=8 avail_mem=31.89 GB):  50%|█████     | 3/6 [00:21<00:15,  5.05s/it]Capturing batches (bs=4 avail_mem=31.87 GB):  50%|█████     | 3/6 [00:21<00:15,  5.05s/it]Capturing batches (bs=4 avail_mem=31.87 GB):  67%|██████▋   | 4/6 [00:22<00:06,  3.35s/it]Capturing batches (bs=2 avail_mem=31.86 GB):  67%|██████▋   | 4/6 [00:22<00:06,  3.35s/it]Capturing batches (bs=2 avail_mem=31.86 GB):  83%|████████▎ | 5/6 [00:22<00:02,  2.41s/it]Capturing batches (bs=1 avail_mem=31.83 GB):  83%|████████▎ | 5/6 [00:22<00:02,  2.41s/it]Capturing batches (bs=1 avail_mem=31.83 GB): 100%|██████████| 6/6 [00:24<00:00,  2.01s/it]Capturing batches (bs=1 avail_mem=31.83 GB): 100%|██████████| 6/6 [00:24<00:00,  4.04s/it]
+[2026-05-29 02:47:47 DP1 TP1 EP1] Capture cuda graph end. Time elapsed: 24.80 s. mem usage=4.36 GB. avail mem=31.38 GB.
+[2026-05-29 02:47:47 DP1 TP1 EP1] Disable piecewise CUDA graph because --disable-piecewise-cuda-graph is set
+[2026-05-29 02:47:47 DP0 TP0 EP0] Capture cuda graph end. Time elapsed: 24.81 s. mem usage=4.67 GB. avail mem=31.82 GB.
+[2026-05-29 02:47:47 DP0 TP0 EP0] Disable piecewise CUDA graph because --disable-piecewise-cuda-graph is set
+[2026-05-29 02:47:47 DP2 TP2 EP2] Capture cuda graph end. Time elapsed: 24.81 s. mem usage=4.36 GB. avail mem=31.38 GB.
+[2026-05-29 02:47:47 DP2 TP2 EP2] Disable piecewise CUDA graph because --disable-piecewise-cuda-graph is set
+[2026-05-29 02:47:47 DP3 TP3 EP3] Capture cuda graph end. Time elapsed: 24.81 s. mem usage=4.36 GB. avail mem=31.39 GB.
+[2026-05-29 02:47:47 DP3 TP3 EP3] Disable piecewise CUDA graph because --disable-piecewise-cuda-graph is set
+[2026-05-29 02:47:47 DP1 TP1 EP1] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:47:47 DP0 TP0 EP0] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:47:47 DP2 TP2 EP2] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:47:47 DP3 TP3 EP3] Tokenizer loaded as generic TokenizersBackend for /home/admin/DeepSeek-V4-Flash, retrying with use_fast=False
+[2026-05-29 02:47:48 DP0 TP0 EP0] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:47:48 DP1 TP1 EP1] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:47:48 DP2 TP2 EP2] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:47:48 DP3 TP3 EP3] Loading tokenizer for /home/admin/DeepSeek-V4-Flash directly as PreTrainedTokenizerFast (bypassing AutoTokenizer)
+[2026-05-29 02:47:48 DP0 TP0 EP0] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:47:48 DP1 TP1 EP1] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:47:48 DP2 TP2 EP2] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:47:48 DP3 TP3 EP3] Tokenizer for /home/admin/DeepSeek-V4-Flash is still TokenizersBackend after retries with --trust-remote-code. Model-specific tokenizer attributes may be missing.
+[2026-05-29 02:47:49 DP0 TP0 EP0] max_total_num_tokens=7966720, chunked_prefill_size=2048, max_prefill_tokens=16384, max_running_requests=32, context_len=1048576, available_gpu_mem=31.82 GB
+[2026-05-29 02:47:49] INFO:     Started server process [10706]
+[2026-05-29 02:47:49] INFO:     Waiting for application startup.
+[2026-05-29 02:47:49] Using default chat sampling params from model generation config: {'temperature': 1.0, 'top_p': 1.0}
+[2026-05-29 02:47:49] INFO:     Application startup complete.
+[2026-05-29 02:47:49] INFO:     Uvicorn running on http://0.0.0.0:30000 (Press CTRL+C to quit)
+[2026-05-29 02:47:50] INFO:     127.0.0.1:43922 - "GET /model_info HTTP/1.1" 200 OK
+[2026-05-29 02:47:51] INFO:     127.0.0.1:43952 - "GET /health HTTP/1.1" 503 Service Unavailable
+[2026-05-29 02:47:55 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 4.22
+[2026-05-29 02:47:55 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 4.22
+[2026-05-29 02:47:55 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 4.22
+[2026-05-29 02:47:55 DP3 TP3 EP3] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 4.21
+[2026-05-29 02:47:55] INFO:     127.0.0.1:43938 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:47:55] The server is fired up and ready to roll!
+[2026-05-29 02:48:01 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 42.85
+[2026-05-29 02:48:02] INFO:     127.0.0.1:57084 - "GET /health HTTP/1.1" 200 OK
+/usr/local/lib/python3.12/dist-packages/fastapi/routing.py:120: FastAPIDeprecationWarning: ORJSONResponse is deprecated, FastAPI now serializes data directly to JSON bytes via Pydantic when a return type or response model is set, which is faster and doesn't need a custom response class. Read more in the FastAPI docs: https://fastapi.tiangolo.com/advanced/custom-response/#orjson-or-response-model and https://fastapi.tiangolo.com/tutorial/response-model/
+  response = await f(request)
+[2026-05-29 02:48:28] INFO:     127.0.0.1:56256 - "GET /v1/models HTTP/1.1" 200 OK
+[2026-05-29 02:48:38] INFO:     127.0.0.1:34082 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:48:39 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 27686, cuda graph: False, input throughput (token/s): 47.03
+[2026-05-29 02:48:39 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 25638, cuda graph: False, input throughput (token/s): 15047.87
+[2026-05-29 02:48:39 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 23590, cuda graph: False, input throughput (token/s): 15146.18
+[2026-05-29 02:48:39 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 21542, cuda graph: False, input throughput (token/s): 15049.82
+[2026-05-29 02:48:39 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 19494, cuda graph: False, input throughput (token/s): 15043.46
+[2026-05-29 02:48:39 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 17446, cuda graph: False, input throughput (token/s): 15010.08
+[2026-05-29 02:48:39 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 15398, cuda graph: False, input throughput (token/s): 14991.31
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 13350, cuda graph: False, input throughput (token/s): 15018.60
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 11302, cuda graph: False, input throughput (token/s): 15116.95
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 9254, cuda graph: False, input throughput (token/s): 14949.50
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 7206, cuda graph: False, input throughput (token/s): 15003.92
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 5158, cuda graph: False, input throughput (token/s): 15104.26
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 3110, cuda graph: False, input throughput (token/s): 15055.18
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 1062, cuda graph: False, input throughput (token/s): 14167.28
+[2026-05-29 02:48:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 1280, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 230916.22
+[2026-05-29 02:48:41 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 0, full token usage: 0.00, #swa token: 0, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 0.38, #queue-req: 0
+[2026-05-29 02:48:42] INFO:     127.0.0.1:34086 - "POST /start_profile HTTP/1.1" 200 OK
+[2026-05-29 02:48:42] INFO:     127.0.0.1:34100 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:48:42 DP2 TP2 EP2] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145 (with profile id: 1780022922.2167828)
+[2026-05-29 02:48:42 DP3 TP3 EP3] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145 (with profile id: 1780022922.2167828)
+[2026-05-29 02:48:42 DP1 TP1 EP1] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145 (with profile id: 1780022922.2167828)
+[2026-05-29 02:48:42 DP0 TP0 EP0] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145 (with profile id: 1780022922.2167828)
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[2026-05-29 02:48:43 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 27686, cuda graph: False, input throughput (token/s): 43.06
+[2026-05-29 02:48:43 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 25638, cuda graph: False, input throughput (token/s): 5012.16
+[2026-05-29 02:48:44 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 23590, cuda graph: False, input throughput (token/s): 4945.72
+[2026-05-29 02:48:44 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 21542, cuda graph: False, input throughput (token/s): 4798.87
+[2026-05-29 02:48:44 DP2 TP2 EP2] Stop profiling...
+[2026-05-29 02:48:44 DP3 TP3 EP3] Stop profiling...
+[2026-05-29 02:48:44 DP1 TP1 EP1] Stop profiling...
+[2026-05-29 02:48:44 DP0 TP0 EP0] Stop profiling...
+[2026-05-29 02:48:45 DP1 TP1 EP1] Profiling done. Traces are saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145
+[2026-05-29 02:48:45 DP0 TP0 EP0] Profiling done. Traces are saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145
+[2026-05-29 02:48:45 DP3 TP3 EP3] Profiling done. Traces are saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145
+[2026-05-29 02:48:51 DP2 TP2 EP2] Profiling done. Traces are saved to: /home/admin/0528/profiles/tp8_32k_c1/1780022922.2150145
+[2026-05-29 02:48:51 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 19494, cuda graph: False, input throughput (token/s): 290.98
+[2026-05-29 02:48:51 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 17446, cuda graph: False, input throughput (token/s): 9299.64
+[2026-05-29 02:48:52 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 15398, cuda graph: False, input throughput (token/s): 9244.89
+[2026-05-29 02:48:52 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 13350, cuda graph: False, input throughput (token/s): 9277.08
+[2026-05-29 02:48:52 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 11302, cuda graph: False, input throughput (token/s): 9702.20
+[2026-05-29 02:48:52 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 9254, cuda graph: False, input throughput (token/s): 9335.76
+[2026-05-29 02:48:52 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 7206, cuda graph: False, input throughput (token/s): 9516.70
+[2026-05-29 02:48:53 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 5158, cuda graph: False, input throughput (token/s): 9324.05
+[2026-05-29 02:48:53 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 3110, cuda graph: False, input throughput (token/s): 9004.79
+[2026-05-29 02:48:53 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 1062, cuda graph: False, input throughput (token/s): 8891.48
+[2026-05-29 02:48:53 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 1280, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 171182.29
+[2026-05-29 02:48:53 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 29952, full token usage: 0.00, #swa token: 1280, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 0.34, #queue-req: 0
+[2026-05-29 02:48:54 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 29952, full token usage: 0.00, #swa token: 1280, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.26, #queue-req: 0
+[2026-05-29 02:48:54 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 29952, full token usage: 0.00, #swa token: 1280, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.28, #queue-req: 0
+[2026-05-29 02:48:54 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 29952, full token usage: 0.00, #swa token: 1280, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.27, #queue-req: 0
+[2026-05-29 02:48:55 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 29952, full token usage: 0.00, #swa token: 1280, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.25, #queue-req: 0
+[2026-05-29 02:48:55 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 30208, full token usage: 0.00, #swa token: 1536, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 107.45, #queue-req: 0
+[2026-05-29 02:48:55 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 30208, full token usage: 0.00, #swa token: 1536, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.29, #queue-req: 0
+[2026-05-29 02:48:56 DP2 TP2 EP2] Decode batch, #running-req: 1, #full token: 30208, full token usage: 0.00, #swa token: 1536, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.33, #queue-req: 0
+[2026-05-29 02:48:56] INFO:     127.0.0.1:51942 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:48:56 DP3 TP3 EP3] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 4.21
+[2026-05-29 02:48:56 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 512, full token usage: 0.00, #swa token: 512, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 0.33, #queue-req: 0
+[2026-05-29 02:48:57 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 512, full token usage: 0.00, #swa token: 512, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.33, #queue-req: 0
+[2026-05-29 02:48:57 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 512, full token usage: 0.00, #swa token: 512, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.34, #queue-req: 0
+[2026-05-29 02:48:57 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 512, full token usage: 0.00, #swa token: 512, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.34, #queue-req: 0
+[2026-05-29 02:48:58 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 512, full token usage: 0.00, #swa token: 512, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.34, #queue-req: 0
+[2026-05-29 02:48:58 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 512, full token usage: 0.00, #swa token: 512, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.34, #queue-req: 0
+[2026-05-29 02:48:58 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 512, full token usage: 0.00, #swa token: 512, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.36, #queue-req: 0
+[2026-05-29 02:48:59 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 768, full token usage: 0.00, #swa token: 768, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.24, #queue-req: 0
+[2026-05-29 02:48:59 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 768, full token usage: 0.00, #swa token: 768, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.27, #queue-req: 0
+[2026-05-29 02:48:59 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 768, full token usage: 0.00, #swa token: 768, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.27, #queue-req: 0
+[2026-05-29 02:49:00 DP3 TP3 EP3] Decode batch, #running-req: 1, #full token: 768, full token usage: 0.00, #swa token: 768, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 118.27, #queue-req: 0
+[2026-05-29 02:49:00] INFO:     127.0.0.1:51950 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:49:03] INFO:     127.0.0.1:51966 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:49:05] INFO:     127.0.0.1:38946 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:49:11] INFO:     127.0.0.1:38960 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:49:13] INFO:     127.0.0.1:38972 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:49:14 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 8869, cuda graph: False, input throughput (token/s): 28.18
+[2026-05-29 02:49:14 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 6821, cuda graph: False, input throughput (token/s): 10137.86
+[2026-05-29 02:49:14 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 4773, cuda graph: False, input throughput (token/s): 13301.43
+[2026-05-29 02:49:14 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 2725, cuda graph: False, input throughput (token/s): 13473.56
+[2026-05-29 02:49:14 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 677, cuda graph: False, input throughput (token/s): 12570.35
+[2026-05-29 02:49:14 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 768, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 146773.70
+[2026-05-29 02:49:15 DP0 TP0 EP0] Decode batch, #running-req: 1, #full token: 11008, full token usage: 0.00, #swa token: 768, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 0.29, #queue-req: 0
+[2026-05-29 02:49:15 DP0 TP0 EP0] Decode batch, #running-req: 1, #full token: 11008, full token usage: 0.00, #swa token: 768, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 116.23, #queue-req: 0
+[2026-05-29 02:49:15 DP0 TP0 EP0] Decode batch, #running-req: 1, #full token: 11264, full token usage: 0.00, #swa token: 1024, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 115.25, #queue-req: 0
+[2026-05-29 02:49:16 DP0 TP0 EP0] Decode batch, #running-req: 1, #full token: 11264, full token usage: 0.00, #swa token: 1024, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 116.21, #queue-req: 0
+[2026-05-29 02:49:16 DP0 TP0 EP0] Decode batch, #running-req: 1, #full token: 11264, full token usage: 0.00, #swa token: 1024, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 116.24, #queue-req: 0
+[2026-05-29 02:49:16 DP0 TP0 EP0] Decode batch, #running-req: 1, #full token: 11264, full token usage: 0.00, #swa token: 1024, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 116.27, #queue-req: 0
+[2026-05-29 02:49:16] INFO:     127.0.0.1:53138 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:49:17 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 5766, cuda graph: False, input throughput (token/s): 56.29
+[2026-05-29 02:49:17 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 3718, cuda graph: False, input throughput (token/s): 13068.37
+[2026-05-29 02:49:17 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 1670, cuda graph: False, input throughput (token/s): 9385.23
+[2026-05-29 02:49:17 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 1792, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: False, input throughput (token/s): 334041.18
+[2026-05-29 02:49:18 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 7936, full token usage: 0.00, #swa token: 1792, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 1.09, #queue-req: 0
+[2026-05-29 02:49:18 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 7936, full token usage: 0.00, #swa token: 1792, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.13, #queue-req: 0
+[2026-05-29 02:49:18 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 7936, full token usage: 0.00, #swa token: 1792, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.12, #queue-req: 0
+[2026-05-29 02:49:19 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 8192, full token usage: 0.00, #swa token: 2048, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 116.16, #queue-req: 0
+[2026-05-29 02:49:19 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 8192, full token usage: 0.00, #swa token: 2048, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.13, #queue-req: 0
+[2026-05-29 02:49:19 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 8192, full token usage: 0.00, #swa token: 2048, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.12, #queue-req: 0
+[2026-05-29 02:49:20 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 8192, full token usage: 0.00, #swa token: 2048, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.14, #queue-req: 0
+[2026-05-29 02:49:20 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 8192, full token usage: 0.00, #swa token: 2048, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.13, #queue-req: 0
+[2026-05-29 02:49:20 DP1 TP1 EP1] Decode batch, #running-req: 1, #full token: 8192, full token usage: 0.00, #swa token: 2048, swa token usage: 0.00, cuda graph: True, gen throughput (token/s): 117.14, #queue-req: 0
+[2026-05-29 02:49:21] INFO:     127.0.0.1:53144 - "GET /server_info HTTP/1.1" 200 OK
+[2026-05-29 02:49:21] INFO:     127.0.0.1:53158 - "GET /server_info HTTP/1.1" 200 OK
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 4 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked shared_memory objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/home/admin/0528/commands/tp8_dp8_dpa_nvl_cg16_profile32k_rank0_server_command.sh: line 37: 10706 Killed                  python3 -m sglang.launch_server --trust-remote-code --model-path /home/admin/DeepSeek-V4-Flash --host 0.0.0.0 --port 30000 --tp-size 8 --nnodes 2 --node-rank 0 --dist-init-addr 10.56.160.38:29530 --dp-size 8 --enable-dp-attention --quantization fp8 --dtype bfloat16 --kv-cache-dtype fp8_e4m3 --mem-fraction-static 0.8 --chunked-prefill-size 16384 --max-prefill-tokens 16384 --max-running-requests 256 --schedule-conservativeness 0.3 --moe-a2a-backend megamoe --enable-cache-report --enable-nccl-nvls --pre-warm-nccl --cuda-graph-max-bs 16

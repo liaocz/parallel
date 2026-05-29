@@ -10335,3 +10335,110 @@ W20260529 01:39:18.448139   523 nvlink_transport.cpp:347] Memory region 0x55d0df
 [2026-05-29 02:36:03] INFO:     10.56.160.38:38252 - "GET /health HTTP/1.1" 200 OK
 [2026-05-29 02:36:22] INFO:     10.56.160.38:48040 - "GET /v1/models HTTP/1.1" 200 OK
 [2026-05-29 02:36:33] INFO:     10.56.160.38:54950 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:36:37] INFO:     10.56.160.38:42318 - "POST /start_profile HTTP/1.1" 200 OK
+[2026-05-29 02:36:37] INFO:     10.56.160.38:42320 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:36:37 DP1 TP1 EP1] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175 (with profile id: 1780022197.2590663)
+[2026-05-29 02:36:37 DP3 TP3 EP3] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175 (with profile id: 1780022197.2590663)
+[2026-05-29 02:36:37 DP2 TP2 EP2] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175 (with profile id: 1780022197.2590663)
+[2026-05-29 02:36:37 DP0 TP0 EP0] Profiling starts. Traces will be saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175 (with profile id: 1780022197.2590663)
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+/usr/local/lib/python3.12/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+[2026-05-29 02:36:37 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 29696, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, #bootstrap-req: 0, #inflight-req: 1, cuda graph: False, input throughput (token/s): 0.34
+[2026-05-29 02:36:40] INFO:     10.56.160.38:42336 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:36:41 DP2 TP2 EP2] Prefill batch, #new-seq: 1, #new-token: 256, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, #bootstrap-req: 0, #inflight-req: 1, cuda graph: False, input throughput (token/s): 0.35
+[2026-05-29 02:36:44] INFO:     10.56.160.38:38290 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:36:45 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 10125, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 267.14
+[2026-05-29 02:36:45 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 8077, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 6823.32
+[2026-05-29 02:36:45 DP1 TP1 EP1] Stop profiling...
+[2026-05-29 02:36:45 DP2 TP2 EP2] Stop profiling...
+[2026-05-29 02:36:45 DP3 TP3 EP3] Stop profiling...
+[2026-05-29 02:36:45 DP0 TP0 EP0] Stop profiling...
+[2026-05-29 02:39:20 DP0 TP0 EP0] Profiling done. Traces are saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175
+[2026-05-29 02:39:21 DP3 TP3 EP3] Profiling done. Traces are saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175
+[2026-05-29 02:39:28 DP1 TP1 EP1] Profiling done. Traces are saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175
+[2026-05-29 02:39:40 DP2 TP2 EP2] Profiling done. Traces are saved to: /home/admin/0528/profiles/pd_prefill_32k_c1/1780022197.257175
+[2026-05-29 02:39:40 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 6029, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 11.73
+[2026-05-29 02:39:45 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 3981, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 410.35
+[2026-05-29 02:39:45] INFO:     10.56.160.38:38948 - "POST /stop_profile HTTP/1.1" 500 Internal Server Error
+[2026-05-29 02:39:45] ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/dist-packages/uvicorn/protocols/http/h11_impl.py", line 415, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/uvicorn/middleware/proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/fastapi/applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/applications.py", line 90, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.12/dist-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/middleware/cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.12/dist-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.12/dist-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/fastapi/routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.12/dist-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.12/dist-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.12/dist-packages/fastapi/routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/fastapi/routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/fastapi/routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sgl-workspace/sglang/python/sglang/srt/entrypoints/http_server.py", line 976, in stop_profile_async
+    await _global_state.tokenizer_manager.stop_profile()
+  File "/sgl-workspace/sglang/python/sglang/srt/managers/tokenizer_control_mixin.py", line 363, in stop_profile
+    return await self._execute_profile(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sgl-workspace/sglang/python/sglang/srt/managers/tokenizer_control_mixin.py", line 368, in _execute_profile
+    raise RuntimeError(result.message)
+RuntimeError: Profiling is not in progress. Call /start_profile first.
+[2026-05-29 02:39:45 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 1933, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 11872.67
+[2026-05-29 02:39:45 DP1 TP1 EP1] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, #bootstrap-req: 0, #inflight-req: 1, cuda graph: False, input throughput (token/s): 430217.39
+[2026-05-29 02:39:46] INFO:     10.56.160.38:34536 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:39:47 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 3183, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 9.11
+[2026-05-29 02:39:51 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 1135, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 434.93
+[2026-05-29 02:39:51 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 1280, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, #bootstrap-req: 0, #inflight-req: 1, cuda graph: False, input throughput (token/s): 358124.50
+[2026-05-29 02:39:52] INFO:     10.56.160.38:34548 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:40:04] INFO:     10.56.160.38:54440 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:40:10] INFO:     10.56.160.38:54446 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:40:17] INFO:     10.56.160.38:42852 - "POST /generate HTTP/1.1" 200 OK
+[2026-05-29 02:40:18 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 5766, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 77.41
+[2026-05-29 02:40:18 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.01, #running-req: 0, #queue-req: 0, #pending-token: 3718, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 12734.32
+[2026-05-29 02:40:18 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 2048, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 1670, #bootstrap-req: 0, #inflight-req: 0, cuda graph: False, input throughput (token/s): 12607.32
+[2026-05-29 02:40:18 DP0 TP0 EP0] Prefill batch, #new-seq: 1, #new-token: 1792, #cached-token: 0, full token usage: 0.00, swa token usage: 0.00, #running-req: 0, #queue-req: 0, #pending-token: 0, #bootstrap-req: 0, #inflight-req: 1, cuda graph: False, input throughput (token/s): 495032.00
+[2026-05-29 02:40:21] INFO:     10.56.160.38:42854 - "GET /server_info HTTP/1.1" 200 OK
+[2026-05-29 02:40:21] INFO:     10.56.160.38:42864 - "GET /server_info HTTP/1.1" 200 OK
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 4 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked shared_memory objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+/home/admin/0528/commands/pd_prefill_rank0_nvl_cg16_command.sh: line 49:    95 Killed                  python3 -m sglang.launch_server --trust-remote-code --model-path /home/admin/DeepSeek-V4-Flash --host 0.0.0.0 --port 30000 --tp-size 8 --nnodes 2 --node-rank 0 --dist-init-addr 10.56.160.38:29520 --dp-size 8 --enable-dp-attention --disaggregation-mode prefill --disaggregation-transfer-backend mooncake --disaggregation-bootstrap-port 8998 --disaggregation-ib-device mlx5_0,mlx5_1,mlx5_2,mlx5_3 --quantization fp8 --dtype bfloat16 --kv-cache-dtype fp8_e4m3 --mem-fraction-static 0.8 --chunked-prefill-size 16384 --max-prefill-tokens 16384 --max-running-requests 256 --schedule-conservativeness 0.3 --moe-a2a-backend megamoe --enable-cache-report --enable-nccl-nvls --pre-warm-nccl --cuda-graph-max-bs 16

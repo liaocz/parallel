@@ -1696,3 +1696,15 @@ INFO:     127.0.0.1:58912 - "GET /health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:40400 - "GET /health HTTP/1.1" 200 OK
 INFO:     127.0.0.1:51130 - "GET /v1/models HTTP/1.1" 200 OK
 INFO:     127.0.0.1:59056 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53508 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53516 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46346 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60214 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41730 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41736 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57936 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57946 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59902 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59912 - "GET /server_info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59916 - "GET /server_info HTTP/1.1" 200 OK
+/home/admin/0528/commands/pd_router_nvl_cg16_command.sh: line 17:  6125 Killed                  python3 -m sglang_router.launch_router --pd-disaggregation --mini-lb --prefill http://10.56.160.38:30000 8998 --decode http://10.56.160.36:30001 --host 0.0.0.0 --port 8000 --worker-startup-timeout-secs 1800 --worker-startup-check-interval 10 --request-timeout-secs 7200 --max-concurrent-requests 512 --queue-size 2048
