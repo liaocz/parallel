@@ -1,0 +1,78 @@
+BEGIN mode=pd_tp8_dp8_dpa_megamoe_mooncake_nvl_cg16 case=4k_500 input=4096 output=500 concurrency=64 num_prompts=64 at 2026-05-29 01:51:09
+server_info_http=200
+{"internal_states":[{"model_path":"/home/admin/DeepSeek-V4-Flash","tokenizer_path":"/home/admin/DeepSeek-V4-Flash","tokenizer_mode":"auto","tokenizer_backend":"huggingface","tokenizer_worker_num":1,"detokenizer_worker_num":1,"skip_tokenizer_init":false,"load_format":"auto","model_loader_extra_config":"{}","trust_remote_code":true,"context_length":null,"is_embedding":false,"prefill_only_disable_kv_cache":false,"enable_multimodal":null,"revision":null,"model_impl":"auto","model_config_parser":"auto","host":"0.0.0.0","port":30001,"fastapi_root_path":"","grpc_mode":false,"skip_server_warmup":false,"warmups":null,"nccl_port":null,"checkpoint_engine_wait_weights_before_ready":false,"ssl_keyfile":null,"ssl_certfile":null,"ssl_ca_certs":null,"ssl_keyfile_password":null,"enable_ssl_refresh":false,"enable_http2":false,"dtype":"bfloat16","quantization":"fp8","quantization_param_path":null,"kv_cache_dtype":"fp8_e4m3","enable_fp32_lm_head":false,"modelopt_quant":null,"modelopt_checkpoint_restore_path":null,"modelopt_checkpoint_save_path":null,"modelopt_export_path":null,"quantize_and_serve":false,"rl_quant_profile":null,"mem_fraction_static":0.8,"max_running_requests":256,"max_queued_requests":null,"max_total_tokens":null,"chunked_prefill_size":2048,"enable_dynamic_chunking":false,"max_prefill_tokens":16384,"prefill_max_requests":null,"schedule_policy":"fcfs","enable_priority_scheduling":false,"disable_priority_preemption":false,"default_priority_value":null,"abort_on_priority_when_disabled":false,"schedule_low_priority_values_first":false,"priority_scheduling_preemption_threshold":10,"schedule_conservativeness":0.09,"page_size":256,"swa_full_tokens_ratio":0.1,"disable_hybrid_swa_memory":false,"radix_eviction_policy":"lru","enable_prefill_delayer":false,"prefill_delayer_max_delay_passes":30,"prefill_delayer_token_usage_low_watermark":null,"prefill_delayer_forward_passes_buckets":null,"prefill_delayer_wait_seconds_buckets":null,"prefill_delayer_queue_min_ratio":null,"prefill_delayer_max_delay_ms":null,"device":"cuda","tp_size":8,"pp_size":1,"pp_max_micro_batch_size":32,"pp_async_batch_depth":0,"stream_interval":1,"batch_notify_size":16,"stream_response_default_include_usage":false,"incremental_streaming_output":false,"enable_streaming_session":false,"random_seed":1071111218,"constrained_json_whitespace_pattern":null,"constrained_json_disable_any_whitespace":false,"watchdog_timeout":300,"soft_watchdog_timeout":null,"dist_timeout":null,"download_dir":null,"model_checksum":null,"base_gpu_id":0,"gpu_id_step":1,"sleep_on_idle":false,"use_ray":false,"custom_sigquit_handler":null,"log_level":"info","log_level_http":null,"log_requests":false,"log_requests_level":2,"log_requests_format":"text","log_requests_target":null,"uvicorn_access_log_exclude_prefixes":[],"crash_dump_folder":null,"show_time_cost":false,"enable_metrics":false,"grpc_http_sidecar_port":null,"enable_mfu_metrics":false,"enable_metrics_for_all_schedulers":false,"tokenizer_metrics_custom_labels_header":"x-custom-labels","tokenizer_metrics_allowed_custom_labels":null,"extra_metric_labels":null,"bucket_time_to_first_token":null,"bucket_inter_token_latency":null,"bucket_e2e_request_latency":null,"prompt_tokens_buckets":null,"generation_tokens_buckets":null,"gc_warning_threshold_secs":0.0,"decode_log_interval":100,"enable_request_time_stats_logging":false,"kv_events_config":null,"enable_forward_pass_metrics":false,"forward_pass_metrics_worker_id":"","forward_pass_metrics_ipc_name":null,"enable_trace":false,"otlp_traces_endpoint":"localhost:4317","export_metrics_to_file":false,"export_metrics_to_file_dir":null,"api_key":null,"admin_api_key":null,"served_model_name":"/home/admin/DeepSeek-V4-Flash","weight_version":"default","chat_template":null,"hf_chat_template_name":null,"completion_template":null,"file_storage_path":"sglang_storage","enable_cache_report":true,"reasoning_parser":null,"strip_thinking_cache":false,"enable_strict_thinking":false,"tool_call_parser":null,"tool_server":null,"sampling_defaults":"model","dp_size":8,"load_balance_method":"round_robin","attn_cp_size":1,"moe_d
+health_http=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   81M  442G   1% /dev/shm
+0, 0 %, 159410 MiB, 189471 MiB
+1, 0 %, 157486 MiB, 189471 MiB
+2, 0 %, 157390 MiB, 189471 MiB
+3, 0 %, 157256 MiB, 189471 MiB
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+benchmark_args=Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=8000, ready_check_timeout_sec=600, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=64, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=4096, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=64, output_file='/home/admin/0528/raw/pd_tp8_dp8_dpa_megamoe_mooncake_nvl_cg16_4k_500_c64.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+Waiting up to 600s for http://127.0.0.1:8000/v1/models to become ready...
+Server ready in 0.0s.
+
+WARNING It is recommended to use the `Chat` or `Instruct` model for benchmarking.
+Because when the tokenizer counts the output tokens, if there is gibberish, it might count incorrectly.
+
+Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=8000, ready_check_timeout_sec=600, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=64, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=4096, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=64, output_file='/home/admin/0528/raw/pd_tp8_dp8_dpa_megamoe_mooncake_nvl_cg16_4k_500_c64.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+
+#Input tokens: 132046
+#Output tokens: 16019
+Starting warmup with 1 sequences...
+Warmup completed with 1 sequences. Starting main benchmark run...
+  0%|          | 0/64 [00:00<?, ?it/s]  2%|▏         | 1/64 [00:01<01:14,  1.19s/it]  3%|▎         | 2/64 [00:01<00:42,  1.47it/s]  5%|▍         | 3/64 [00:01<00:26,  2.31it/s]  8%|▊         | 5/64 [00:01<00:12,  4.55it/s]  9%|▉         | 6/64 [00:01<00:12,  4.68it/s] 11%|█         | 7/64 [00:02<00:13,  4.29it/s] 12%|█▎        | 8/64 [00:02<00:13,  4.16it/s] 16%|█▌        | 10/64 [00:02<00:09,  5.98it/s] 17%|█▋        | 11/64 [00:02<00:10,  5.00it/s] 20%|██        | 13/64 [00:03<00:07,  7.17it/s] 23%|██▎       | 15/64 [00:03<00:05,  8.22it/s] 27%|██▋       | 17/64 [00:03<00:04,  9.66it/s] 31%|███▏      | 20/64 [00:03<00:03, 11.75it/s] 36%|███▌      | 23/64 [00:03<00:03, 10.30it/s] 39%|███▉      | 25/64 [00:04<00:03,  9.91it/s] 42%|████▏     | 27/64 [00:04<00:03, 10.37it/s] 48%|████▊     | 31/64 [00:04<00:02, 14.02it/s] 52%|█████▏    | 33/64 [00:04<00:02, 11.18it/s] 55%|█████▍    | 35/64 [00:04<00:02, 11.90it/s] 58%|█████▊    | 37/64 [00:05<00:02, 11.55it/s] 61%|██████    | 39/64 [00:05<00:02, 11.87it/s] 64%|██████▍   | 41/64 [00:05<00:01, 13.32it/s] 73%|███████▎  | 47/64 [00:05<00:00, 20.04it/s] 78%|███████▊  | 50/64 [00:05<00:00, 21.58it/s] 83%|████████▎ | 53/64 [00:05<00:00, 22.06it/s] 88%|████████▊ | 56/64 [00:06<00:00, 13.45it/s] 92%|█████████▏| 59/64 [00:06<00:00, 15.98it/s] 97%|█████████▋| 62/64 [00:06<00:00, 13.95it/s]100%|██████████| 64/64 [00:06<00:00, 13.13it/s]100%|██████████| 64/64 [00:06<00:00,  9.46it/s]
+
+============ Serving Benchmark Result ============
+Backend:                                 sglang    
+Traffic request rate:                    inf       
+Max request concurrency:                 64        
+Successful requests:                     64        
+Benchmark duration (s):                  6.81      
+Total input tokens:                      132046    
+Total input text tokens:                 132046    
+Total generated tokens:                  16019     
+Total generated tokens (retokenized):    16019     
+Request throughput (req/s):              9.40      
+Input token throughput (tok/s):          19384.01  
+Output token throughput (tok/s):         2351.55   
+Peak output token throughput (tok/s):    4531.00   
+Peak concurrent requests:                64        
+Total token throughput (tok/s):          21735.55  
+Concurrency:                             41.40     
+----------------End-to-End Latency----------------
+Mean E2E Latency (ms):                   4406.66   
+Median E2E Latency (ms):                 4693.22   
+P90 E2E Latency (ms):                    6203.61   
+P99 E2E Latency (ms):                    6650.61   
+---------------Time to First Token----------------
+Mean TTFT (ms):                          1781.30   
+Median TTFT (ms):                        1846.23   
+P99 TTFT (ms):                           2725.77   
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          10.62     
+Median TPOT (ms):                        10.64     
+P99 TPOT (ms):                           11.90     
+---------------Inter-Token Latency----------------
+Mean ITL (ms):                           10.53     
+Median ITL (ms):                         10.55     
+P95 ITL (ms):                            11.43     
+P99 ITL (ms):                            12.28     
+Max ITL (ms):                            23.92     
+==================================================
+bench_rc=0
+health_http_after=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   81M  442G   1% /dev/shm
+0, 0 %, 159412 MiB, 189471 MiB
+1, 0 %, 157486 MiB, 189471 MiB
+2, 0 %, 157390 MiB, 189471 MiB
+3, 0 %, 157256 MiB, 189471 MiB
+END mode=pd_tp8_dp8_dpa_megamoe_mooncake_nvl_cg16 case=4k_500 concurrency=64 at 2026-05-29 01:51:33
