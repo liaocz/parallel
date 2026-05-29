@@ -1,0 +1,78 @@
+BEGIN mode=tp4_dp4_dpa_nvl_cg16 case=128k_500 input=131072 output=500 concurrency=32 num_prompts=64 at 2026-05-29 00:00:06
+server_info_http=200
+{"model_path":"/home/admin/DeepSeek-V4-Flash","tokenizer_path":"/home/admin/DeepSeek-V4-Flash","tokenizer_mode":"auto","tokenizer_backend":"huggingface","tokenizer_worker_num":1,"detokenizer_worker_num":1,"skip_tokenizer_init":false,"load_format":"auto","model_loader_extra_config":"{}","trust_remote_code":true,"context_length":null,"is_embedding":false,"prefill_only_disable_kv_cache":false,"enable_multimodal":null,"revision":null,"model_impl":"auto","model_config_parser":"auto","host":"0.0.0.0","port":30000,"fastapi_root_path":"","grpc_mode":false,"skip_server_warmup":false,"warmups":null,"nccl_port":null,"checkpoint_engine_wait_weights_before_ready":false,"ssl_keyfile":null,"ssl_certfile":null,"ssl_ca_certs":null,"ssl_keyfile_password":null,"enable_ssl_refresh":false,"enable_http2":false,"dtype":"bfloat16","quantization":"fp8","quantization_param_path":null,"kv_cache_dtype":"fp8_e4m3","enable_fp32_lm_head":false,"modelopt_quant":null,"modelopt_checkpoint_restore_path":null,"modelopt_checkpoint_save_path":null,"modelopt_export_path":null,"quantize_and_serve":false,"rl_quant_profile":null,"mem_fraction_static":0.8,"max_running_requests":256,"max_queued_requests":null,"max_total_tokens":null,"chunked_prefill_size":4096,"enable_dynamic_chunking":false,"max_prefill_tokens":16384,"prefill_max_requests":null,"schedule_policy":"fcfs","enable_priority_scheduling":false,"disable_priority_preemption":false,"default_priority_value":null,"abort_on_priority_when_disabled":false,"schedule_low_priority_values_first":false,"priority_scheduling_preemption_threshold":10,"schedule_conservativeness":0.09,"page_size":256,"swa_full_tokens_ratio":0.1,"disable_hybrid_swa_memory":false,"radix_eviction_policy":"lru","enable_prefill_delayer":false,"prefill_delayer_max_delay_passes":30,"prefill_delayer_token_usage_low_watermark":null,"prefill_delayer_forward_passes_buckets":null,"prefill_delayer_wait_seconds_buckets":null,"prefill_delayer_queue_min_ratio":null,"prefill_delayer_max_delay_ms":null,"device":"cuda","tp_size":4,"pp_size":1,"pp_max_micro_batch_size":null,"pp_async_batch_depth":0,"stream_interval":1,"batch_notify_size":16,"stream_response_default_include_usage":false,"incremental_streaming_output":false,"enable_streaming_session":false,"random_seed":418058012,"constrained_json_whitespace_pattern":null,"constrained_json_disable_any_whitespace":false,"watchdog_timeout":300,"soft_watchdog_timeout":null,"dist_timeout":null,"download_dir":null,"model_checksum":null,"base_gpu_id":0,"gpu_id_step":1,"sleep_on_idle":false,"use_ray":false,"custom_sigquit_handler":null,"log_level":"info","log_level_http":null,"log_requests":false,"log_requests_level":2,"log_requests_format":"text","log_requests_target":null,"uvicorn_access_log_exclude_prefixes":[],"crash_dump_folder":null,"show_time_cost":false,"enable_metrics":false,"grpc_http_sidecar_port":null,"enable_mfu_metrics":false,"enable_metrics_for_all_schedulers":false,"tokenizer_metrics_custom_labels_header":"x-custom-labels","tokenizer_metrics_allowed_custom_labels":null,"extra_metric_labels":null,"bucket_time_to_first_token":null,"bucket_inter_token_latency":null,"bucket_e2e_request_latency":null,"prompt_tokens_buckets":null,"generation_tokens_buckets":null,"gc_warning_threshold_secs":0.0,"decode_log_interval":40,"enable_request_time_stats_logging":false,"kv_events_config":null,"enable_forward_pass_metrics":false,"forward_pass_metrics_worker_id":"","forward_pass_metrics_ipc_name":null,"enable_trace":false,"otlp_traces_endpoint":"localhost:4317","export_metrics_to_file":false,"export_metrics_to_file_dir":null,"api_key":null,"admin_api_key":null,"served_model_name":"/home/admin/DeepSeek-V4-Flash","weight_version":"default","chat_template":null,"hf_chat_template_name":null,"completion_template":null,"file_storage_path":"sglang_storage","enable_cache_report":true,"reasoning_parser":null,"strip_thinking_cache":false,"enable_strict_thinking":false,"tool_call_parser":null,"tool_server":null,"sampling_defaults":"model","dp_size":4,"load_balance_method":"round_robin","attn_cp_size":1,"moe_dp_size":1,"dist_init
+health_http=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   79M  442G   1% /dev/shm
+0, 0 %, 158745 MiB, 189471 MiB
+1, 0 %, 158165 MiB, 189471 MiB
+2, 0 %, 160070 MiB, 189471 MiB
+3, 0 %, 159134 MiB, 189471 MiB
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+[transformers] You are using a model of type `deepseek_v4` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] PreTrainedConfig got `key=rope_scaling` in kwargs but hasn't set it as attribute. For RoPE standardization you need to set `self.rope_parameters` in model's config. 
+benchmark_args=Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=600, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=64, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=131072, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=32, output_file='/home/admin/0528/raw/tp4_dp4_dpa_nvl_cg16_128k_500_c32.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+Waiting up to 600s for http://127.0.0.1:30000/v1/models to become ready...
+Server ready in 0.0s.
+
+WARNING It is recommended to use the `Chat` or `Instruct` model for benchmarking.
+Because when the tokenizer counts the output tokens, if there is gibberish, it might count incorrectly.
+
+Namespace(backend='sglang', base_url=None, host='127.0.0.1', port=30000, ready_check_timeout_sec=600, dataset_name='random', dataset_path='', model='deepseek-ai/DeepSeek-V4-Flash', served_model_name=None, tokenizer=None, num_prompts=64, sharegpt_output_len=None, sharegpt_context_len=None, random_input_len=131072, random_output_len=500, random_range_ratio=0.0, image_count=1, image_resolution='1080p', random_image_count=False, image_format='jpeg', image_content='random', request_rate=inf, use_trace_timestamps=False, max_concurrency=32, output_file='/home/admin/0528/raw/tp4_dp4_dpa_nvl_cg16_128k_500_c32.json', output_details=False, print_requests=False, disable_tqdm=False, disable_stream=False, return_logprob=False, top_logprobs_num=0, token_ids_logprob=None, logprob_start_len=-1, return_routed_experts=False, seed=1, disable_ignore_eos=False, extra_request_body=None, apply_chat_template=False, profile=False, plot_throughput=False, profile_activities=['CPU', 'GPU'], profile_start_step=None, profile_steps=None, profile_num_steps=None, profile_by_stage=False, profile_stages=None, profile_output_dir=None, profile_prefix=None, lora_name=None, lora_request_distribution='uniform', lora_zipf_alpha=1.5, prompt_suffix='', pd_separated=False, profile_prefill_url=None, profile_decode_url=None, flush_cache=False, warmup_requests=1, tokenize_prompt=False, gsp_num_groups=64, gsp_prompts_per_group=16, gsp_system_prompt_len=2048, gsp_question_len=128, gsp_output_len=256, gsp_range_ratio=1.0, gsp_fast_prepare=False, gsp_send_routing_key=False, gsp_num_turns=1, gsp_ordered=False, mooncake_slowdown_factor=1.0, mooncake_num_rounds=1, mooncake_workload='conversation', fake_prefill=False, tag=None, header=None)
+
+#Input tokens: 4408270
+#Output tokens: 16019
+Starting warmup with 1 sequences...
+Warmup completed with 1 sequences. Starting main benchmark run...
+  0%|          | 0/64 [00:00<?, ?it/s]  2%|▏         | 1/64 [00:19<20:25, 19.46s/it]  3%|▎         | 2/64 [00:20<08:43,  8.44s/it]  5%|▍         | 3/64 [00:22<05:34,  5.49s/it]  6%|▋         | 4/64 [00:23<03:55,  3.93s/it]  9%|▉         | 6/64 [00:24<02:05,  2.16s/it] 12%|█▎        | 8/64 [00:27<01:35,  1.70s/it] 16%|█▌        | 10/64 [00:31<01:37,  1.81s/it] 17%|█▋        | 11/64 [00:31<01:18,  1.48s/it] 19%|█▉        | 12/64 [00:35<01:53,  2.18s/it] 20%|██        | 13/64 [00:39<02:14,  2.63s/it] 22%|██▏       | 14/64 [00:40<01:51,  2.24s/it] 23%|██▎       | 15/64 [00:43<01:52,  2.29s/it] 25%|██▌       | 16/64 [00:44<01:39,  2.08s/it] 27%|██▋       | 17/64 [00:48<01:56,  2.47s/it] 30%|██▉       | 19/64 [00:53<01:56,  2.59s/it] 31%|███▏      | 20/64 [00:53<01:27,  1.99s/it] 33%|███▎      | 21/64 [00:56<01:29,  2.09s/it] 34%|███▍      | 22/64 [00:59<01:44,  2.49s/it] 36%|███▌      | 23/64 [01:00<01:15,  1.83s/it] 38%|███▊      | 24/64 [01:00<00:55,  1.39s/it] 39%|███▉      | 25/64 [01:00<00:45,  1.16s/it] 41%|████      | 26/64 [01:04<01:05,  1.73s/it] 42%|████▏     | 27/64 [01:04<00:47,  1.29s/it] 44%|████▍     | 28/64 [01:06<00:57,  1.61s/it] 45%|████▌     | 29/64 [01:06<00:42,  1.21s/it] 47%|████▋     | 30/64 [01:09<00:56,  1.65s/it] 48%|████▊     | 31/64 [01:12<01:03,  1.93s/it] 50%|█████     | 32/64 [01:14<01:04,  2.03s/it] 52%|█████▏    | 33/64 [01:16<01:06,  2.14s/it] 53%|█████▎    | 34/64 [01:18<01:01,  2.05s/it] 56%|█████▋    | 36/64 [01:18<00:31,  1.14s/it] 59%|█████▉    | 38/64 [01:19<00:19,  1.37it/s] 62%|██████▎   | 40/64 [01:19<00:11,  2.04it/s] 69%|██████▉   | 44/64 [01:19<00:05,  3.75it/s] 72%|███████▏  | 46/64 [01:19<00:04,  4.25it/s] 78%|███████▊  | 50/64 [01:19<00:02,  6.52it/s] 81%|████████▏ | 52/64 [01:20<00:01,  6.46it/s] 84%|████████▍ | 54/64 [01:20<00:01,  7.45it/s] 88%|████████▊ | 56/64 [01:21<00:01,  4.60it/s] 91%|█████████ | 58/64 [01:21<00:01,  5.67it/s] 94%|█████████▍| 60/64 [01:21<00:00,  5.53it/s] 97%|█████████▋| 62/64 [01:21<00:00,  6.05it/s] 98%|█████████▊| 63/64 [01:22<00:00,  5.42it/s]100%|██████████| 64/64 [01:22<00:00,  4.89it/s]100%|██████████| 64/64 [01:22<00:00,  1.29s/it]
+
+============ Serving Benchmark Result ============
+Backend:                                 sglang    
+Traffic request rate:                    inf       
+Max request concurrency:                 32        
+Successful requests:                     64        
+Benchmark duration (s):                  82.55     
+Total input tokens:                      4408270   
+Total input text tokens:                 4408270   
+Total generated tokens:                  16019     
+Total generated tokens (retokenized):    16019     
+Request throughput (req/s):              0.78      
+Input token throughput (tok/s):          53403.37  
+Output token throughput (tok/s):         194.06    
+Peak output token throughput (tok/s):    1717.00   
+Peak concurrent requests:                35        
+Total token throughput (tok/s):          53597.43  
+Concurrency:                             31.01     
+----------------End-to-End Latency----------------
+Mean E2E Latency (ms):                   39999.96  
+Median E2E Latency (ms):                 32303.95  
+P90 E2E Latency (ms):                    78096.23  
+P99 E2E Latency (ms):                    79954.82  
+---------------Time to First Token----------------
+Mean TTFT (ms):                          5946.57   
+Median TTFT (ms):                        4116.53   
+P99 TTFT (ms):                           18617.67  
+-----Time per Output Token (excl. 1st token)------
+Mean TPOT (ms):                          265.94    
+Median TPOT (ms):                        150.52    
+P99 TPOT (ms):                           2929.27   
+---------------Inter-Token Latency----------------
+Mean ITL (ms):                           136.60    
+Median ITL (ms):                         77.04     
+P95 ITL (ms):                            179.88    
+P99 ITL (ms):                            2518.41   
+Max ITL (ms):                            18131.19  
+==================================================
+bench_rc=0
+health_http_after=200
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   79M  442G   1% /dev/shm
+0, 0 %, 158755 MiB, 189471 MiB
+1, 0 %, 158175 MiB, 189471 MiB
+2, 0 %, 160082 MiB, 189471 MiB
+3, 0 %, 159142 MiB, 189471 MiB
+END mode=tp4_dp4_dpa_nvl_cg16 case=128k_500 concurrency=32 at 2026-05-29 00:01:54
