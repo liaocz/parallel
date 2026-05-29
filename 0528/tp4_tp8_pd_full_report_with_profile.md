@@ -726,3 +726,13 @@ python3 -m sglang_router.launch_router \
 - `failed_attempts/pd_deepep_65536_assert`：DeepEP low-latency dispatcher token 限制断言。
 - `failed_attempts/pd_deepep_ep8_weight_mismatch`：DeepEP EP8 与当前 FP8 权重 shape 不匹配。
 - `failed_attempts/pd_bench_host_python_missing`：宿主机 Python 缺少 sglang 模块，benchmark 后续改在容器内执行。
+
+## TP=8 Pure TP 重跑补充
+
+- 补充报告：`/home/admin/0528/tp8_puretp_rerun_report.md`
+- 汇总 CSV：`/home/admin/0528/summary_tp8_puretp.csv`
+- 部署：2 机 `TP=8 pure TP`，rank0 `10.56.160.38`，rank1 `10.56.160.40`，未启用 DP/DPA；NVLS/MNNVL 环境变量和 `--enable-nccl-nvls` 均开启，`--cuda-graph-max-bs 16` 保持一致。
+- 结果：`4k_500` 的 c1、c2、c4、c8、c16、c32、c64 全部完成；最佳为 c16，输出吞吐 `654.91 tok/s`。c32/c64 出现明显退化，分别为 `187.82 tok/s` 和 `275.87 tok/s`。
+- 失败点：进入 `32k_500_c1` warmup 后服务崩溃，client 侧为 `TransferEncodingError` 且 `health_http_after=000`；server 侧为 FlashMLA decode scheduling 报错 `get_decoding_sched_meta.cu:111 invalid argument`，scheduler exit code 1。
+- NVL 结论：日志中存在 `NVLS multicast support is available` 和大量 `via P2P/MNNVL`，因此本次失败不是 NVLS/MNNVL 未生效导致。
+- 排障结论：`--disable-cuda-graph` 重试仍在 `32k_500_c1` 复现同一 FlashMLA 报错，说明不是 CUDA graph replay 直接导致；`--decode-attention-backend triton` 启动阶段因 DeepSeek V4 KV pool 不兼容报 `NotImplementedError`，不能作为当前容器内的直接替代方案。

@@ -1,0 +1,9 @@
+2026-05-29 06:18:42 completed mode=tp8_puretp_nvl_cg16 case=4k_500 concurrency=1
+2026-05-29 06:20:53 completed mode=tp8_puretp_nvl_cg16 case=4k_500 concurrency=2
+2026-05-29 06:22:17 completed mode=tp8_puretp_nvl_cg16 case=4k_500 concurrency=4
+2026-05-29 06:23:15 completed mode=tp8_puretp_nvl_cg16 case=4k_500 concurrency=8
+2026-05-29 06:24:00 completed mode=tp8_puretp_nvl_cg16 case=4k_500 concurrency=16
+2026-05-29 06:25:45 completed mode=tp8_puretp_nvl_cg16 case=4k_500 concurrency=32
+2026-05-29 06:27:03 completed mode=tp8_puretp_nvl_cg16 case=4k_500 concurrency=64
+2026-05-29 06:27:23 failed mode=tp8_puretp_nvl_cg16 case=32k_500 concurrency=1 rc=1
+2026-05-29 06:27:23 service unhealthy after failed benchmark; stopping matrix

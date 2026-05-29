@@ -1,0 +1,82 @@
+=== tp8_puretp_nvl_cg16 rank 0 server start ===
+2026-05-29T06:11:28+00:00
+dist_init_addr=10.56.160.38:29540
+export SGLANG_OPT_DEEPGEMM_MEGA_MOE_NUM_MAX_TOKENS_PER_RANK=8320
+export GLOO_SOCKET_IFNAME=eth0
+export NCCL_SOCKET_IFNAME=eth0
+export NCCL_MNNVL_ENABLE=1
+export NCCL_CUMEM_ENABLE=1
+export NCCL_NVLS_ENABLE=1
+export NCCL_P2P_LEVEL=NVL
+export NCCL_PROTO=LL128
+export NVSHMEM_ENABLE_NIC_PE_MAPPING=1
+export NVSHMEM_HCA_LIST=mlx5_0,mlx5_1,mlx5_2,mlx5_3
+export NCCL_IB_HCA=mlx5_0,mlx5_1,mlx5_2,mlx5_3
+export NCCL_DEBUG=INFO
+
+python3 -m sglang.launch_server \
+  --trust-remote-code \
+  --model-path /home/admin/DeepSeek-V4-Flash \
+  --host 0.0.0.0 \
+  --port 30000 \
+  --tp-size 8 \
+  --nnodes 2 \
+  --node-rank 0 \
+  --dist-init-addr 10.56.160.38:29540 \
+  --quantization fp8 \
+  --dtype bfloat16 \
+  --kv-cache-dtype fp8_e4m3 \
+  --mem-fraction-static 0.8 \
+  --chunked-prefill-size 16384 \
+  --max-prefill-tokens 16384 \
+  --max-running-requests 256 \
+  --schedule-conservativeness 0.3 \
+  --moe-a2a-backend megamoe \
+  --enable-cache-report \
+  --enable-nccl-nvls \
+  --pre-warm-nccl \
+  --cuda-graph-max-bs 16
+
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           442G   73M  442G   1% /dev/shm
+	[4mGPU0	GPU1	GPU2	GPU3	NIC0	NIC1	NIC2	NIC3	CPU Affinity	NUMA Affinity	GPU NUMA ID[0m
+GPU0	 X 	NV18	NV18	NV18	NODE	NODE	SYS	SYS	0-69	0		2
+GPU1	NV18	 X 	NV18	NV18	NODE	NODE	SYS	SYS	0-69	0		10
+GPU2	NV18	NV18	 X 	NV18	SYS	SYS	NODE	NODE	70-139	1		18
+GPU3	NV18	NV18	NV18	 X 	SYS	SYS	NODE	NODE	70-139	1		26
+NIC0	NODE	NODE	SYS	SYS	 X 	NODE	SYS	SYS				
+NIC1	NODE	NODE	SYS	SYS	NODE	 X 	SYS	SYS				
+NIC2	SYS	SYS	NODE	NODE	SYS	SYS	 X 	NODE				
+NIC3	SYS	SYS	NODE	NODE	SYS	SYS	NODE	 X 				
+
+Legend:
+
+  X    = Self
+  SYS  = Connection traversing PCIe as well as the SMP interconnect between NUMA nodes (e.g., QPI/UPI)
+  NODE = Connection traversing PCIe as well as the interconnect between PCIe Host Bridges within a NUMA node
+  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the CPU)
+  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)
+  PIX  = Connection traversing at most a single PCIe bridge
+  NV#  = Connection traversing a bonded set of # NVLinks
+
+NIC Legend:
+
+  NIC0: mlx5_0
+  NIC1: mlx5_1
+  NIC2: mlx5_2
+  NIC3: mlx5_3
+
+0, NVIDIA L20A , 1 MiB, 189471 MiB
+1, NVIDIA L20A , 1 MiB, 189471 MiB
+2, NVIDIA L20A , 1 MiB, 189471 MiB
+3, NVIDIA L20A , 1 MiB, 189471 MiB
+/usr/local/lib/python3.12/dist-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/sgl-workspace/sglang/python/sglang/launch_server.py:54: UserWarning: 'python -m sglang.launch_server' is still supported, but 'sglang serve' is the recommended entrypoint.
+  Example: sglang serve --model-path <model> [options]
+  warnings.warn(
+[2026-05-29 06:11:38] Auto-detected DSV4 routed-expert layout: is_fp4_experts=True
+[2026-05-29 06:11:38] Hybrid swa model: self.hf_config.architectures=['DeepseekV4ForCausalLM']
+[2026-05-29 06:11:38] Use dsv4 attention backend for DeepseekV4ForCausalLM, setting page_size to 256.
+[2026-05-29 06:11:38] Setting swa_full_tokens_ratio to 0.1 for DeepseekV4ForCausalLM.
+[2026-05-29 06:11:38] Mega MoE is enabled. The expert parallel size is adjusted to be the same as the tensor parallel size[8].
