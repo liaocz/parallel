@@ -75,52 +75,6 @@ PER_A = (BT * BT) // NUM_THREADS      # 8
 
 
 # ============================================================================
-# Helper: Ensure tensor 16-byte alignment for CUDA 12.9 compatibility
-# ============================================================================
-def _ensure_16byte_aligned(tensor):
-    """
-    Ensure tensor is 16-byte aligned for CuTe copy operations in CUDA 12.9+.
-    
-    In CUDA 12.9, CuTe's IR verification is stricter about pointer alignment.
-    If a freshly allocated tensor (e.g., from torch.empty) doesn't meet the
-    16-byte alignment requirement, we allocate a properly aligned replacement.
-    
-    Args:
-        tensor: A PyTorch tensor that should be 16-byte aligned
-        
-    Returns:
-        The input tensor if already aligned, or a contiguous copy if not
-    """
-    # Check if pointer is 16-byte aligned (16 bytes = 128 bits)
-    if tensor.data_ptr() % 16 == 0:
-        return tensor
-    
-    # Not aligned; allocate a new aligned tensor and copy data
-    # torch.cuda.synchronize to ensure any pending operations complete
-    torch.cuda.synchronize()
-    
-    # Allocate new aligned tensor - CUDA allocator often provides alignment,
-    # but we can enforce it by allocating slightly larger and adjusting if needed
-    aligned = tensor.clone().contiguous()
-    if aligned.data_ptr() % 16 != 0:
-        # If clone didn't help, allocate with explicit padding
-        numel = tensor.numel()
-        dtype = tensor.dtype
-        device = tensor.device
-        # Allocate with extra elements to find aligned boundary
-        padded = torch.empty(numel + 16, dtype=dtype, device=device)
-        # Find aligned offset
-        offset = (16 - (padded.data_ptr() % 16)) % 16
-        aligned = padded[offset:offset + numel].reshape(tensor.shape).contiguous()
-        # Copy data
-        aligned.copy_(tensor)
-    else:
-        aligned.copy_(tensor)
-    
-    return aligned
-
-
-# ============================================================================
 # Kernel 0: preprocess_kk
 # ============================================================================
 
@@ -1664,8 +1618,8 @@ def atrex_fused_chunk_h_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -1831,8 +1785,8 @@ def atrex_fused_chunk_h_mgqk_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -2021,8 +1975,8 @@ def atrex_fused_chunk_h_mgqk_v_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     gV_full = mV[(i_b, None, i_hv, None)]
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
@@ -2197,8 +2151,8 @@ def atrex_fused_chunk_h_mgqk_v_fp32state_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     gV_full = mV[(i_b, None, i_hv, None)]
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
@@ -2413,8 +2367,8 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_probe_kernel(
         state = cute.make_rmem_tensor(cute.make_layout((BV_TILE,)), cutlass.Float32)
         state.fill(cutlass.Float32(0.0))
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     gV_full = mV[(i_b, None, i_hv, None)]
     gO_full = mO[(i_b, None, i_hv, None)]
     thr_cp = tiled_copy_kq.get_slice(tidx)
@@ -2943,8 +2897,8 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_state_mma_probe_kernel(
         sState[k_row, v_col] = cutlass.Float32(0.0)
     cute.arch.barrier()
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     gV_full = mV[(i_b, None, i_hv, None)]
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
@@ -3135,7 +3089,7 @@ def atrex_chunk_h_store_vnew_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
     gV_full = mV[(i_b, None, i_hv, None)]
 
     thr_cp_k = tiled_copy_k.get_slice(tidx)
@@ -3273,7 +3227,7 @@ def atrex_chunk_o_split_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     gQ_chunk = cute.local_tile(gQ_full, (BT, K_DIM), (chunk_idx, 0))
     thr_cp_q = tiled_copy_q.get_slice(tidx)
     thr_gQ = thr_cp_q.partition_S(gQ_chunk)
@@ -3382,8 +3336,8 @@ def atrex_fused_chunk_h_m_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -3554,8 +3508,8 @@ def atrex_fused_chunk_h_gqk_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -3727,8 +3681,8 @@ def atrex_fused_chunk_h_pairv_reuse_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -3901,8 +3855,8 @@ def atrex_fused_chunk_h_bf16_state_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -4074,8 +4028,8 @@ def atrex_fused_chunk_h_state_mma_probe_kernel(
         sState[k_row, v_col] = cutlass.Float32(0.0)
     cute.arch.barrier()
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -4257,8 +4211,8 @@ def atrex_fused_chunk_h_megakernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -6445,17 +6399,6 @@ def _run_3kernel_tiled(q, k, v, g, beta, scale, bv_tile: int):
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    qk = _ensure_16byte_aligned(qk)
-    neumann_m = _ensure_16byte_aligned(neumann_m)
-    gated_qk = _ensure_16byte_aligned(gated_qk)
-    exp_gc = _ensure_16byte_aligned(exp_gc)
-    exp_decay = _ensure_16byte_aligned(exp_decay)
-    o = _ensure_16byte_aligned(o)
-
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
     mV = from_dlpack(vc, assumed_align=16)
@@ -6571,17 +6514,6 @@ def _run_3kernel_mgqk_cpasync_probe_tiled(q, k, v, g, beta, scale, bv_tile: int)
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    qk = _ensure_16byte_aligned(qk)
-    neumann_m = _ensure_16byte_aligned(neumann_m)
-    gated_qk = _ensure_16byte_aligned(gated_qk)
-    exp_gc = _ensure_16byte_aligned(exp_gc)
-    exp_decay = _ensure_16byte_aligned(exp_decay)
-    o = _ensure_16byte_aligned(o)
-
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
     mV = from_dlpack(vc, assumed_align=16)
@@ -6681,17 +6613,6 @@ def _run_3kernel_mgqk_v_cpasync_probe_tiled(q, k, v, g, beta, scale, bv_tile: in
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    qk = _ensure_16byte_aligned(qk)
-    neumann_m = _ensure_16byte_aligned(neumann_m)
-    gated_qk = _ensure_16byte_aligned(gated_qk)
-    exp_gc = _ensure_16byte_aligned(exp_gc)
-    exp_decay = _ensure_16byte_aligned(exp_decay)
-    o = _ensure_16byte_aligned(o)
-
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
     mV = from_dlpack(vc, assumed_align=16)
@@ -6790,17 +6711,6 @@ def _run_3kernel_mgqk_v_fp32state_cpasync_probe_tiled(q, k, v, g, beta, scale, b
     exp_gc = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
-
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    qk = _ensure_16byte_aligned(qk)
-    neumann_m = _ensure_16byte_aligned(neumann_m)
-    gated_qk = _ensure_16byte_aligned(gated_qk)
-    exp_gc = _ensure_16byte_aligned(exp_gc)
-    exp_decay = _ensure_16byte_aligned(exp_decay)
-    o = _ensure_16byte_aligned(o)
 
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
@@ -6924,17 +6834,6 @@ def _run_3kernel_mgqk_v_ldsm_probe_tiled(
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o_dtype = torch.float32 if output_fp32 else v.dtype
     o = torch.empty(B, T, HV, V, dtype=o_dtype, device=v.device)
-
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    qk = _ensure_16byte_aligned(qk)
-    neumann_m = _ensure_16byte_aligned(neumann_m)
-    gated_qk = _ensure_16byte_aligned(gated_qk)
-    exp_gc = _ensure_16byte_aligned(exp_gc)
-    exp_decay = _ensure_16byte_aligned(exp_decay)
-    o = _ensure_16byte_aligned(o)
 
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
@@ -7248,17 +7147,6 @@ def _run_3kernel_mgqk_v_ldsm_state_mma_probe_tiled(q, k, v, g, beta, scale, bv_t
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    qk = _ensure_16byte_aligned(qk)
-    neumann_m = _ensure_16byte_aligned(neumann_m)
-    gated_qk = _ensure_16byte_aligned(gated_qk)
-    exp_gc = _ensure_16byte_aligned(exp_gc)
-    exp_decay = _ensure_16byte_aligned(exp_decay)
-    o = _ensure_16byte_aligned(o)
-
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
     mV = from_dlpack(vc, assumed_align=16)
@@ -7361,22 +7249,22 @@ def _run_4kernel_split_o_cpasync_probe_tiled(q, k, v, g, beta, scale, bv_tile: i
     v_new_t = torch.empty(B, NT, HV, V, BT, dtype=torch.bfloat16, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    mQ = from_dlpack(qc, assumed_align=128)
-    mK = from_dlpack(kc, assumed_align=128)
-    mV = from_dlpack(vc, assumed_align=128)
-    mG = from_dlpack(gc_, assumed_align=128)
-    mBeta = from_dlpack(betac, assumed_align=128)
-    mQnorm = from_dlpack(q_norm, assumed_align=128)
-    mKnorm = from_dlpack(k_norm, assumed_align=128)
-    mKK = from_dlpack(kk, assumed_align=128)
-    mQK = from_dlpack(qk, assumed_align=128)
-    mM = from_dlpack(neumann_m, assumed_align=128)
-    mGQK = from_dlpack(gated_qk, assumed_align=128)
-    mExpGC = from_dlpack(exp_gc, assumed_align=128)
-    mExpDecay = from_dlpack(exp_decay, assumed_align=128)
-    mH = from_dlpack(h_state, assumed_align=128)
-    mVNew = from_dlpack(v_new_t, assumed_align=128)
-    mO = from_dlpack(o, assumed_align=128)
+    mQ = from_dlpack(qc, assumed_align=16)
+    mK = from_dlpack(kc, assumed_align=16)
+    mV = from_dlpack(vc, assumed_align=16)
+    mG = from_dlpack(gc_, assumed_align=16)
+    mBeta = from_dlpack(betac, assumed_align=16)
+    mQnorm = from_dlpack(q_norm, assumed_align=16)
+    mKnorm = from_dlpack(k_norm, assumed_align=16)
+    mKK = from_dlpack(kk, assumed_align=16)
+    mQK = from_dlpack(qk, assumed_align=16)
+    mM = from_dlpack(neumann_m, assumed_align=16)
+    mGQK = from_dlpack(gated_qk, assumed_align=16)
+    mExpGC = from_dlpack(exp_gc, assumed_align=16)
+    mExpDecay = from_dlpack(exp_decay, assumed_align=16)
+    mH = from_dlpack(h_state, assumed_align=16)
+    mVNew = from_dlpack(v_new_t, assumed_align=16)
+    mO = from_dlpack(o, assumed_align=16)
 
     key0 = ("pinv-k0-qk-bt32", B, T, H, K, q.dtype)
     compiled0 = _compiled_cache.get(key0)
@@ -7481,20 +7369,20 @@ def _run_3kernel_aligned_scalar_probe_tiled(q, k, v, g, beta, scale, bv_tile: in
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    mQ = from_dlpack(qc, assumed_align=128)
-    mK = from_dlpack(kc, assumed_align=128)
-    mV = from_dlpack(vc, assumed_align=128)
-    mG = from_dlpack(gc_, assumed_align=128)
-    mBeta = from_dlpack(betac, assumed_align=128)
-    mQnorm = from_dlpack(q_norm, assumed_align=128)
-    mKnorm = from_dlpack(k_norm, assumed_align=128)
-    mKK = from_dlpack(kk, assumed_align=128)
-    mQK = from_dlpack(qk, assumed_align=128)
-    mM = from_dlpack(neumann_m, assumed_align=128)
-    mGQK = from_dlpack(gated_qk, assumed_align=128)
-    mExpGC = from_dlpack(exp_gc, assumed_align=128)
-    mExpDecay = from_dlpack(exp_decay, assumed_align=128)
-    mO = from_dlpack(o, assumed_align=128)
+    mQ = from_dlpack(qc, assumed_align=16)
+    mK = from_dlpack(kc, assumed_align=16)
+    mV = from_dlpack(vc, assumed_align=16)
+    mG = from_dlpack(gc_, assumed_align=16)
+    mBeta = from_dlpack(betac, assumed_align=16)
+    mQnorm = from_dlpack(q_norm, assumed_align=16)
+    mKnorm = from_dlpack(k_norm, assumed_align=16)
+    mKK = from_dlpack(kk, assumed_align=16)
+    mQK = from_dlpack(qk, assumed_align=16)
+    mM = from_dlpack(neumann_m, assumed_align=16)
+    mGQK = from_dlpack(gated_qk, assumed_align=16)
+    mExpGC = from_dlpack(exp_gc, assumed_align=16)
+    mExpDecay = from_dlpack(exp_decay, assumed_align=16)
+    mO = from_dlpack(o, assumed_align=16)
 
     key0 = ("pinv-k0-qk-bt32", B, T, H, K, q.dtype)
     compiled0 = _compiled_cache.get(key0)
@@ -7580,20 +7468,20 @@ def _run_3kernel_m_cpasync_probe_tiled(q, k, v, g, beta, scale, bv_tile: int):
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    mQ = from_dlpack(qc, assumed_align=128)
-    mK = from_dlpack(kc, assumed_align=128)
-    mV = from_dlpack(vc, assumed_align=128)
-    mG = from_dlpack(gc_, assumed_align=128)
-    mBeta = from_dlpack(betac, assumed_align=128)
-    mQnorm = from_dlpack(q_norm, assumed_align=128)
-    mKnorm = from_dlpack(k_norm, assumed_align=128)
-    mKK = from_dlpack(kk, assumed_align=128)
-    mQK = from_dlpack(qk, assumed_align=128)
-    mM = from_dlpack(neumann_m, assumed_align=128)
-    mGQK = from_dlpack(gated_qk, assumed_align=128)
-    mExpGC = from_dlpack(exp_gc, assumed_align=128)
-    mExpDecay = from_dlpack(exp_decay, assumed_align=128)
-    mO = from_dlpack(o, assumed_align=128)
+    mQ = from_dlpack(qc, assumed_align=16)
+    mK = from_dlpack(kc, assumed_align=16)
+    mV = from_dlpack(vc, assumed_align=16)
+    mG = from_dlpack(gc_, assumed_align=16)
+    mBeta = from_dlpack(betac, assumed_align=16)
+    mQnorm = from_dlpack(q_norm, assumed_align=16)
+    mKnorm = from_dlpack(k_norm, assumed_align=16)
+    mKK = from_dlpack(kk, assumed_align=16)
+    mQK = from_dlpack(qk, assumed_align=16)
+    mM = from_dlpack(neumann_m, assumed_align=16)
+    mGQK = from_dlpack(gated_qk, assumed_align=16)
+    mExpGC = from_dlpack(exp_gc, assumed_align=16)
+    mExpDecay = from_dlpack(exp_decay, assumed_align=16)
+    mO = from_dlpack(o, assumed_align=16)
 
     key0 = ("pinv-k0-qk-bt32", B, T, H, K, q.dtype)
     compiled0 = _compiled_cache.get(key0)
@@ -7679,20 +7567,20 @@ def _run_3kernel_gqk_cpasync_probe_tiled(q, k, v, g, beta, scale, bv_tile: int):
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    mQ = from_dlpack(qc, assumed_align=128)
-    mK = from_dlpack(kc, assumed_align=128)
-    mV = from_dlpack(vc, assumed_align=128)
-    mG = from_dlpack(gc_, assumed_align=128)
-    mBeta = from_dlpack(betac, assumed_align=128)
-    mQnorm = from_dlpack(q_norm, assumed_align=128)
-    mKnorm = from_dlpack(k_norm, assumed_align=128)
-    mKK = from_dlpack(kk, assumed_align=128)
-    mQK = from_dlpack(qk, assumed_align=128)
-    mM = from_dlpack(neumann_m, assumed_align=128)
-    mGQK = from_dlpack(gated_qk, assumed_align=128)
-    mExpGC = from_dlpack(exp_gc, assumed_align=128)
-    mExpDecay = from_dlpack(exp_decay, assumed_align=128)
-    mO = from_dlpack(o, assumed_align=128)
+    mQ = from_dlpack(qc, assumed_align=16)
+    mK = from_dlpack(kc, assumed_align=16)
+    mV = from_dlpack(vc, assumed_align=16)
+    mG = from_dlpack(gc_, assumed_align=16)
+    mBeta = from_dlpack(betac, assumed_align=16)
+    mQnorm = from_dlpack(q_norm, assumed_align=16)
+    mKnorm = from_dlpack(k_norm, assumed_align=16)
+    mKK = from_dlpack(kk, assumed_align=16)
+    mQK = from_dlpack(qk, assumed_align=16)
+    mM = from_dlpack(neumann_m, assumed_align=16)
+    mGQK = from_dlpack(gated_qk, assumed_align=16)
+    mExpGC = from_dlpack(exp_gc, assumed_align=16)
+    mExpDecay = from_dlpack(exp_decay, assumed_align=16)
+    mO = from_dlpack(o, assumed_align=16)
 
     key0 = ("pinv-k0-qk-bt32", B, T, H, K, q.dtype)
     compiled0 = _compiled_cache.get(key0)
@@ -7778,20 +7666,20 @@ def _run_3kernel_pairv_reuse_probe_tiled(q, k, v, g, beta, scale, bv_tile: int):
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    mQ = from_dlpack(qc, assumed_align=128)
-    mK = from_dlpack(kc, assumed_align=128)
-    mV = from_dlpack(vc, assumed_align=128)
-    mG = from_dlpack(gc_, assumed_align=128)
-    mBeta = from_dlpack(betac, assumed_align=128)
-    mQnorm = from_dlpack(q_norm, assumed_align=128)
-    mKnorm = from_dlpack(k_norm, assumed_align=128)
-    mKK = from_dlpack(kk, assumed_align=128)
-    mQK = from_dlpack(qk, assumed_align=128)
-    mM = from_dlpack(neumann_m, assumed_align=128)
-    mGQK = from_dlpack(gated_qk, assumed_align=128)
-    mExpGC = from_dlpack(exp_gc, assumed_align=128)
-    mExpDecay = from_dlpack(exp_decay, assumed_align=128)
-    mO = from_dlpack(o, assumed_align=128)
+    mQ = from_dlpack(qc, assumed_align=16)
+    mK = from_dlpack(kc, assumed_align=16)
+    mV = from_dlpack(vc, assumed_align=16)
+    mG = from_dlpack(gc_, assumed_align=16)
+    mBeta = from_dlpack(betac, assumed_align=16)
+    mQnorm = from_dlpack(q_norm, assumed_align=16)
+    mKnorm = from_dlpack(k_norm, assumed_align=16)
+    mKK = from_dlpack(kk, assumed_align=16)
+    mQK = from_dlpack(qk, assumed_align=16)
+    mM = from_dlpack(neumann_m, assumed_align=16)
+    mGQK = from_dlpack(gated_qk, assumed_align=16)
+    mExpGC = from_dlpack(exp_gc, assumed_align=16)
+    mExpDecay = from_dlpack(exp_decay, assumed_align=16)
+    mO = from_dlpack(o, assumed_align=16)
 
     key0 = ("pinv-k0-qk-bt32", B, T, H, K, q.dtype)
     compiled0 = _compiled_cache.get(key0)
@@ -7877,20 +7765,20 @@ def _run_3kernel_bf16_state_probe_tiled(q, k, v, g, beta, scale, bv_tile: int):
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    mQ = from_dlpack(qc, assumed_align=128)
-    mK = from_dlpack(kc, assumed_align=128)
-    mV = from_dlpack(vc, assumed_align=128)
-    mG = from_dlpack(gc_, assumed_align=128)
-    mBeta = from_dlpack(betac, assumed_align=128)
-    mQnorm = from_dlpack(q_norm, assumed_align=128)
-    mKnorm = from_dlpack(k_norm, assumed_align=128)
-    mKK = from_dlpack(kk, assumed_align=128)
-    mQK = from_dlpack(qk, assumed_align=128)
-    mM = from_dlpack(neumann_m, assumed_align=128)
-    mGQK = from_dlpack(gated_qk, assumed_align=128)
-    mExpGC = from_dlpack(exp_gc, assumed_align=128)
-    mExpDecay = from_dlpack(exp_decay, assumed_align=128)
-    mO = from_dlpack(o, assumed_align=128)
+    mQ = from_dlpack(qc, assumed_align=16)
+    mK = from_dlpack(kc, assumed_align=16)
+    mV = from_dlpack(vc, assumed_align=16)
+    mG = from_dlpack(gc_, assumed_align=16)
+    mBeta = from_dlpack(betac, assumed_align=16)
+    mQnorm = from_dlpack(q_norm, assumed_align=16)
+    mKnorm = from_dlpack(k_norm, assumed_align=16)
+    mKK = from_dlpack(kk, assumed_align=16)
+    mQK = from_dlpack(qk, assumed_align=16)
+    mM = from_dlpack(neumann_m, assumed_align=16)
+    mGQK = from_dlpack(gated_qk, assumed_align=16)
+    mExpGC = from_dlpack(exp_gc, assumed_align=16)
+    mExpDecay = from_dlpack(exp_decay, assumed_align=16)
+    mO = from_dlpack(o, assumed_align=16)
 
     key0 = ("pinv-k0-qk-bt32", B, T, H, K, q.dtype)
     compiled0 = _compiled_cache.get(key0)
@@ -7977,20 +7865,20 @@ def _run_3kernel_state_mma_probe_tiled(q, k, v, g, beta, scale, bv_tile: int):
     exp_decay = torch.empty(B, NT, HV, BT, dtype=torch.float32, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    mQ = from_dlpack(qc, assumed_align=128)
-    mK = from_dlpack(kc, assumed_align=128)
-    mV = from_dlpack(vc, assumed_align=128)
-    mG = from_dlpack(gc_, assumed_align=128)
-    mBeta = from_dlpack(betac, assumed_align=128)
-    mQnorm = from_dlpack(q_norm, assumed_align=128)
-    mKnorm = from_dlpack(k_norm, assumed_align=128)
-    mKK = from_dlpack(kk, assumed_align=128)
-    mQK = from_dlpack(qk, assumed_align=128)
-    mM = from_dlpack(neumann_m, assumed_align=128)
-    mGQK = from_dlpack(gated_qk, assumed_align=128)
-    mExpGC = from_dlpack(exp_gc, assumed_align=128)
-    mExpDecay = from_dlpack(exp_decay, assumed_align=128)
-    mO = from_dlpack(o, assumed_align=128)
+    mQ = from_dlpack(qc, assumed_align=16)
+    mK = from_dlpack(kc, assumed_align=16)
+    mV = from_dlpack(vc, assumed_align=16)
+    mG = from_dlpack(gc_, assumed_align=16)
+    mBeta = from_dlpack(betac, assumed_align=16)
+    mQnorm = from_dlpack(q_norm, assumed_align=16)
+    mKnorm = from_dlpack(k_norm, assumed_align=16)
+    mKK = from_dlpack(kk, assumed_align=16)
+    mQK = from_dlpack(qk, assumed_align=16)
+    mM = from_dlpack(neumann_m, assumed_align=16)
+    mGQK = from_dlpack(gated_qk, assumed_align=16)
+    mExpGC = from_dlpack(exp_gc, assumed_align=16)
+    mExpDecay = from_dlpack(exp_decay, assumed_align=16)
+    mO = from_dlpack(o, assumed_align=16)
 
     key0 = ("pinv-k0-qk-bt32", B, T, H, K, q.dtype)
     compiled0 = _compiled_cache.get(key0)
@@ -8077,12 +7965,6 @@ def _run_megakernel_tiled(q, k, v, g, beta, scale, bv_tile: int):
     kk = torch.empty(B, NT, H, BT, BT, dtype=torch.bfloat16, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
 
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    o = _ensure_16byte_aligned(o)
-
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
     mV = from_dlpack(vc, assumed_align=16)
@@ -8148,12 +8030,6 @@ def _run_megakernel_tma_tiled(q, k, v, g, beta, scale, bv_tile: int):
     k_norm = torch.empty(B, H, T, K, dtype=kc.dtype, device=kc.device)
     kk = torch.empty(B, NT, H, BT, BT, dtype=torch.bfloat16, device=q.device)
     o = torch.empty(B, T, HV, V, dtype=v.dtype, device=v.device)
-
-    # Ensure 16-byte alignment for CUDA 12.9 compatibility
-    q_norm = _ensure_16byte_aligned(q_norm)
-    k_norm = _ensure_16byte_aligned(k_norm)
-    kk = _ensure_16byte_aligned(kk)
-    o = _ensure_16byte_aligned(o)
 
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
@@ -8363,8 +8239,8 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
     state2.fill(cutlass.Float32(0.0))
     state3.fill(cutlass.Float32(0.0))
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = mKnorm[(i_b, i_h, None, None)].align(128)
+    gQ_full = mQnorm[(i_b, i_h, None, None)].align(128)
     gV_full = mV[(i_b, None, i_hv, None)]
     gO_full = mO[(i_b, None, i_hv, None)]
 
@@ -9149,9 +9025,6 @@ def _run_3kernel_v31_final_state(
     if workspace is None:
         q_norm = torch.empty(b, h, t_work, k_dim, dtype=qc.dtype, device=qc.device)
         k_norm = torch.empty(b, h, t_work, k_dim, dtype=kc.dtype, device=kc.device)
-        # Ensure 16-byte alignment for CUDA 12.9 compatibility
-        q_norm = _ensure_16byte_aligned(q_norm)
-        k_norm = _ensure_16byte_aligned(k_norm)
     else:
         q_norm = workspace["q_norm"]
         k_norm = workspace["k_norm"]
@@ -9159,16 +9032,12 @@ def _run_3kernel_v31_final_state(
         if workspace is None:
             kk = torch.empty(b, nt, h, BT, BT, dtype=torch.bfloat16, device=q.device)
             qk = torch.empty(b, nt, h, BT, BT, dtype=torch.bfloat16, device=q.device)
-            kk = _ensure_16byte_aligned(kk)
-            qk = _ensure_16byte_aligned(qk)
         else:
             kk = workspace["kk"]
             qk = workspace["qk"]
     if workspace is None:
         neumann_m = torch.empty(b, nt, hv, BT, BT, dtype=torch.bfloat16, device=q.device)
         gated_qk = torch.empty(b, nt, hv, BT, BT, dtype=torch.bfloat16, device=q.device)
-        neumann_m = _ensure_16byte_aligned(neumann_m)
-        gated_qk = _ensure_16byte_aligned(gated_qk)
     else:
         neumann_m = workspace["neumann_m"]
         gated_qk = workspace["gated_qk"]
@@ -9176,17 +9045,11 @@ def _run_3kernel_v31_final_state(
     if workspace is None:
         exp_gc = torch.empty(b, nt, hv, BT, dtype=exp_dtype, device=q.device)
         exp_decay = torch.empty(b, nt, hv, BT, dtype=exp_dtype, device=q.device)
-        exp_gc = _ensure_16byte_aligned(exp_gc)
-        exp_decay = _ensure_16byte_aligned(exp_decay)
     else:
         exp_gc = workspace["exp_gc"]
         exp_decay = workspace["exp_decay"]
     o = torch.empty_like(v)
     final_state = torch.empty(b, hv, k_dim, v_dim, dtype=torch.float32, device=v.device)
-    # Ensure 16-byte alignment for outputs as well
-    o = _ensure_16byte_aligned(o)
-    final_state = _ensure_16byte_aligned(final_state)
-    
     mQ = from_dlpack(qc, assumed_align=16)
     mK = from_dlpack(kc, assumed_align=16)
     mV = from_dlpack(vc, assumed_align=16)
@@ -9421,17 +9284,6 @@ def _alloc_3kernel_v31_workspace(
     if not fused_tail_k0inv:
         workspace["kk"] = torch.empty(b, nt, h, BT, BT, dtype=torch.bfloat16, device=q.device)
         workspace["qk"] = torch.empty(b, nt, h, BT, BT, dtype=torch.bfloat16, device=q.device)
-    # Ensure 16-byte alignment for all workspace tensors
-    workspace["q_norm"] = _ensure_16byte_aligned(workspace["q_norm"])
-    workspace["k_norm"] = _ensure_16byte_aligned(workspace["k_norm"])
-    workspace["neumann_m"] = _ensure_16byte_aligned(workspace["neumann_m"])
-    workspace["gated_qk"] = _ensure_16byte_aligned(workspace["gated_qk"])
-    workspace["exp_gc"] = _ensure_16byte_aligned(workspace["exp_gc"])
-    workspace["exp_decay"] = _ensure_16byte_aligned(workspace["exp_decay"])
-    if not fused_tail_k0inv:
-        workspace["kk"] = _ensure_16byte_aligned(workspace["kk"])
-        workspace["qk"] = _ensure_16byte_aligned(workspace["qk"])
-    
     workspace["mQnorm"] = from_dlpack(workspace["q_norm"], assumed_align=16)
     workspace["mKnorm"] = from_dlpack(workspace["k_norm"], assumed_align=16)
     workspace["mM"] = from_dlpack(workspace["neumann_m"], assumed_align=16)
