@@ -8778,27 +8778,27 @@ def _launch_kernel1_v31_final_state_bx2(
     tiled_copy_state_gmem = cute.make_tiled_copy_C(copy_atom_state_gmem, tiled_mma)
     if cutlass.const_expr(T % BT != 0 or (T < 32768 and T % BT == 0)):
         cp_atom_kq = cute.make_copy_atom(
-            cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.ALWAYS),
+            cute.nvgpu.CopyUniversalOp(),
             cutlass.BFloat16,
-            num_bits_per_copy=16,
+            num_bits_per_copy=128,
         )
     else:
         cp_atom_kq = cute.make_copy_atom(
-            cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.GLOBAL),
+            cute.nvgpu.CopyUniversalOp(),
             cutlass.BFloat16,
-            num_bits_per_copy=16,
+            num_bits_per_copy=128,
         )
     if cutlass.const_expr(T % BT == 0 and T < 32768):
         cp_atom_mgqk = cute.make_copy_atom(
-            cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.ALWAYS),
+            cute.nvgpu.CopyUniversalOp(),
             cutlass.BFloat16,
-            num_bits_per_copy=16,
+            num_bits_per_copy=128,
         )
     else:
         cp_atom_mgqk = cute.make_copy_atom(
-            cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.GLOBAL),
+            cute.nvgpu.CopyUniversalOp(),
             cutlass.BFloat16,
-            num_bits_per_copy=16,
+            num_bits_per_copy=128,
         )
     thr_layout_kq = cute.make_layout((16, 8), stride=(8, 1))
     val_layout_kq = cute.make_layout((1, 8), stride=(8, 1))
