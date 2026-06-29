@@ -8780,25 +8780,25 @@ def _launch_kernel1_v31_final_state_bx2(
         cp_atom_kq = cute.make_copy_atom(
             cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.ALWAYS),
             cutlass.BFloat16,
-            num_bits_per_copy=32,
+            num_bits_per_copy=16,
         )
     else:
         cp_atom_kq = cute.make_copy_atom(
             cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.GLOBAL),
             cutlass.BFloat16,
-            num_bits_per_copy=32,
+            num_bits_per_copy=16,
         )
     if cutlass.const_expr(T % BT == 0 and T < 32768):
         cp_atom_mgqk = cute.make_copy_atom(
             cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.ALWAYS),
             cutlass.BFloat16,
-            num_bits_per_copy=32,
+            num_bits_per_copy=16,
         )
     else:
         cp_atom_mgqk = cute.make_copy_atom(
             cpasync.CopyG2SOp(cache_mode=cpasync.LoadCacheMode.GLOBAL),
             cutlass.BFloat16,
-            num_bits_per_copy=32,
+            num_bits_per_copy=16,
         )
     thr_layout_kq = cute.make_layout((16, 8), stride=(8, 1))
     val_layout_kq = cute.make_layout((1, 8), stride=(8, 1))
