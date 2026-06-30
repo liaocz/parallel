@@ -1421,7 +1421,7 @@ def _store_acc_o_gmem_vector(
     scale: cutlass.Constexpr[float],
 ):
     thr_copy = tiled_copy_o_gmem.get_slice(tidx)
-    tOgO = thr_copy.partition_D(gO_tile)
+    tOgO = _align_gmem(thr_copy.partition_D(gO_tile))
     tOrO = tiled_copy_o_gmem.retile(acc_o)
     tOrO_bf16 = cute.make_rmem_tensor(cute.shape(tOrO), gO_tile.element_type)
     for idx in cutlass.range(cute.size(tOrO_bf16)):
@@ -1437,7 +1437,7 @@ def _store_acc_o_gmem_vector_noscale(
     gO_tile,
 ):
     thr_copy = tiled_copy_o_gmem.get_slice(tidx)
-    tOgO = thr_copy.partition_D(gO_tile)
+    tOgO = _align_gmem(thr_copy.partition_D(gO_tile))
     tOrO = tiled_copy_o_gmem.retile(acc_o)
     tOrO_bf16 = cute.make_rmem_tensor(cute.shape(tOrO), gO_tile.element_type)
     for idx in cutlass.range(cute.size(tOrO_bf16)):
@@ -2429,7 +2429,7 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_probe_kernel(
     gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
     gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
-    gO_full = _align_gmem(mO[(i_b, None, i_hv, None)])
+    gO_full = mO[(i_b, None, i_hv, None)]
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -8379,7 +8379,7 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
     gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
     gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
-    gO_full = _align_gmem(mO[(i_b, None, i_hv, None)])
+    gO_full = mO[(i_b, None, i_hv, None)]
 
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
@@ -8639,11 +8639,11 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
                 )
         cute.arch.fence_acq_rel_cta()
     if cutlass.const_expr(T % BT != 0 or (T < 32768 and T % BT == 0)):
-        gState_full = _align_gmem(mFinalState[(i_b, i_hv, None, None)])
-        gState0 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (0, bid_v)))
-        gState1 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (1, bid_v)))
-        gState2 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (2, bid_v)))
-        gState3 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (3, bid_v)))
+        gState_full = mFinalState[(i_b, i_hv, None, None)]
+        gState0 = cute.local_tile(gState_full, (BT, BV_TILE), (0, bid_v))
+        gState1 = cute.local_tile(gState_full, (BT, BV_TILE), (1, bid_v))
+        gState2 = cute.local_tile(gState_full, (BT, BV_TILE), (2, bid_v))
+        gState3 = cute.local_tile(gState_full, (BT, BV_TILE), (3, bid_v))
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state0, gState0)
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state1, gState1)
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state2, gState2)
@@ -8724,7 +8724,7 @@ def _launch_kernel1_v31_final_state(
         copy_atom_state_gmem = cute.make_copy_atom(
             cute.nvgpu.CopyUniversalOp(),
             cutlass.Float32,
-            num_bits_per_copy=64,
+            num_bits_per_copy=32,
         )
     else:
         copy_atom_state_gmem = cute.make_copy_atom(
@@ -8904,7 +8904,7 @@ def _launch_kernel1_v31_final_state_bx2(
         copy_atom_state_gmem = cute.make_copy_atom(
             cute.nvgpu.CopyUniversalOp(),
             cutlass.Float32,
-            num_bits_per_copy=64,
+            num_bits_per_copy=32,
         )
     else:
         copy_atom_state_gmem = cute.make_copy_atom(
