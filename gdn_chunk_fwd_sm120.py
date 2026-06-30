@@ -1421,7 +1421,7 @@ def _store_acc_o_gmem_vector(
     scale: cutlass.Constexpr[float],
 ):
     thr_copy = tiled_copy_o_gmem.get_slice(tidx)
-    tOgO = _align_gmem(thr_copy.partition_D(gO_tile))
+    tOgO = thr_copy.partition_D(gO_tile)
     tOrO = tiled_copy_o_gmem.retile(acc_o)
     tOrO_bf16 = cute.make_rmem_tensor(cute.shape(tOrO), gO_tile.element_type)
     for idx in cutlass.range(cute.size(tOrO_bf16)):
@@ -1437,7 +1437,7 @@ def _store_acc_o_gmem_vector_noscale(
     gO_tile,
 ):
     thr_copy = tiled_copy_o_gmem.get_slice(tidx)
-    tOgO = _align_gmem(thr_copy.partition_D(gO_tile))
+    tOgO = thr_copy.partition_D(gO_tile)
     tOrO = tiled_copy_o_gmem.retile(acc_o)
     tOrO_bf16 = cute.make_rmem_tensor(cute.shape(tOrO), gO_tile.element_type)
     for idx in cutlass.range(cute.size(tOrO_bf16)):
@@ -2622,7 +2622,7 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_probe_kernel(
             )
 
         if cutlass.const_expr(USE_VECTOR_O_GMEM):
-            gO_chunk = cute.local_tile(gO_full, (BT, BV_TILE), (chunk_idx, bid_v))
+            gO_chunk = _align_gmem(cute.local_tile(gO_full, (BT, BV_TILE), (chunk_idx, bid_v)))
             _store_acc_o_gmem_vector(
                 tiled_copy_o_gmem, tidx, acc_qS, gO_chunk, scale
             )
@@ -8551,7 +8551,7 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
                             o_val = scale * acc_qS[idx]
                         mO[i_b, t0 + co[0], i_hv, v_off + co[1]] = o_val.to(mO.element_type)
             else:
-                gO_chunk = cute.local_tile(gO_full, (BT, BV_TILE), (chunk_idx, bid_v))
+                gO_chunk = _align_gmem(cute.local_tile(gO_full, (BT, BV_TILE), (chunk_idx, bid_v)))
                 if cutlass.const_expr(H_PER_HV == 3):
                     for idx in cutlass.range(cute.size(acc_qS)):
                         co = tCcC_bv[idx]
@@ -8565,7 +8565,7 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
                 else:
                     _store_acc_o_gmem_vector(tiled_copy_o_gmem, tidx, acc_qS, gO_chunk, scale)
         else:
-            gO_chunk = cute.local_tile(gO_full, (BT, BV_TILE), (chunk_idx, bid_v))
+            gO_chunk = _align_gmem(cute.local_tile(gO_full, (BT, BV_TILE), (chunk_idx, bid_v)))
             if cutlass.const_expr(H_PER_HV == 3):
                 for idx in cutlass.range(cute.size(acc_qS)):
                     co = tCcC_bv[idx]
@@ -8640,10 +8640,10 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
         cute.arch.fence_acq_rel_cta()
     if cutlass.const_expr(T % BT != 0 or (T < 32768 and T % BT == 0)):
         gState_full = mFinalState[(i_b, i_hv, None, None)]
-        gState0 = cute.local_tile(gState_full, (BT, BV_TILE), (0, bid_v))
-        gState1 = cute.local_tile(gState_full, (BT, BV_TILE), (1, bid_v))
-        gState2 = cute.local_tile(gState_full, (BT, BV_TILE), (2, bid_v))
-        gState3 = cute.local_tile(gState_full, (BT, BV_TILE), (3, bid_v))
+        gState0 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (0, bid_v)))
+        gState1 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (1, bid_v)))
+        gState2 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (2, bid_v)))
+        gState3 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (3, bid_v)))
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state0, gState0)
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state1, gState1)
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state2, gState2)
