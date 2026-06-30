@@ -120,6 +120,19 @@ def _ensure_16byte_aligned(tensor):
     return aligned
 
 
+def _align_gmem(tensor):
+    """Re-assert 16-byte alignment on sliced gmem tensors for cp.async 128b.
+
+    In CUDA 12.9 + SM120, the CuTe IR verifier checks that cp.async 128-bit
+    source pointers carry an alignment annotation >= 128 bits (16 bytes).
+    While ``from_dlpack(tensor, assumed_align=128)`` creates an aligned memref
+    at kernel entry, the C++ ``_cute_ir.slice()`` used by ``tensor[(i, j, None, None)]``
+    drops the alignment from the resulting memref type. This helper rebuilds
+    the tensor with an explicit 16-byte-aligned pointer.
+    """
+    return cute.make_tensor(tensor.iterator.align(16), tensor.layout)
+
+
 # ============================================================================
 # Kernel 0: preprocess_kk
 # ============================================================================
@@ -845,8 +858,8 @@ def atrex_preprocess_kk_inv2_tail_kernel(
     tCcC = thr_mma.partition_C(cC)
 
     if cutlass.const_expr(T % BT == 0):
-        gK_full = mK[(i_b, None, i_h, None)]
-        gQ_full = mQ[(i_b, None, i_h, None)]
+        gK_full = _align_gmem(mK[(i_b, None, i_h, None)])
+        gQ_full = _align_gmem(mQ[(i_b, None, i_h, None)])
         gK_chunk = cute.local_tile(gK_full, (BT, K_DIM), (chunk_idx, 0))
         gQ_chunk = cute.local_tile(gQ_full, (BT, K_DIM), (chunk_idx, 0))
         thr_cp = tiled_copy_kq.get_slice(tidx)
@@ -1440,7 +1453,7 @@ def _store_state_gmem_vector(
     gState_tile,
 ):
     thr_copy = tiled_copy_state_gmem.get_slice(tidx)
-    tSgS = thr_copy.partition_D(gState_tile)
+    tSgS = _align_gmem(thr_copy.partition_D(gState_tile))
     tSrS = tiled_copy_state_gmem.retile(state_frag)
     cute.copy(tiled_copy_state_gmem, tSrS, tSgS)
 
@@ -1664,8 +1677,8 @@ def atrex_fused_chunk_h_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -1831,8 +1844,8 @@ def atrex_fused_chunk_h_mgqk_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -1860,8 +1873,8 @@ def atrex_fused_chunk_h_mgqk_cpasync_probe_kernel(
                 and not STATE_SPLIT
             )
         ):
-            gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
-            gGQK_chunk = mGQK[(i_b, chunk_idx, i_hv, None, None)]
+            gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
+            gGQK_chunk = _align_gmem(mGQK[(i_b, chunk_idx, i_hv, None, None)])
             thr_gM = thr_cp_mgqk.partition_S(gM_chunk)
             thr_gGQK = thr_cp_mgqk.partition_S(gGQK_chunk)
             cute.copy(tiled_copy_mgqk, thr_gM, thr_sA_cp)
@@ -2021,9 +2034,9 @@ def atrex_fused_chunk_h_mgqk_v_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
-    gV_full = mV[(i_b, None, i_hv, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
+    gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -2044,11 +2057,11 @@ def atrex_fused_chunk_h_mgqk_v_cpasync_probe_kernel(
         cute.copy(tiled_copy_kq, thr_gK, thr_sK_cp)
         cute.copy(tiled_copy_kq, thr_gQ, thr_sQ_cp)
 
-        gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
+        gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
         thr_gM = thr_cp_mgqk.partition_S(gM_chunk)
         cute.copy(tiled_copy_mgqk, thr_gM, thr_sA_cp)
         if cutlass.const_expr(not (T == 4096 and BV_TILE == 32 and not STATE_SPLIT)):
-            gGQK_chunk = mGQK[(i_b, chunk_idx, i_hv, None, None)]
+            gGQK_chunk = _align_gmem(mGQK[(i_b, chunk_idx, i_hv, None, None)])
             thr_gGQK = thr_cp_mgqk.partition_S(gGQK_chunk)
             cute.copy(tiled_copy_mgqk, thr_gGQK, thr_sGQK_cp)
 
@@ -2197,9 +2210,9 @@ def atrex_fused_chunk_h_mgqk_v_fp32state_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
-    gV_full = mV[(i_b, None, i_hv, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
+    gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -2219,8 +2232,8 @@ def atrex_fused_chunk_h_mgqk_v_fp32state_cpasync_probe_kernel(
         cute.copy(tiled_copy_kq, thr_gK, thr_sK_cp)
         cute.copy(tiled_copy_kq, thr_gQ, thr_sQ_cp)
 
-        gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
-        gGQK_chunk = mGQK[(i_b, chunk_idx, i_hv, None, None)]
+        gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
+        gGQK_chunk = _align_gmem(mGQK[(i_b, chunk_idx, i_hv, None, None)])
         thr_gM = thr_cp_mgqk.partition_S(gM_chunk)
         thr_gGQK = thr_cp_mgqk.partition_S(gGQK_chunk)
         cute.copy(tiled_copy_mgqk, thr_gM, thr_sA_cp)
@@ -2413,10 +2426,10 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_probe_kernel(
         state = cute.make_rmem_tensor(cute.make_layout((BV_TILE,)), cutlass.Float32)
         state.fill(cutlass.Float32(0.0))
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
-    gV_full = mV[(i_b, None, i_hv, None)]
-    gO_full = mO[(i_b, None, i_hv, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
+    gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
+    gO_full = _align_gmem(mO[(i_b, None, i_hv, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -2436,8 +2449,8 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_probe_kernel(
         cute.copy(tiled_copy_kq, thr_gK, thr_sK_cp)
         cute.copy(tiled_copy_kq, thr_gQ, thr_sQ_cp)
 
-        gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
-        gGQK_chunk = mGQK[(i_b, chunk_idx, i_hv, None, None)]
+        gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
+        gGQK_chunk = _align_gmem(mGQK[(i_b, chunk_idx, i_hv, None, None)])
         thr_gM = thr_cp_mgqk.partition_S(gM_chunk)
         thr_gGQK = thr_cp_mgqk.partition_S(gGQK_chunk)
         cute.copy(tiled_copy_mgqk, thr_gM, thr_sA_cp)
@@ -2943,9 +2956,9 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_state_mma_probe_kernel(
         sState[k_row, v_col] = cutlass.Float32(0.0)
     cute.arch.barrier()
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
-    gV_full = mV[(i_b, None, i_hv, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
+    gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -2965,8 +2978,8 @@ def atrex_fused_chunk_h_mgqk_v_ldsm_state_mma_probe_kernel(
         cute.copy(tiled_copy_kq, thr_gK, thr_sK_cp)
         cute.copy(tiled_copy_kq, thr_gQ, thr_sQ_cp)
 
-        gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
-        gGQK_chunk = mGQK[(i_b, chunk_idx, i_hv, None, None)]
+        gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
+        gGQK_chunk = _align_gmem(mGQK[(i_b, chunk_idx, i_hv, None, None)])
         thr_gM = thr_cp_mgqk.partition_S(gM_chunk)
         thr_gGQK = thr_cp_mgqk.partition_S(gGQK_chunk)
         cute.copy(tiled_copy_mgqk, thr_gM, thr_sA_cp)
@@ -3135,8 +3148,8 @@ def atrex_chunk_h_store_vnew_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gV_full = mV[(i_b, None, i_hv, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
 
     thr_cp_k = tiled_copy_k.get_slice(tidx)
     thr_sK_cp = thr_cp_k.partition_D(sK)
@@ -3156,7 +3169,7 @@ def atrex_chunk_h_store_vnew_cpasync_probe_kernel(
         thr_gK = thr_cp_k.partition_S(gK_chunk)
         cute.copy(tiled_copy_k, thr_gK, thr_sK_cp)
 
-        gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
+        gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
         thr_gM = thr_cp_m.partition_S(gM_chunk)
         cute.copy(tiled_copy_m, thr_gM, thr_sA_cp)
 
@@ -3273,7 +3286,7 @@ def atrex_chunk_o_split_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     gQ_chunk = cute.local_tile(gQ_full, (BT, K_DIM), (chunk_idx, 0))
     thr_cp_q = tiled_copy_q.get_slice(tidx)
     thr_gQ = thr_cp_q.partition_S(gQ_chunk)
@@ -3382,8 +3395,8 @@ def atrex_fused_chunk_h_m_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -3402,7 +3415,7 @@ def atrex_fused_chunk_h_m_cpasync_probe_kernel(
         cute.copy(tiled_copy_kq, thr_gK, thr_sK_cp)
         cute.copy(tiled_copy_kq, thr_gQ, thr_sQ_cp)
 
-        gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
+        gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
         thr_gM = thr_cp_m.partition_S(gM_chunk)
         cute.copy(tiled_copy_m, thr_gM, thr_sA_cp)
         cute.arch.cp_async_commit_group()
@@ -3554,8 +3567,8 @@ def atrex_fused_chunk_h_gqk_cpasync_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -3574,7 +3587,7 @@ def atrex_fused_chunk_h_gqk_cpasync_probe_kernel(
         cute.copy(tiled_copy_kq, thr_gK, thr_sK_cp)
         cute.copy(tiled_copy_kq, thr_gQ, thr_sQ_cp)
 
-        gGQK_chunk = mGQK[(i_b, chunk_idx, i_hv, None, None)]
+        gGQK_chunk = _align_gmem(mGQK[(i_b, chunk_idx, i_hv, None, None)])
         thr_gGQK = thr_cp_gqk.partition_S(gGQK_chunk)
         cute.copy(tiled_copy_gqk, thr_gGQK, thr_sGQK_cp)
         cute.arch.cp_async_commit_group()
@@ -3727,8 +3740,8 @@ def atrex_fused_chunk_h_pairv_reuse_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -3901,8 +3914,8 @@ def atrex_fused_chunk_h_bf16_state_probe_kernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -4074,8 +4087,8 @@ def atrex_fused_chunk_h_state_mma_probe_kernel(
         sState[k_row, v_col] = cutlass.Float32(0.0)
     cute.arch.barrier()
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -4257,8 +4270,8 @@ def atrex_fused_chunk_h_megakernel(
     cC_bv = cute.make_identity_tensor((BT, BV_TILE))
     tCcC_bv = thr_mma.partition_C(cC_bv)
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
     thr_sQ_cp = thr_cp.partition_D(sQ)
@@ -8363,10 +8376,10 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
     state2.fill(cutlass.Float32(0.0))
     state3.fill(cutlass.Float32(0.0))
 
-    gK_full = mKnorm[(i_b, i_h, None, None)]
-    gQ_full = mQnorm[(i_b, i_h, None, None)]
-    gV_full = mV[(i_b, None, i_hv, None)]
-    gO_full = mO[(i_b, None, i_hv, None)]
+    gK_full = _align_gmem(mKnorm[(i_b, i_h, None, None)])
+    gQ_full = _align_gmem(mQnorm[(i_b, i_h, None, None)])
+    gV_full = _align_gmem(mV[(i_b, None, i_hv, None)])
+    gO_full = _align_gmem(mO[(i_b, None, i_hv, None)])
 
     thr_cp = tiled_copy_kq.get_slice(tidx)
     thr_sK_cp = thr_cp.partition_D(sK)
@@ -8386,8 +8399,8 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
         cute.copy(tiled_copy_kq, thr_gK, thr_sK_cp)
         cute.copy(tiled_copy_kq, thr_gQ, thr_sQ_cp)
 
-        gM_chunk = mM[(i_b, chunk_idx, i_hv, None, None)]
-        gGQK_chunk = mGQK[(i_b, chunk_idx, i_hv, None, None)]
+        gM_chunk = _align_gmem(mM[(i_b, chunk_idx, i_hv, None, None)])
+        gGQK_chunk = _align_gmem(mGQK[(i_b, chunk_idx, i_hv, None, None)])
         thr_gM = thr_cp_mgqk.partition_S(gM_chunk)
         thr_gGQK = thr_cp_mgqk.partition_S(gGQK_chunk)
         cute.copy(tiled_copy_mgqk, thr_gM, thr_sA_cp)
@@ -8626,11 +8639,11 @@ def atrex__fused_chunk_h_v31_final_state_kernel(
                 )
         cute.arch.fence_acq_rel_cta()
     if cutlass.const_expr(T % BT != 0 or (T < 32768 and T % BT == 0)):
-        gState_full = mFinalState[(i_b, i_hv, None, None)]
-        gState0 = cute.local_tile(gState_full, (BT, BV_TILE), (0, bid_v))
-        gState1 = cute.local_tile(gState_full, (BT, BV_TILE), (1, bid_v))
-        gState2 = cute.local_tile(gState_full, (BT, BV_TILE), (2, bid_v))
-        gState3 = cute.local_tile(gState_full, (BT, BV_TILE), (3, bid_v))
+        gState_full = _align_gmem(mFinalState[(i_b, i_hv, None, None)])
+        gState0 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (0, bid_v)))
+        gState1 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (1, bid_v)))
+        gState2 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (2, bid_v)))
+        gState3 = _align_gmem(cute.local_tile(gState_full, (BT, BV_TILE), (3, bid_v)))
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state0, gState0)
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state1, gState1)
         _store_state_gmem_vector(tiled_copy_state_gmem, tidx, state2, gState2)
